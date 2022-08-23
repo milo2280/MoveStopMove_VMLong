@@ -9,6 +9,11 @@ public class Player : Character
     private Vector3 mouseDir, moveDir;
     private Quaternion lookRotation;
 
+    private void Start()
+    {
+        changeAnim(Constant.ANIM_IDLE);
+    }
+
     private void Update()
     {
         JoystickMove();
@@ -22,13 +27,11 @@ public class Player : Character
         {
             CalculateMoveDir();
             Move();
-            animator.SetTrigger(Constant.ANIM_RUN);
+            changeAnim(Constant.ANIM_RUN);
         }
-
-        if (Input.GetMouseButtonUp(0))
+        else
         {
-            animator.ResetTrigger(Constant.ANIM_RUN);
-            animator.SetTrigger(Constant.ANIM_IDLE);
+            changeAnim(Constant.ANIM_IDLE);
         }
     }
 
