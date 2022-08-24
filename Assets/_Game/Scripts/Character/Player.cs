@@ -11,7 +11,7 @@ public class Player : Character
 
     private void Start()
     {
-        changeAnim(Constant.ANIM_IDLE);
+        ChangeAnim(Constant.ANIM_IDLE);
     }
 
     private void Update()
@@ -27,11 +27,11 @@ public class Player : Character
         {
             CalculateMoveDir();
             Move();
-            changeAnim(Constant.ANIM_RUN);
+            ChangeAnim(Constant.ANIM_RUN);
         }
         else
         {
-            changeAnim(Constant.ANIM_IDLE);
+            ChangeAnim(Constant.ANIM_IDLE);
         }
     }
 

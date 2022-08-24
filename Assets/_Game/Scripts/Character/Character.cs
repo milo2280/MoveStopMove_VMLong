@@ -29,7 +29,7 @@ public abstract class Character : MonoBehaviour
         weapon.Attack();
     }
 
-    public void changeAnim(string nextAnim)
+    public void ChangeAnim(string nextAnim)
     {
         if (currentAnim != nextAnim)
         {
