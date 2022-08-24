@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class Enemy : Character
 {
     public NavMeshAgent navMeshAgent;
+    public Mark mark;
 
     private IState<Enemy> currentState;
 
@@ -57,5 +58,10 @@ public class Enemy : Character
             && (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f);
 
         return isReachDes;
+    }
+
+    public void Targeted()
+    {
+        mark.EnableMark();
     }
 }

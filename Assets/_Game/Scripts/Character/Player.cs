@@ -8,6 +8,7 @@ public class Player : Character
 
     private Vector3 mouseDir, moveDir;
     private Quaternion lookRotation;
+    private bool isStop = true;
 
     private void Start()
     {
@@ -17,6 +18,7 @@ public class Player : Character
     private void Update()
     {
         JoystickMove();
+        DetectEnemy();
     }
 
     private void JoystickMove()
@@ -28,10 +30,12 @@ public class Player : Character
             CalculateMoveDir();
             Move();
             ChangeAnim(Constant.ANIM_RUN);
+            isStop = false;
         }
         else
         {
             ChangeAnim(Constant.ANIM_IDLE);
+            isStop = true;
         }
     }
 
@@ -46,5 +50,20 @@ public class Player : Character
     {
         charTransform.position = Vector3.Lerp(charTransform.position, charTransform.position + moveDir, speed * Time.deltaTime);
         charTransform.rotation = Quaternion.Slerp(charTransform.rotation, lookRotation, speed * Time.deltaTime);
+    }
+
+    private void DetectEnemy()
+    {
+        Collider[] colliders = Physics.OverlapSphere(charTransform.position, attackRange);
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i].CompareTag(Constant.TAG_ENEMY))
+            {
+                Enemy enemy = Cache<Enemy>.Get(colliders[i]);
+                enemy.Targeted();
+                break;
+            }
+        }
     }
 }

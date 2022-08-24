@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     public float speed;
+    public float attackRange;
     public Transform charTransform;
     public Animator animator;
     public Weapon weapon;
