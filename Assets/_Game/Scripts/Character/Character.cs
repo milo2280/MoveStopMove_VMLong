@@ -9,7 +9,7 @@ public abstract class Character : MonoBehaviour
     public float attackSpeed;
     public Transform charTransform;
     public Animator animator;
-    public Weapon weapon;
+    public WeaponHolder weaponHolder;
     public Collider charCollider;
 
     protected bool isAttacking = false;
@@ -64,6 +64,7 @@ public abstract class Character : MonoBehaviour
     {
         yield return new WaitForSeconds(ATTACK_ANIM_DURATION / 2);
 
+        weaponHolder.Attack();
         isAttacking = false;
     }
 
