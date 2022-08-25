@@ -24,6 +24,11 @@ public class PatrolState : IState<Enemy>
         }
 
         t.Patrolling();
+
+        if (t.DetectEnemy())
+        {
+            t.ChangeState(new AttackState());
+        }
     }
 
     public void OnExit(Enemy t)

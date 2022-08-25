@@ -8,14 +8,6 @@ public class Mark : MonoBehaviour
     public Transform enemyTransform;
 
     private bool isOn = false;
-    private float playerRange;
-    private float sqrplayerRange;
-
-    private void Start()
-    {
-        playerRange = LevelManager.Ins.playerRange;
-        sqrplayerRange = playerRange * playerRange;
-    }
 
     private void Update()
     {
@@ -30,7 +22,9 @@ public class Mark : MonoBehaviour
 
     private bool OutOfPlayerRange()
     {
-        return (enemyTransform.position - LevelManager.Ins.playerPos).sqrMagnitude > sqrplayerRange;
+        float distance = (enemyTransform.position - LevelManager.Ins.playerPos).sqrMagnitude;
+        float range = LevelManager.Ins.playerRange * LevelManager.Ins.playerRange;
+        return distance > range;
     }
 
     public void EnableMark()

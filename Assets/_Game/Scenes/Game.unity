@@ -697,6 +697,11 @@ MonoBehaviour:
   cameraTranform: {fileID: 963194228}
   playerTransform: {fileID: 97321947}
   offset: {x: 0, y: 15, z: -15}
+--- !u!136 &1107431243 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 1107431243, guid: 29500e878f02f2e4a95b7189bdce1c1a, type: 3}
+  m_PrefabInstance: {fileID: 3579936358133670713}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1139401803
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,6 +1153,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1703202213, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 1890375759441814778, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -1213,6 +1222,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 1212053112115738304, guid: 29500e878f02f2e4a95b7189bdce1c1a, type: 3}
+      propertyPath: m_TagString
+      value: Character
+      objectReference: {fileID: 0}
     - target: {fileID: 6174554572369083367, guid: 29500e878f02f2e4a95b7189bdce1c1a, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -1257,5 +1270,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6638304256866674041, guid: 29500e878f02f2e4a95b7189bdce1c1a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638304256866674041, guid: 29500e878f02f2e4a95b7189bdce1c1a, type: 3}
+      propertyPath: attackRange
+      value: 5.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638304256866674041, guid: 29500e878f02f2e4a95b7189bdce1c1a, type: 3}
+      propertyPath: attackSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638304256866674041, guid: 29500e878f02f2e4a95b7189bdce1c1a, type: 3}
+      propertyPath: charCollider
+      value: 
+      objectReference: {fileID: 1107431243}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29500e878f02f2e4a95b7189bdce1c1a, type: 3}

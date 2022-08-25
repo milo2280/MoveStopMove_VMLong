@@ -18,7 +18,7 @@ public class Player : Character
     private void Update()
     {
         JoystickMove();
-        DetectEnemy();
+        AttackControl();
     }
 
     private void JoystickMove()
@@ -27,15 +27,15 @@ public class Player : Character
 
         if ((mouseDir - Vector3.zero).sqrMagnitude > 0.01f)
         {
+            isStop = false;
             CalculateMoveDir();
             Move();
             ChangeAnim(Constant.ANIM_RUN);
-            isStop = false;
         }
         else
         {
-            ChangeAnim(Constant.ANIM_IDLE);
             isStop = true;
+            if (!isAttacking) ChangeAnim(Constant.ANIM_IDLE);
         }
     }
 
@@ -52,18 +52,26 @@ public class Player : Character
         charTransform.rotation = Quaternion.Slerp(charTransform.rotation, lookRotation, speed * Time.deltaTime);
     }
 
-    private void DetectEnemy()
+    private void AttackControl()
     {
-        Collider[] colliders = Physics.OverlapSphere(charTransform.position, attackRange);
-
-        for (int i = 0; i < colliders.Length; i++)
+        if (DetectEnemy())
         {
-            if (colliders[i].CompareTag(Constant.TAG_ENEMY))
+            MarkEnemy();
+            if (isStop) Attack();
+        }
+
+        if (isAttacking)
+        {
+            if (!isStop || !DetectEnemy())
             {
-                Enemy enemy = Cache<Enemy>.Get(colliders[i]);
-                enemy.Targeted();
-                break;
+                StopAttack();
             }
         }
+    }
+
+    private void MarkEnemy()
+    {
+        Enemy enemy = Cache<Enemy>.Get(targetCollider);
+        enemy.Targeted();
     }
 }

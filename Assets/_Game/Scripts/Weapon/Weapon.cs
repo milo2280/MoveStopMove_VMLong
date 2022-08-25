@@ -4,8 +4,7 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    public virtual void Attack()
-    {
+    public float attackSpeed { get; private set; }
 
-    }
+    public virtual void Attack() { }
 }

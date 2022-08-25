@@ -22,6 +22,11 @@ public class IdleState : IState<Enemy>
         { 
             t.ChangeState(new PatrolState());
         }
+
+        if (t.DetectEnemy())
+        {
+            t.ChangeState(new AttackState());
+        }
     }
 
     public void OnExit(Enemy t)
