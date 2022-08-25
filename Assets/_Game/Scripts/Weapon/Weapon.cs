@@ -5,6 +5,11 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     public float attackSpeed { get; private set; }
+    public GameObject bulletPrefab;
+    public Transform weaponTransform;
 
-    public virtual void Attack() { }
+    public virtual void Attack(Vector3 position, Quaternion rotation) 
+    {
+        Instantiate(bulletPrefab, position, rotation);
+    }
 }
