@@ -64,4 +64,9 @@ public class Enemy : Character
     {
         mark.EnableMark();
     }
+
+    public override void OnDespawn()
+    {
+        GameObject.Destroy(this.gameObject);
+    }
 }
