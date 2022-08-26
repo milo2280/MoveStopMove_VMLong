@@ -11,4 +11,5 @@ public class Constant
 
     // Tag
     public const string TAG_CHARACTER = "Character";
+    public const string TAG_BULLET = "Bullet";
 }
