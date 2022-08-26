@@ -74,4 +74,9 @@ public class Player : Character
         Enemy enemy = Cache<Enemy>.Get(targetCollider);
         enemy.Targeted();
     }
+
+    public override void OnDespawn()
+    {
+        GameObject.Destroy(this.gameObject);
+    }
 }

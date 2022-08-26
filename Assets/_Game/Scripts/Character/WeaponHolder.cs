@@ -25,7 +25,7 @@ public class WeaponHolder : MonoBehaviour
 
     private void GenerateWeapon()
     {
-        weaponObj = Instantiate(listWeaponPrefab[0], holderTransform);
+        weaponObj = Instantiate(listWeaponPrefab[1], holderTransform);
         currentWeapon = weaponObj.GetComponent<Weapon>();
     }
 

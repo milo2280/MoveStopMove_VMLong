@@ -10,6 +10,6 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void Attack(Vector3 position, Quaternion rotation) 
     {
-        Instantiate(bulletPrefab, position, rotation);
+        SimplePool.Spawn(bulletPrefab, position, rotation);
     }
 }

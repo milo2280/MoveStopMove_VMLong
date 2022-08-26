@@ -6,7 +6,10 @@ public class Bullet : MonoBehaviour
 {
     public Rigidbody bulletRigidbody;
     public Transform bulletTransform;
+    private Vector3 spawnPos;
+    private float distanceTravelled;
     private float speed = 5f;
+    private float charAttackRange = 5.6f;
 
 
     private void OnEnable()
@@ -16,16 +19,35 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        
+        TrackBulletDistance();
     }
 
-    private void OnInit()
+    public void OnInit()
     {
         bulletRigidbody.velocity = bulletTransform.forward * speed;
+        spawnPos = bulletTransform.position;
+        distanceTravelled = 0;
     }
 
     private void OnDespawn()
     {
+        SimplePool.Despawn(this.gameObject);
+    }
 
+    private void TrackBulletDistance()
+    {
+        distanceTravelled = Vector3.Distance(spawnPos, bulletTransform.position);
+        if (distanceTravelled > charAttackRange)
+        {
+            OnDespawn();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag(Constant.TAG_CHARACTER))
+        {
+            OnDespawn();
+        }
     }
 }
