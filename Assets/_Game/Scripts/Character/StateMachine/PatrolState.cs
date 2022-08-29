@@ -10,7 +10,7 @@ public class PatrolState : IState<Enemy>
     public void OnEnter(Enemy t)
     {
         timer = 0f;
-        endTime = Random.Range(6f, 10f);
+        endTime = Random.Range(50f, 60f);
 
         t.ChangeAnim(Constant.ANIM_RUN);
     }

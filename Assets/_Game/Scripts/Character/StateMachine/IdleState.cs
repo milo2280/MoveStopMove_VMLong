@@ -10,7 +10,7 @@ public class IdleState : IState<Enemy>
     public void OnEnter(Enemy t)
     {
         timer = 0f;
-        endTime = Random.Range(1f, 4f);
+        endTime = Random.Range(1f, 2f);
         t.ChangeAnim(Constant.ANIM_IDLE);
     }
 
