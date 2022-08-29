@@ -8,6 +8,9 @@ public class Enemy : Character
     public NavMeshAgent navMeshAgent;
     public Mark mark;
 
+    private const float MAX_X = 50f;
+    private const float MAX_Z = 60f;
+
     private IState<Enemy> currentState;
 
     private void Start()
@@ -47,8 +50,21 @@ public class Enemy : Character
     {
         if (IsReachDes())
         {
-            navMeshAgent.destination = new Vector3(Random.Range(-8f, 8f), 0f, Random.Range(-8f, 8f));
+            navMeshAgent.destination = RandomPoint(charTransform.position, 10f);
         }
+    }
+
+    public Vector3 RandomPoint(Vector3 center, float radius)
+    {
+        Vector3 randomPoint = center + Random.insideUnitSphere * radius;
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(randomPoint, out hit, radius, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+
+        return Vector3.zero;
     }
 
     public bool IsReachDes()

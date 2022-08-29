@@ -12,7 +12,7 @@ public abstract class Character : MonoBehaviour
     public WeaponHolder weaponHolder;
     public Collider charCollider;
 
-    protected bool isAttacking = false;
+    protected bool isAttacking;
     protected string currentAnim;
     protected Collider targetCollider;
     protected Coroutine lastPrepare, lastAttack;
