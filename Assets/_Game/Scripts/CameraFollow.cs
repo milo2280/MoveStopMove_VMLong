@@ -16,4 +16,9 @@ public class CameraFollow : MonoBehaviour
     {
         cameraTranform.position = playerTransform.position + offset;
     }
+
+    public void IncreaseOffset()
+    {
+        offset = Vector3.Scale(offset, Constant.SCALE_VECTOR3);
+    }
 }

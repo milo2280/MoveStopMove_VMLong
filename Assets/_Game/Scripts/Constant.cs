@@ -12,4 +12,8 @@ public class Constant
     // Tag
     public const string TAG_CHARACTER = "Character";
     public const string TAG_BULLET = "Bullet";
+
+    // Number
+    public static readonly float SCALE_FLOAT = 1.1f;
+    public static readonly Vector3 SCALE_VECTOR3 = new Vector3(1.1f, 1.1f, 1.1f);
 }

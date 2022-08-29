@@ -5,11 +5,11 @@ using UnityEngine;
 public static class SimplePool
 {
     static int DEFAULT_AMOUNT = 10;
-    static Dictionary<GameObject, Pool> poolObject = new Dictionary<GameObject, Pool>();
-    static Dictionary<GameObject, Pool> poolParent = new Dictionary<GameObject, Pool>();
+    static Dictionary<GameUnit, Pool> poolObject = new Dictionary<GameUnit, Pool>();
+    static Dictionary<GameUnit, Pool> poolParent = new Dictionary<GameUnit, Pool>();
 
 
-    public static void Preload(GameObject prefab, int amount, Transform parent)
+    public static void Preload(GameUnit prefab, int amount, Transform parent)
     {
         if (!poolObject.ContainsKey(prefab))
         {
@@ -17,31 +17,43 @@ public static class SimplePool
         }
     }
 
-    public static GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation)
+    public static GameUnit Spawn(GameUnit prefab, Vector3 position, Quaternion rotation)
     {
         if (!poolObject.ContainsKey(prefab) || poolObject[prefab] == null)
         {
             poolObject.Add(prefab, new Pool(prefab, DEFAULT_AMOUNT, null));
         }
 
-        GameObject obj = poolObject[prefab].Spawn(position, rotation);
+        GameUnit obj = poolObject[prefab].Spawn(position, rotation);
 
         return obj;
     }
 
-    public static GameObject Spawn(GameObject prefab, Vector3 localPosition, Transform myParent)
+    public static T Spawn<T>(GameUnit prefab, Vector3 position, Quaternion rotation) where T : GameUnit
+    {
+        if (!poolObject.ContainsKey(prefab) || poolObject[prefab] == null)
+        {
+            poolObject.Add(prefab, new Pool(prefab, DEFAULT_AMOUNT, null));
+        }
+
+        GameUnit obj = poolObject[prefab].Spawn(position, rotation);
+
+        return obj as T;
+    }
+
+    public static GameUnit Spawn(GameUnit prefab, Vector3 localPosition, Transform myParent)
     {
         if (!poolObject.ContainsKey(prefab) || poolObject[prefab] == null)
         {
             poolObject.Add(prefab, new Pool(prefab, DEFAULT_AMOUNT, myParent));
         }
 
-        GameObject obj = poolObject[prefab].Spawn(localPosition, myParent);
+        GameUnit obj = poolObject[prefab].Spawn(localPosition, myParent);
 
         return obj;
     }
 
-    public static void Despawn(GameObject obj)
+    public static void Despawn(GameUnit obj)
     {
         if (poolParent.ContainsKey(obj))
         {
@@ -71,27 +83,27 @@ public static class SimplePool
 
     public class Pool
     {
-        Queue<GameObject> pool = new Queue<GameObject>();
-        List<GameObject> activeObjs = new List<GameObject>();
+        Queue<GameUnit> pool = new Queue<GameUnit>();
+        List<GameUnit> activeObjs = new List<GameUnit>();
         Transform parent;
-        GameObject prefab;
+        GameUnit prefab;
 
-        public Pool(GameObject prefab, int amount, Transform parent)
+        public Pool(GameUnit prefab, int amount, Transform parent)
         {
             this.prefab = prefab;
 
             for (int i = 0; i < amount; i++)
             {
-                GameObject obj = GameObject.Instantiate(prefab, parent);
+                GameUnit obj = GameObject.Instantiate(prefab, parent);
                 poolParent.Add(obj, this);
                 pool.Enqueue(obj);
-                obj.SetActive(false);
+                obj.gameObject.SetActive(false);
             }
         }
 
-        public GameObject Spawn(Vector3 position, Quaternion rotation)
+        public GameUnit Spawn(Vector3 position, Quaternion rotation)
         {
-            GameObject obj = null;
+            GameUnit obj = null;
 
             if (pool.Count == 0)
             {
@@ -104,16 +116,16 @@ public static class SimplePool
             }
 
             obj.transform.SetPositionAndRotation(position, rotation);
-            obj.SetActive(true);
+            obj.gameObject.SetActive(true);
 
             activeObjs.Add(obj);
 
             return obj;
         }
 
-        public GameObject Spawn(Vector3 localPosition, Transform myParent)
+        public GameUnit Spawn(Vector3 localPosition, Transform myParent)
         {
-            GameObject obj = null;
+            GameUnit obj = null;
 
             if (pool.Count == 0)
             {
@@ -126,18 +138,18 @@ public static class SimplePool
             }
 
             obj.transform.localPosition = localPosition;
-            obj.SetActive(true);
+            obj.gameObject.SetActive(true);
 
             activeObjs.Add(obj);
 
             return obj;
         }
 
-        public void Despawn(GameObject obj)
+        public void Despawn(GameUnit obj)
         {
             activeObjs.Remove(obj);
             pool.Enqueue(obj);
-            obj.SetActive(false);
+            obj.gameObject.SetActive(false);
         }
 
         public void Collect()
@@ -154,9 +166,14 @@ public static class SimplePool
 
             while (pool.Count > 0)
             {
-                GameObject obj = pool.Dequeue();
+                GameUnit obj = pool.Dequeue();
                 GameObject.Destroy(obj);
             }
         }
     }
+}
+
+public class GameUnit : MonoBehaviour
+{
+
 }

@@ -8,13 +8,11 @@ public class Enemy : Character
     public NavMeshAgent navMeshAgent;
     public Mark mark;
 
-    private const float MAX_X = 50f;
-    private const float MAX_Z = 60f;
-
     private IState<Enemy> currentState;
 
     private void Start()
     {
+        OnInit();
         ChangeState(new IdleState());
     }
 
@@ -79,6 +77,11 @@ public class Enemy : Character
     public void Targeted()
     {
         mark.EnableMark();
+    }
+
+    public override void OnInit()
+    {
+        base.OnInit();
     }
 
     public override void OnDespawn()

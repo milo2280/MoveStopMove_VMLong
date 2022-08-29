@@ -200,6 +200,7 @@ MonoBehaviour:
   weaponHolder: {fileID: 1543441740}
   charCollider: {fileID: 1890375759441814781}
   joystick: {fileID: 0}
+  cameraFollow: {fileID: 0}
 --- !u!114 &78529575207847083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,6 +293,8 @@ MonoBehaviour:
   listWeaponPrefab:
   - {fileID: 7160437588610602712, guid: 674886397e6a01b43b3a1ac99c239af2, type: 3}
   - {fileID: 2117157752809097028, guid: b527fd6c8a048734d8c2c9f9427b29f6, type: 3}
+  - {fileID: 1642851876974449542, guid: 951ba43c672e8f546bd0c0ac1f7e0f96, type: 3}
+  character: {fileID: 1890375759441814783}
 --- !u!1001 &1890375759114809097
 PrefabInstance:
   m_ObjectHideFlags: 0

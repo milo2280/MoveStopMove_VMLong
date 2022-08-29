@@ -16,11 +16,15 @@ public abstract class Character : MonoBehaviour
     protected string currentAnim;
     protected Collider targetCollider;
     protected Coroutine lastPrepare, lastAttack;
+    protected Vector3 nextScale;
 
     protected const float MAX_ATTACK_SPEED = 5f;
     protected const float ATTACK_ANIM_DURATION = 1f;
 
-    public virtual void OnInit() { }
+    public virtual void OnInit() 
+    {
+        nextScale = Constant.SCALE_VECTOR3;
+    }
     public virtual void OnDespawn() { }
 
     public void OnHit()
@@ -95,5 +99,17 @@ public abstract class Character : MonoBehaviour
         }
 
         return false;
+    }
+
+    public virtual void KillAnEnemy()
+    {
+        charTransform.localScale = nextScale;
+        attackRange *= Constant.SCALE_FLOAT;
+        nextScale = Vector3.Scale(nextScale, Constant.SCALE_VECTOR3);
+    }
+
+    public float GetAttackRange()
+    {
+        return attackRange;
     }
 }
