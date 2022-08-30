@@ -19,7 +19,7 @@ public abstract class Character : GameUnit, IHit
     protected Vector3 nextScale;
     protected bool dead;
 
-    protected const float MAX_ATTACK_SPEED = 5f;
+    protected const float MAX_ATTACK_SPEED = 1f;
     protected const float ATTACK_ANIM_DURATION = 1f;
 
     public virtual void OnInit() 

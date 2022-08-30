@@ -9,6 +9,7 @@ public class WeaponHolder : MonoBehaviour
     public Transform bulletPoint;
     public Character character;
 
+    private Weapon weaponPrefab;
     private Weapon currentWeapon;
 
     private void Start()
@@ -26,6 +27,8 @@ public class WeaponHolder : MonoBehaviour
     {
         currentWeapon = SimplePool.SpawnOne<Weapon>(DataManager.Ins.weapons[Random.Range(0, 3)], Vector3.zero, holderTransform);
         currentWeapon.OnInit(this);
+
+        //currentWeapon = Instantiate(weaponPrefab);
     }
 
     private void WeaponOnHand()

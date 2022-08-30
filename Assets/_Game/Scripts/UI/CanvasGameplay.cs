@@ -8,5 +8,6 @@ public class CanvasGameplay : UICanvas
     {
         UIManager.Ins.OpenUI(UIID.UICSetting);
         GameManager.Ins.ChangeState(GameState.Pause);
+        Close();
     }
 }

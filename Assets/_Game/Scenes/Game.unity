@@ -601,9 +601,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTranform: {fileID: 963194228}
   playerTransform: {fileID: 97321947}
-  offset: {x: 0, y: 15, z: -15}
-  playingAngle: {x: 0.38268346, y: 0, z: 0, w: 0.9238795}
+  playingOffset: {x: 0, y: 15, z: -15}
   startOffset: {x: 0, y: 5, z: -8}
+  playingAngle: {x: 0.38268346, y: 0, z: 0, w: 0.9238795}
   startAngle: {x: 0.25881904, y: 0, z: 0, w: 0.9659258}
 --- !u!1 &1139401803
 GameObject:
@@ -1234,6 +1234,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1509871060, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1509871061, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.008
+      objectReference: {fileID: 0}
+    - target: {fileID: 1509871061, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.38268343
+      objectReference: {fileID: 0}
+    - target: {fileID: 1509871061, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 45
+      objectReference: {fileID: 0}
     - target: {fileID: 1890375759441814778, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -1286,6 +1302,10 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 1745851153}
+    - target: {fileID: 1890375759441814783, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
+      propertyPath: attackSpeed
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 1890375759441814783, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
       propertyPath: cameraFollow
       value: 
