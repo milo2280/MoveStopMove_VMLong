@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Joystick : MonoBehaviour
 {
     public Transform joystickTransform;
     public Transform stickTransform;
 
-    private bool disabled;
     private float dragOffset, sqrDragOffset;
     private Vector3 rootPos, dragPos, dragDir;
     public Vector3 mouseDir { get; private set; }
@@ -20,15 +20,12 @@ public class Joystick : MonoBehaviour
 
     private void Update()
     {
-        if (!disabled)
-        {
-            HandleMouseInput();
-        }
+        HandleMouseInput();
     }
 
     private void HandleMouseInput()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !IsMouseOverUI())
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -57,8 +54,27 @@ public class Joystick : MonoBehaviour
         }
     }
 
-    public void DisableJoystick()
+    private bool IsMouseOverUI()
     {
-        disabled = true;
+        if (GameManager.Ins.IsState(GameState.Gameplay))
+        {
+            PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
+            pointerEventData.position = Input.mousePosition;
+
+            List<RaycastResult> raycastResults = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerEventData, raycastResults);
+
+            for (int i = 0; i < raycastResults.Count; i++)
+            {
+                if (raycastResults[i].gameObject.CompareTag("Button"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        
+        return true;
     }
 }

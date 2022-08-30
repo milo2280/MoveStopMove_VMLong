@@ -85,12 +85,6 @@ public class Player : Character
         base.OnInit();
     }
 
-    public override void OnDeath()
-    {
-        base.OnDeath();
-        joystick.DisableJoystick();
-    }
-
     public override void KillAnEnemy()
     {
         base.KillAnEnemy();

@@ -6,13 +6,23 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform cameraTranform, playerTransform;
     public Vector3 offset;
+    public Quaternion playingAngle;
+    public Vector3 startOffset;
+    public Quaternion startAngle;
+
     private Vector3 newOffset;
     private bool isScaling;
 
+    private void Start()
+    {
+        cameraTranform.position = playerTransform.position + startOffset;
+        cameraTranform.rotation = startAngle;
+    }
+
     private void LateUpdate()
     {
-        FollowPlayer();
-        Scaling();
+        //FollowPlayer();
+        //Scaling();
     }
 
     private void FollowPlayer()

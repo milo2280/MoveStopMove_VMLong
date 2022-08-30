@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Character : MonoBehaviour, IHit
+public abstract class Character : GameUnit, IHit
 {
     public float speed;
     public float attackRange;
