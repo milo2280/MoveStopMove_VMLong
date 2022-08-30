@@ -6,10 +6,13 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform cameraTranform, playerTransform;
     public Vector3 offset;
+    private Vector3 newOffset;
+    private bool isScaling;
 
     private void LateUpdate()
     {
         FollowPlayer();
+        Scaling();
     }
 
     private void FollowPlayer()
@@ -17,8 +20,21 @@ public class CameraFollow : MonoBehaviour
         cameraTranform.position = playerTransform.position + offset;
     }
 
-    public void IncreaseOffset()
+    public void ScaleOffset()
     {
-        offset = Vector3.Scale(offset, Constant.SCALE_VECTOR3);
+        isScaling = true;
+        newOffset = Vector3.Scale(offset, Constant.SCALE_VECTOR3);
+    }
+
+    private void Scaling()
+    {
+        if (isScaling)
+        {
+            offset = Vector3.Lerp(offset, newOffset, Time.deltaTime);
+            if ((newOffset - offset).sqrMagnitude < 0.01f)
+            {
+                isScaling = false;
+            }
+        }
     }
 }

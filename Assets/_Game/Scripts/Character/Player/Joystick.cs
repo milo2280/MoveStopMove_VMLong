@@ -7,6 +7,7 @@ public class Joystick : MonoBehaviour
     public Transform joystickTransform;
     public Transform stickTransform;
 
+    private bool disabled;
     private float dragOffset, sqrDragOffset;
     private Vector3 rootPos, dragPos, dragDir;
     public Vector3 mouseDir { get; private set; }
@@ -19,7 +20,10 @@ public class Joystick : MonoBehaviour
 
     private void Update()
     {
-        HandleMouseInput();
+        if (!disabled)
+        {
+            HandleMouseInput();
+        }
     }
 
     private void HandleMouseInput()
@@ -51,5 +55,10 @@ public class Joystick : MonoBehaviour
             mouseDir = Vector3.zero;
             joystickTransform.gameObject.SetActive(false);
         }
+    }
+
+    public void DisableJoystick()
+    {
+        disabled = true;
     }
 }

@@ -19,8 +19,11 @@ public class Player : Character
 
     private void Update()
     {
-        JoystickMove();
-        AttackControl();
+        if (!dead)
+        {
+            JoystickMove();
+            AttackControl();
+        }
     }
 
     private void JoystickMove()
@@ -82,14 +85,15 @@ public class Player : Character
         base.OnInit();
     }
 
-    public override void OnDespawn()
+    public override void OnDeath()
     {
-        GameObject.Destroy(this.gameObject);
+        base.OnDeath();
+        joystick.DisableJoystick();
     }
 
     public override void KillAnEnemy()
     {
         base.KillAnEnemy();
-        cameraFollow.IncreaseOffset();
+        cameraFollow.ScaleOffset();
     }
 }

@@ -10,6 +10,8 @@ public class Enemy : Character
 
     private IState<Enemy> currentState;
 
+    private const float DECOMPOSE_TIME = 2f;
+
     private void Start()
     {
         OnInit();
@@ -18,7 +20,7 @@ public class Enemy : Character
 
     void Update()
     {
-        if (currentState != null)
+        if (currentState != null && !dead)
         {
             currentState.OnExecute(this);
         }
@@ -82,6 +84,19 @@ public class Enemy : Character
     public override void OnInit()
     {
         base.OnInit();
+    }
+
+    public override void OnDeath()
+    {
+        base.OnDeath();
+        StartCoroutine(IEDecompose());
+    }
+
+    protected IEnumerator IEDecompose()
+    {
+        yield return new WaitForSeconds(DECOMPOSE_TIME);
+
+        OnDespawn();
     }
 
     public override void OnDespawn()

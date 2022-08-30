@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Character : MonoBehaviour
+public abstract class Character : MonoBehaviour, IHit
 {
     public float speed;
     public float attackRange;
@@ -17,6 +17,7 @@ public abstract class Character : MonoBehaviour
     protected Collider targetCollider;
     protected Coroutine lastPrepare, lastAttack;
     protected Vector3 nextScale;
+    protected bool dead;
 
     protected const float MAX_ATTACK_SPEED = 5f;
     protected const float ATTACK_ANIM_DURATION = 1f;
@@ -32,9 +33,12 @@ public abstract class Character : MonoBehaviour
         OnDeath();
     }
 
-    public void OnDeath()
+    public virtual void OnDeath()
     {
-        OnDespawn();
+        dead = true;
+        charCollider.enabled = false;
+        ChangeAnim(Constant.ANIM_DEAD);
+        if (isAttacking) StopAttack();
     }
 
     public void ChangeAnim(string nextAnim)
