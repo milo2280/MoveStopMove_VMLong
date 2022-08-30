@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour
+public abstract class Weapon : GameUnit
 {
     public float attackSpeed { get; private set; }
     public GameUnit bulletPrefab;

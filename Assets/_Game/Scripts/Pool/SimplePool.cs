@@ -53,6 +53,30 @@ public static class SimplePool
         return obj;
     }
 
+    public static T Spawn<T>(GameUnit prefab, Vector3 localPosition, Transform myParent) where T : GameUnit
+    {
+        if (!poolObject.ContainsKey(prefab) || poolObject[prefab] == null)
+        {
+            poolObject.Add(prefab, new Pool(prefab, DEFAULT_AMOUNT, myParent));
+        }
+
+        GameUnit obj = poolObject[prefab].Spawn(localPosition, myParent);
+
+        return obj as T;
+    }
+
+    public static T SpawnOne<T>(GameUnit prefab, Vector3 localPosition, Transform myParent) where T : GameUnit
+    {
+        if (!poolObject.ContainsKey(prefab) || poolObject[prefab] == null)
+        {
+            poolObject.Add(prefab, new Pool(prefab, 1, myParent));
+        }
+
+        GameUnit obj = poolObject[prefab].Spawn(localPosition, myParent);
+
+        return obj as T;
+    }
+
     public static void Despawn(GameUnit obj)
     {
         if (poolParent.ContainsKey(obj))

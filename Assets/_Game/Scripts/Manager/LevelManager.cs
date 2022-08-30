@@ -8,8 +8,15 @@ public class LevelManager : Singleton<LevelManager>
     public Vector3 playerPos { get; private set; }
     public float playerRange;
 
+    private int counter;
+
     private void Update()
     {
         playerPos = player.charTransform.position;
+    }
+
+    private void OnInit()
+    {
+
     }
 }
