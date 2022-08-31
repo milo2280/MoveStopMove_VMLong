@@ -66,7 +66,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -50}
-  m_SizeDelta: {x: 150, y: 100}
+  m_SizeDelta: {x: 120, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &995613837
 CanvasRenderer:
@@ -197,14 +197,14 @@ GameObject:
   - component: {fileID: 1509871064}
   - component: {fileID: 1509871063}
   - component: {fileID: 1509871062}
-  - component: {fileID: 1773692322902006255}
+  - component: {fileID: 1937983527944766015}
   m_Layer: 0
-  m_Name: Canvas - Status
+  m_Name: Canvas - Name Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1509871061
 RectTransform:
   m_ObjectHideFlags: 0
@@ -212,7 +212,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1509871060}
-  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalRotation: {x: -0.38268343, y: 0, z: 0, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: -0.008, y: 0.008, z: 0.008}
   m_Children:
@@ -220,7 +220,7 @@ RectTransform:
   - {fileID: 995613835}
   m_Father: {fileID: 1890375759441814778}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 4}
@@ -287,7 +287,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1773692322902006255
+--- !u!114 &1937983527944766015
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1509871060}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55c1630b374058f4995b7b3a8d50b4dd, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b6389173986a1945aeead987fd45319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1703202212
@@ -446,7 +446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   attackRange: 5.6
-  attackSpeed: 4
+  attackSpeed: 0.6
   charTransform: {fileID: 1890375759441814778}
   animator: {fileID: 3588033767626844521}
   weaponHolder: {fileID: 1543441740}

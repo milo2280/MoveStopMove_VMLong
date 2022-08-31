@@ -6,6 +6,7 @@ public class Player : Character
 {
     public Joystick joystick;
     public CameraFollow cameraFollow;
+    public NameBar nameBar;
 
     private Vector3 mouseDir, moveDir;
     private Quaternion lookRotation;

@@ -21,6 +21,7 @@ public class CameraFollow : MonoBehaviour
 
     private void LateUpdate()
     {
+        GameStateTransition();
         FollowPlayer();
         Scaling();
     }
@@ -28,7 +29,6 @@ public class CameraFollow : MonoBehaviour
     private void FollowPlayer()
     {
         cameraTranform.position = playerTransform.position + offset;
-        GameStateTransition();
     }
 
     private void GameStateTransition()
