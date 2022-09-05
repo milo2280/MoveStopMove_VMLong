@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Character
   - Bullet
+  - Button
   layers:
   - Default
   - TransparentFX

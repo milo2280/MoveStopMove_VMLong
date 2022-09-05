@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c58e0f4b82ddbaf40afadf1cf2d77a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 6326509951645845385, guid: 55e076c8c134fad439631f4ed29615d7, type: 3}
+  bulletPrefab: {fileID: 4020862748125847394, guid: 55e076c8c134fad439631f4ed29615d7, type: 3}
   weaponTransform: {fileID: 7228746657328479045}
 --- !u!1001 &7982879670648445692
 PrefabInstance:

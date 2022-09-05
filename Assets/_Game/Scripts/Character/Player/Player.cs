@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : Character
 {
     public Joystick joystick;
+    public CameraFollow cameraFollow;
+    public NameBar nameBar;
 
     private Vector3 mouseDir, moveDir;
     private Quaternion lookRotation;
@@ -12,13 +14,17 @@ public class Player : Character
 
     private void Start()
     {
+        OnInit();
         ChangeAnim(Constant.ANIM_IDLE);
     }
 
     private void Update()
     {
-        JoystickMove();
-        AttackControl();
+        if (!dead)
+        {
+            JoystickMove();
+            AttackControl();
+        }
     }
 
     private void JoystickMove()
@@ -75,8 +81,14 @@ public class Player : Character
         enemy.Targeted();
     }
 
-    public override void OnDespawn()
+    public override void OnInit()
     {
-        GameObject.Destroy(this.gameObject);
+        base.OnInit();
+    }
+
+    public override void KillAnEnemy()
+    {
+        base.KillAnEnemy();
+        cameraFollow.ScaleOffset();
     }
 }

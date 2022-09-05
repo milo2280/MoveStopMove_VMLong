@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Joystick : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class Joystick : MonoBehaviour
 
     private void HandleMouseInput()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !IsMouseOverUI())
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -51,5 +52,29 @@ public class Joystick : MonoBehaviour
             mouseDir = Vector3.zero;
             joystickTransform.gameObject.SetActive(false);
         }
+    }
+
+    private bool IsMouseOverUI()
+    {
+        if (GameManager.Ins.IsState(GameState.Gameplay))
+        {
+            PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
+            pointerEventData.position = Input.mousePosition;
+
+            List<RaycastResult> raycastResults = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerEventData, raycastResults);
+
+            for (int i = 0; i < raycastResults.Count; i++)
+            {
+                if (raycastResults[i].gameObject.CompareTag("Button"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        
+        return true;
     }
 }

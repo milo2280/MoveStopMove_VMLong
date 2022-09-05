@@ -7,9 +7,9 @@ public class WeaponHolder : MonoBehaviour
     public Transform handTransform;
     public Transform holderTransform;
     public Transform bulletPoint;
-    public GameObject[] listWeaponPrefab;
+    public Character character;
 
-    private GameObject weaponObj;
+    private Weapon weaponPrefab;
     private Weapon currentWeapon;
 
     private void Start()
@@ -25,8 +25,10 @@ public class WeaponHolder : MonoBehaviour
 
     private void GenerateWeapon()
     {
-        weaponObj = Instantiate(listWeaponPrefab[1], holderTransform);
-        currentWeapon = weaponObj.GetComponent<Weapon>();
+        currentWeapon = SimplePool.SpawnOne<Weapon>(DataManager.Ins.weapons[Random.Range(0, 3)], Vector3.zero, holderTransform);
+        currentWeapon.OnInit(this);
+
+        //currentWeapon = Instantiate(weaponPrefab);
     }
 
     private void WeaponOnHand()
@@ -38,5 +40,15 @@ public class WeaponHolder : MonoBehaviour
     public void Attack()
     {
         currentWeapon.Attack(bulletPoint.position, bulletPoint.rotation);
+    }
+
+    public void HitTarget()
+    {
+        character.KillAnEnemy();
+    }
+
+    public float GetAttackRange()
+    {
+        return character.GetAttackRange();
     }
 }

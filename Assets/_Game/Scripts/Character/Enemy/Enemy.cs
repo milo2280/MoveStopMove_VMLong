@@ -8,19 +8,19 @@ public class Enemy : Character
     public NavMeshAgent navMeshAgent;
     public Mark mark;
 
-    private const float MAX_X = 50f;
-    private const float MAX_Z = 60f;
-
     private IState<Enemy> currentState;
+
+    private const float DECOMPOSE_TIME = 2f;
 
     private void Start()
     {
+        OnInit();
         ChangeState(new IdleState());
     }
 
     void Update()
     {
-        if (currentState != null)
+        if (currentState != null && !dead)
         {
             currentState.OnExecute(this);
         }
@@ -79,6 +79,24 @@ public class Enemy : Character
     public void Targeted()
     {
         mark.EnableMark();
+    }
+
+    public override void OnInit()
+    {
+        base.OnInit();
+    }
+
+    public override void OnDeath()
+    {
+        base.OnDeath();
+        StartCoroutine(IEDecompose());
+    }
+
+    protected IEnumerator IEDecompose()
+    {
+        yield return new WaitForSeconds(DECOMPOSE_TIME);
+
+        OnDespawn();
     }
 
     public override void OnDespawn()

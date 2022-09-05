@@ -15,6 +15,7 @@ public class GameManager : Singleton<GameManager>
 
         // Init data
 
+        ChangeState(GameState.MainMenu);
         UIManager.Ins.OpenUI(UIID.UICMainMenu);
     }
 
