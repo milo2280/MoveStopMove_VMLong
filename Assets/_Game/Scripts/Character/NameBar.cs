@@ -9,15 +9,10 @@ public class NameBar : MonoBehaviour
     public Image pointBG;
     public Transform nameBarTrans;
 
-    private Quaternion savedRotation;
+    private Quaternion savedRotation = Quaternion.Euler(315f, 180f, 0f);
     private bool barEnabled;
 
-    private void Start()
-    {
-        savedRotation = nameBarTrans.rotation;
-    }
-
-    private void Update()
+    private void LateUpdate()
     {
         FreezeRotation();
         GameStateTransition();
@@ -32,7 +27,7 @@ public class NameBar : MonoBehaviour
     public void DisableBar()
     {
         charName.gameObject.SetActive(false);
-        charName.gameObject.SetActive(false);
+        pointBG.gameObject.SetActive(false);
     }
 
     private void FreezeRotation()
@@ -58,5 +53,10 @@ public class NameBar : MonoBehaviour
                 barEnabled = false;
             }
         }
+    }
+
+    public void SetName(string name)
+    {
+        charName.text = name;
     }
 }

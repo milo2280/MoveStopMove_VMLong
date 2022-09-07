@@ -25,7 +25,7 @@ public class PatrolState : IState<Enemy>
 
         t.Patrolling();
 
-        if (t.DetectEnemy())
+        if (t.ScanTarget())
         {
             t.ChangeState(new AttackState());
         }

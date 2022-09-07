@@ -8,8 +8,8 @@ public class WeaponHolder : MonoBehaviour
     public Transform holderTransform;
     public Transform bulletPoint;
     public Character character;
+    public Collider rangeCollider;
 
-    private Weapon weaponPrefab;
     private Weapon currentWeapon;
 
     private void Start()
@@ -27,8 +27,6 @@ public class WeaponHolder : MonoBehaviour
     {
         currentWeapon = SimplePool.SpawnOne<Weapon>(DataManager.Ins.weapons[Random.Range(0, 3)], Vector3.zero, holderTransform);
         currentWeapon.OnInit(this);
-
-        //currentWeapon = Instantiate(weaponPrefab);
     }
 
     private void WeaponOnHand()
@@ -42,9 +40,9 @@ public class WeaponHolder : MonoBehaviour
         currentWeapon.Attack(bulletPoint.position, bulletPoint.rotation);
     }
 
-    public void HitTarget()
+    public void HitTarget(Collider target)
     {
-        character.KillAnEnemy();
+        character.HitTarget(target);
     }
 
     public float GetAttackRange()

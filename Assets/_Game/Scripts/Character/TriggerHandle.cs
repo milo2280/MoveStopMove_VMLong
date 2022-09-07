@@ -8,9 +8,22 @@ public class TriggerHandle : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag(Constant.TAG_CHARACTER))
+        {
+            character.AddTargetCollider(other);
+        }
+
         if (other.CompareTag(Constant.TAG_BULLET))
         {
             character.OnHit();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag(Constant.TAG_CHARACTER))
+        {
+            character.RemoveTargetCollider(other);
         }
     }
 }

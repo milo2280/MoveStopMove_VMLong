@@ -8,6 +8,12 @@ public class CanvasMainMenu : UICanvas
     {
         UIManager.Ins.OpenUI(UIID.UICGamePlay);
         GameManager.Ins.ChangeState(GameState.Gameplay);
+        LevelManager.Ins.Gameplay();
         Close();
+    }
+
+    public void ReadStringInput(string name)
+    {
+        LevelManager.Ins.SetPlayerName(name);
     }
 }

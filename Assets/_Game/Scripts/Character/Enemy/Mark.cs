@@ -7,38 +7,13 @@ public class Mark : MonoBehaviour
     public MeshRenderer meshRenderer;
     public Transform enemyTransform;
 
-    private bool isOn = false;
-
-    private void Update()
-    {
-        if (isOn)
-        {
-            if (OutOfPlayerRange())
-            {
-                DisableMark();
-            }
-        }
-    }
-
-    private bool OutOfPlayerRange()
-    {
-        float distance = (enemyTransform.position - LevelManager.Ins.playerPos).sqrMagnitude;
-        float range = LevelManager.Ins.playerRange * LevelManager.Ins.playerRange;
-        return distance > range;
-    }
-
     public void EnableMark()
     {
-        if (!isOn)
-        {
-            meshRenderer.enabled = true;
-            isOn = true;
-        }
+        meshRenderer.enabled = true;
     }
 
-    private void DisableMark()
+    public void DisableMark()
     {
         meshRenderer.enabled = false;
-        isOn = false;
     }
 }

@@ -10,7 +10,8 @@ public class Player : Character
 
     private Vector3 mouseDir, moveDir;
     private Quaternion lookRotation;
-    private bool isStop = true;
+    private bool move;
+    private bool markEnabled;
 
     private void Start()
     {
@@ -18,9 +19,14 @@ public class Player : Character
         ChangeAnim(Constant.ANIM_IDLE);
     }
 
+    public override void OnInit()
+    {
+        base.OnInit();
+    }
+
     private void Update()
     {
-        if (!dead)
+        if (!isDead)
         {
             JoystickMove();
             AttackControl();
@@ -31,21 +37,21 @@ public class Player : Character
     {
         mouseDir = joystick.mouseDir;
 
-        if ((mouseDir - Vector3.zero).sqrMagnitude > 0.01f)
+        if ((mouseDir - Vector3.zero).sqrMagnitude > Constant.ZERO)
         {
-            isStop = false;
-            CalculateMoveDir();
+            move = true;
+            CalMoveDir();
             Move();
             ChangeAnim(Constant.ANIM_RUN);
         }
         else
         {
-            isStop = true;
+            move = false;
             if (!isAttacking) ChangeAnim(Constant.ANIM_IDLE);
         }
     }
 
-    private void CalculateMoveDir()
+    private void CalMoveDir()
     {
         moveDir.x = mouseDir.x;
         moveDir.z = mouseDir.y;
@@ -58,37 +64,60 @@ public class Player : Character
         charTransform.rotation = Quaternion.Slerp(charTransform.rotation, lookRotation, speed * Time.deltaTime);
     }
 
+    public override void RemoveTargetCollider(Collider other)
+    {
+        if (other == targetCollider) UnMarkTarget();
+        base.RemoveTargetCollider(other);
+    }
+
+    private void MarkTarget()
+    {
+        markEnabled = true;
+        (target as Enemy).EnableMark();
+    }
+
+    private void UnMarkTarget()
+    {
+        markEnabled = false;
+        (target as Enemy).DisableMark();
+    }
+
     private void AttackControl()
     {
-        if (DetectEnemy())
+        if (ScanTarget())
         {
-            MarkEnemy();
-            if (isStop) Attack();
+            if (!markEnabled) MarkTarget();
+            if (!move) Attack();
         }
 
         if (isAttacking)
         {
-            if (!isStop || !DetectEnemy())
+            if (move)
             {
                 StopAttack();
+            }
+            else if (!ScanTarget())
+            {
+                StopAttack();
+                ChangeAnim(Constant.ANIM_IDLE);
             }
         }
     }
 
-    private void MarkEnemy()
+    public override void HitTarget(Collider target)
     {
-        Enemy enemy = Cache<Enemy>.Get(targetCollider);
-        enemy.Targeted();
-    }
-
-    public override void OnInit()
-    {
-        base.OnInit();
-    }
-
-    public override void KillAnEnemy()
-    {
-        base.KillAnEnemy();
+        base.HitTarget(target);
         cameraFollow.ScaleOffset();
+    }
+
+    public void SetName(string name)
+    {
+        nameBar.SetName(name);
+    }
+
+    public override void OnDeath()
+    {
+        base.OnDeath();
+        LevelManager.Ins.EndLevel(false);
     }
 }

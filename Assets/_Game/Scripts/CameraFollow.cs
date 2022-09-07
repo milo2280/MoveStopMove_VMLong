@@ -4,86 +4,59 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform cameraTranform, playerTransform;
-    public Vector3 playingOffset, startOffset;
-    public Quaternion playingAngle, startAngle;
+    public Transform cameraTransform, playerTransform;
+    public Vector3 playOffset, menuOffset;
+    public Quaternion playAngle, menuAngle;
 
-    private Vector3 offset;
-    private Vector3 newOffset;
-    private bool isScaling, isPlaying;
+    private Vector3 offset, nextOffset;
+    private Quaternion nextAngle;
+    private bool offsetChanged, angleChanged;
 
     private void Start()
     {
-        isPlaying = false;
-        offset = startOffset;
-        cameraTranform.rotation = startAngle;
+        offset = menuOffset;
+        nextAngle = menuAngle;
     }
 
     private void LateUpdate()
     {
-        GameStateTransition();
         FollowPlayer();
-        Scaling();
     }
 
     private void FollowPlayer()
     {
-        cameraTranform.position = playerTransform.position + offset;
-    }
-
-    private void GameStateTransition()
-    {
-        if (!isPlaying)
+        if (offsetChanged)
         {
-            if (GameManager.Ins.IsState(GameState.Gameplay))
-            {
-                offset = Vector3.Lerp(offset, playingOffset, Time.deltaTime);
-                cameraTranform.rotation = Quaternion.Slerp(cameraTranform.rotation, playingAngle, Time.deltaTime);
-            }
-
-            if (ChangeFinished(playingOffset, playingAngle) || GameManager.Ins.IsState(GameState.MainMenu))
-            {
-                isPlaying = true;
-            }
+            offset = Vector3.Lerp(offset, nextOffset, Time.deltaTime);
+            if ((nextOffset - offset).sqrMagnitude < 0.001f) offsetChanged = false;
         }
-        else
-        {
-            if (GameManager.Ins.IsState(GameState.MainMenu))
-            {
-                offset = Vector3.Lerp(offset, startOffset, Time.deltaTime);
-                cameraTranform.rotation = Quaternion.Slerp(cameraTranform.rotation, startAngle, Time.deltaTime);
-            }
 
-            if (ChangeFinished(startOffset, startAngle) || GameManager.Ins.IsState(GameState.Gameplay))
-            {
-                isPlaying = false;
-            }
+        cameraTransform.position = playerTransform.position + offset;
+
+        if (angleChanged)
+        {
+            cameraTransform.rotation = Quaternion.Slerp(cameraTransform.rotation, nextAngle, Time.deltaTime);
+            if (Quaternion.Angle(cameraTransform.rotation, nextAngle) < 0.01f) angleChanged = false;
         }
     }
 
-    private bool ChangeFinished(Vector3 position, Quaternion rotation)
+    public void GameplayPos()
     {
-        bool changePositionFinished = (position - offset).sqrMagnitude < 0.001f;
-        bool changeAngleFinished = Quaternion.Angle(cameraTranform.rotation, rotation) < 0.001f;
+        nextOffset = playOffset;
+        nextAngle = playAngle;
+        offsetChanged = angleChanged = true;
+    }
 
-        return changeAngleFinished && changePositionFinished;
+    public void MainMenuPos()
+    {
+        nextOffset = menuOffset;
+        nextAngle = menuAngle;
+        offsetChanged = angleChanged = true;
     }
 
     public void ScaleOffset()
     {
-        isScaling = true;
-        newOffset = Vector3.Scale(offset, Constant.SCALE_VECTOR3);
-    }
-
-    private void Scaling()
-    {
-        if (isScaling)
-        {
-            offset = Vector3.Lerp(offset, newOffset, Time.deltaTime);
-            if ((newOffset - offset).sqrMagnitude < 0.01f)
-            {
-                isScaling = false;
-            }
-        }
+        nextOffset = Vector3.Scale(nextOffset, Constant.SCALE_VECTOR3);
+        offsetChanged = true;
     }
 }

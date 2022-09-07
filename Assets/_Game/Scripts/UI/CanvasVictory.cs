@@ -5,17 +5,20 @@ using UnityEngine.UI;
 
 public class CanvasVictory : UICanvas
 {
-    public Text text;
-
-    public void OnInitData(int data)
-    {
-        text.text = data.ToString();
-    }
-
-    public void CloseButton()
+    public void HomeButton()
     {
         UIManager.Ins.OpenUI(UIID.UICMainMenu);
-
+        GameManager.Ins.ChangeState(GameState.MainMenu);
+        LevelManager.Ins.MainMenu();
         Close();
+    }
+
+    public void NextLevelButton()
+    {
+        //UIManager.Ins.OpenUI(UIID.UICGamePlay);
+        //GameManager.Ins.ChangeState(GameState.Gameplay);
+        //Close();
+
+        Debug.Log("Next Level");
     }
 }

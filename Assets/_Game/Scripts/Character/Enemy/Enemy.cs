@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class Enemy : Character
 {
     public NavMeshAgent navMeshAgent;
+    public CapsuleCollider capsuleCollider;
     public Mark mark;
 
     private IState<Enemy> currentState;
@@ -20,7 +21,7 @@ public class Enemy : Character
 
     void Update()
     {
-        if (currentState != null && !dead)
+        if (currentState != null && !isDead)
         {
             currentState.OnExecute(this);
         }
@@ -76,9 +77,14 @@ public class Enemy : Character
         return isReachDes;
     }
 
-    public void Targeted()
+    public void EnableMark()
     {
         mark.EnableMark();
+    }
+
+    public void DisableMark()
+    {
+        mark.DisableMark();
     }
 
     public override void OnInit()
@@ -89,6 +95,8 @@ public class Enemy : Character
     public override void OnDeath()
     {
         base.OnDeath();
+        LevelManager.Ins.AEnemyDead();
+        ResetAgentDes();
         StartCoroutine(IEDecompose());
     }
 
@@ -101,6 +109,6 @@ public class Enemy : Character
 
     public override void OnDespawn()
     {
-        GameObject.Destroy(this.gameObject);
+        SimplePool.Despawn(this);
     }
 }

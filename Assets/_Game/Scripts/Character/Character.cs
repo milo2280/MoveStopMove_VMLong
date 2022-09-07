@@ -12,13 +12,17 @@ public abstract class Character : GameUnit, IHit
     public WeaponHolder weaponHolder;
     public Collider charCollider;
 
-    protected bool isAttacking;
-    protected string currentAnim;
-    protected Collider targetCollider;
-    protected Coroutine lastPrepare, lastAttack;
-    protected Vector3 nextScale;
-    protected bool dead;
+    protected Character target;
 
+    protected Collider targetCollider;
+    protected List<Collider> listTargetCollider = new List<Collider>();
+
+    protected bool isAttacking, isDelaying, isDead;
+    protected string currentAnim;
+    protected Coroutine lastAttack, lastWeaponAttack, lastFinish;
+    protected Vector3 nextScale;
+
+    protected const float DELAY_ATTACK = 1f;
     protected const float MAX_ATTACK_SPEED = 1f;
     protected const float ATTACK_ANIM_DURATION = 1f;
 
@@ -26,7 +30,6 @@ public abstract class Character : GameUnit, IHit
     {
         nextScale = Constant.SCALE_VECTOR3;
     }
-    public virtual void OnDespawn() { }
 
     public void OnHit()
     {
@@ -35,78 +38,114 @@ public abstract class Character : GameUnit, IHit
 
     public virtual void OnDeath()
     {
-        dead = true;
+        isDead = true;
         charCollider.enabled = false;
         ChangeAnim(Constant.ANIM_DEAD);
         if (isAttacking) StopAttack();
     }
 
+    public virtual void OnDespawn() { }
+
     public void ChangeAnim(string nextAnim)
     {
         if (currentAnim != nextAnim)
         {
-            if (nextAnim != Constant.ANIM_ATTACK) currentAnim = nextAnim;
+            animator.ResetTrigger(currentAnim);
             animator.SetTrigger(nextAnim);
+            currentAnim = nextAnim;
+        }
+    }
+
+    public void AddTargetCollider(Collider other)
+    {
+        listTargetCollider.Add(other);
+    }
+
+    public virtual void RemoveTargetCollider(Collider other)
+    {
+        listTargetCollider.Remove(other);
+    }
+
+    public bool ScanTarget()
+    {
+        for (int i = 0; i < listTargetCollider.Count; i++)
+        {
+            if (listTargetCollider[i].enabled == false) RemoveTargetCollider(listTargetCollider[i]);
+        }
+
+        if (listTargetCollider.Count > 0)
+        {
+            if (!listTargetCollider.Contains(targetCollider))
+            {
+                targetCollider = listTargetCollider[0];
+                target = Cache<Character>.Get(targetCollider);
+            }
+
+            return true;
+        }
+        else
+        {
+            targetCollider = null;
+            target = null;
+
+            return false;
         }
     }
 
     public void Attack()
     {
-        if (!isAttacking)
+        if (!isAttacking && !isDelaying)
         {
             isAttacking = true;
-            lastPrepare = StartCoroutine(PrepareToAttack());
+            lastAttack = StartCoroutine(IEAttack());
         }
     }
 
-    protected IEnumerator PrepareToAttack()
+    protected IEnumerator IEAttack()
     {
         yield return new WaitForSeconds(MAX_ATTACK_SPEED - attackSpeed);
 
-        LookAtTarget();
+        charTransform.LookAt(target.charTransform);
         ChangeAnim(Constant.ANIM_ATTACK);
-        lastAttack = StartCoroutine(StartAttacking());
+        lastWeaponAttack = StartCoroutine(IEWeaponAttack());
     }
 
-    protected IEnumerator StartAttacking()
+    protected IEnumerator IEWeaponAttack()
     {
         yield return new WaitForSeconds(ATTACK_ANIM_DURATION / 2);
 
+        isDelaying = true;
         weaponHolder.Attack();
-        isAttacking = false;
+        lastFinish = StartCoroutine(IEFinishAttack());
+        StartCoroutine(IEDelayAfterAttack());
     }
 
-    protected void LookAtTarget()
+    protected IEnumerator IEFinishAttack()
     {
-        Character other = Cache<Character>.Get(targetCollider);
-        charTransform.LookAt(other.charTransform);
+        yield return new WaitForSeconds(ATTACK_ANIM_DURATION / 2);
+
+        isAttacking = false;
+        ChangeAnim(Constant.ANIM_IDLE);
+    }
+
+    protected IEnumerator IEDelayAfterAttack()
+    {
+        yield return new WaitForSeconds(DELAY_ATTACK);
+
+        isDelaying = false;
     }
 
     public void StopAttack()
     {
         isAttacking = false;
-        if (lastPrepare != null) StopCoroutine(lastPrepare);
         if (lastAttack != null) StopCoroutine(lastAttack);
+        if (lastWeaponAttack != null) StopCoroutine(lastWeaponAttack);
+        if (lastFinish != null) StopCoroutine(lastFinish);
     }
 
-    public bool DetectEnemy()
+    public virtual void HitTarget(Collider target)
     {
-        Collider[] colliders = Physics.OverlapSphere(charTransform.position, attackRange);
-
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            if (charCollider != colliders[i] && colliders[i].CompareTag(Constant.TAG_CHARACTER))
-            {
-                targetCollider = colliders[i];
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public virtual void KillAnEnemy()
-    {
+        RemoveTargetCollider(target);
         charTransform.localScale = nextScale;
         attackRange *= Constant.SCALE_FLOAT;
         nextScale = Vector3.Scale(nextScale, Constant.SCALE_VECTOR3);

@@ -11,6 +11,7 @@ public class Bullet : GameUnit
     private float speed = 5f;
     private float range = 5.6f;
     private Weapon weapon;
+    private Collider rangeCollider;
 
 
     private void Update()
@@ -28,9 +29,9 @@ public class Bullet : GameUnit
         range = weapon.range;
     }
 
-    private void OnHit()
+    private void OnHit(Collider target)
     {
-        weapon.HitTarget();
+        weapon.HitTarget(target);
         OnDespawn();
     }
 
@@ -52,7 +53,7 @@ public class Bullet : GameUnit
     {
         if (other.CompareTag(Constant.TAG_CHARACTER))
         {
-            OnHit();
+            OnHit(other);
         }
     }
 }

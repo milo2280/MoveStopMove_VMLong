@@ -11,7 +11,7 @@ public class AttackState : IState<Enemy>
 
     public void OnExecute(Enemy t)
     {
-        if (t.DetectEnemy())
+        if (t.ScanTarget())
         {
             t.Attack();
         }
@@ -24,5 +24,6 @@ public class AttackState : IState<Enemy>
     public void OnExit(Enemy t)
     {
         t.StopAttack();
+        t.ChangeAnim(Constant.ANIM_IDLE);
     }
 }
