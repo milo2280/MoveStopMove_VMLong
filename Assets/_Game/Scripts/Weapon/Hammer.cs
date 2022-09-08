@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class Hammer : Weapon
 {
-
+    private void Awake()
+    {
+        bulletSpeed = 8f;
+    }
 }

@@ -16,7 +16,6 @@ public class Enemy : Character
     private void Start()
     {
         OnInit();
-        ChangeState(new IdleState());
     }
 
     void Update()
@@ -25,6 +24,32 @@ public class Enemy : Character
         {
             currentState.OnExecute(this);
         }
+    }
+
+    public override void OnInit()
+    {
+        base.OnInit();
+        ChangeState(new IdleState());
+    }
+
+    public override void OnDeath()
+    {
+        base.OnDeath();
+        LevelManager.Ins.AEnemyDead(this);
+        ResetAgentDes();
+        StartCoroutine(IEDecompose());
+    }
+
+    protected IEnumerator IEDecompose()
+    {
+        yield return new WaitForSeconds(DECOMPOSE_TIME);
+
+        OnDespawn();
+    }
+
+    public override void OnDespawn()
+    {
+        SimplePool.Despawn(this);
     }
 
     public void ChangeState(IState<Enemy> state)
@@ -85,30 +110,5 @@ public class Enemy : Character
     public void DisableMark()
     {
         mark.DisableMark();
-    }
-
-    public override void OnInit()
-    {
-        base.OnInit();
-    }
-
-    public override void OnDeath()
-    {
-        base.OnDeath();
-        LevelManager.Ins.AEnemyDead();
-        ResetAgentDes();
-        StartCoroutine(IEDecompose());
-    }
-
-    protected IEnumerator IEDecompose()
-    {
-        yield return new WaitForSeconds(DECOMPOSE_TIME);
-
-        OnDespawn();
-    }
-
-    public override void OnDespawn()
-    {
-        SimplePool.Despawn(this);
     }
 }

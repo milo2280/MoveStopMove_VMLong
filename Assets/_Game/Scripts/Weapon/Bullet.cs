@@ -8,11 +8,9 @@ public class Bullet : GameUnit
     public Transform bulletTransform;
     private Vector3 spawnPos;
     private float distanceTravelled;
-    private float speed = 5f;
-    private float range = 5.6f;
+    private float speed;
+    private float range;
     private Weapon weapon;
-    private Collider rangeCollider;
-
 
     private void Update()
     {
@@ -21,12 +19,14 @@ public class Bullet : GameUnit
 
     public void OnInit(Weapon weapon)
     {
-        bulletRigidbody.velocity = bulletTransform.forward * speed;
-        spawnPos = bulletTransform.position;
-        distanceTravelled = 0;
         this.weapon = weapon;
-        bulletTransform.localScale = weapon.scale;
         range = weapon.range;
+        speed = weapon.bulletSpeed;
+        bulletTransform.localScale = weapon.scale;
+
+        distanceTravelled = 0;
+        spawnPos = bulletTransform.position;
+        bulletRigidbody.velocity = bulletTransform.forward * speed;
     }
 
     private void OnHit(Collider target)

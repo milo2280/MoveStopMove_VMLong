@@ -5,4 +5,5 @@ using UnityEngine;
 public class DataManager : Singleton<DataManager>
 {
     public GameUnit[] weapons;
+    public GameUnit[] bullets;
 }

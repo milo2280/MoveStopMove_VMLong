@@ -14,6 +14,11 @@ public class CanvasMainMenu : UICanvas
 
     public void ReadStringInput(string name)
     {
+        if (string.IsNullOrEmpty(name))
+        {
+            name = Constant.DEFAULT_NAME;
+        }
+
         LevelManager.Ins.SetPlayerName(name);
     }
 }

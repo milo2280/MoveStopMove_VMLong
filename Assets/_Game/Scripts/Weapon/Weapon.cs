@@ -11,8 +11,9 @@ public abstract class Weapon : GameUnit
 
     public Vector3 scale;
     public float range;
+    public float bulletSpeed;
 
-    private WeaponHolder weaponHolder;
+    protected WeaponHolder weaponHolder;
 
     public void OnInit(WeaponHolder weaponHolder)
     {

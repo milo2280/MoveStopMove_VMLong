@@ -8,6 +8,11 @@ public class Candy2 : Weapon
 
     private const float ANGLE_DEVIATION = 20f;
 
+    private void Awake()
+    {
+        bulletSpeed = 6f;
+    }
+
     public override void Attack(Vector3 position, Quaternion rotation)
     {
         base.Attack(position, rotation);

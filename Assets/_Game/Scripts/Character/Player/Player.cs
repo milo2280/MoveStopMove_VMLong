@@ -22,6 +22,8 @@ public class Player : Character
     public override void OnInit()
     {
         base.OnInit();
+        charTransform.position = Vector3.zero;
+        charTransform.rotation = Quaternion.Euler(0f, 180f, 0f);
     }
 
     private void Update()

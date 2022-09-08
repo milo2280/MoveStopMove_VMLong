@@ -28,6 +28,9 @@ public abstract class Character : GameUnit, IHit
 
     public virtual void OnInit() 
     {
+        isDead = false;
+        charCollider.enabled = true;
+        charTransform.localScale = new Vector3(1f, 1f, 1f);
         nextScale = Constant.SCALE_VECTOR3;
     }
 
@@ -42,6 +45,7 @@ public abstract class Character : GameUnit, IHit
         charCollider.enabled = false;
         ChangeAnim(Constant.ANIM_DEAD);
         if (isAttacking) StopAttack();
+        listTargetCollider.Clear();
     }
 
     public virtual void OnDespawn() { }
@@ -50,7 +54,7 @@ public abstract class Character : GameUnit, IHit
     {
         if (currentAnim != nextAnim)
         {
-            animator.ResetTrigger(currentAnim);
+            if (!string.IsNullOrEmpty(currentAnim)) animator.ResetTrigger(currentAnim);
             animator.SetTrigger(nextAnim);
             currentAnim = nextAnim;
         }

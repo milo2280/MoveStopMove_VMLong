@@ -14,7 +14,8 @@ public class Constant
     public const string TAG_CHARACTER = "Character";
     public const string TAG_BULLET = "Bullet";
 
-    // Number
+    // Other
+    public const string DEFAULT_NAME = "You";
     public const float ZERO = 0.00001f;
     public const float SCALE_FLOAT = 1.1f;
     public const float MAX_Z = 50f;
