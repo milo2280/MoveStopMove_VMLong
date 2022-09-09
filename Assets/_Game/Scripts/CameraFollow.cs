@@ -14,13 +14,24 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
-        offset = menuOffset;
-        nextAngle = menuAngle;
+        OnInit();
     }
 
     private void LateUpdate()
     {
         FollowPlayer();
+    }
+
+    public void OnInit()
+    {
+        offset = menuOffset;
+    }
+
+    public void OnReset()
+    {
+        offset = playOffset;
+        nextOffset = offset;
+        offsetChanged = angleChanged = false;
     }
 
     private void FollowPlayer()

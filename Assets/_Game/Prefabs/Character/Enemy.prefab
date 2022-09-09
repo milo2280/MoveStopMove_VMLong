@@ -1,5 +1,84 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1525555809
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1525555810}
+  - component: {fileID: 1525555811}
+  - component: {fileID: 1525555812}
+  m_Layer: 6
+  m_Name: Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1525555810
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525555809}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3333999720218676350}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1525555811
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525555809}
+  m_CullTransparentMesh: 1
+--- !u!114 &1525555812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525555809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 60
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 6
+    m_MaxSize: 60
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 0
 --- !u!1 &1599574148
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,6 +275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charName: {fileID: 8069860441453797888}
+  pointText: {fileID: 1525555812}
   pointBG: {fileID: 3031394473520792886}
   nameBarTrans: {fileID: 9439290164303270}
 --- !u!1 &1212053112115738304
@@ -251,16 +331,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff4c344b76ed7d40abbaa215240beea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1538625110415528108}
+  myCollider: {fileID: 1107431243}
+  myTransform: {fileID: 6174554572369083367}
+  nameBar: {fileID: 8818820969693472491}
+  weaponHolder: {fileID: 1992860502}
   speed: 0
   attackRange: 5.6
-  attackSpeed: 0.6
-  charTransform: {fileID: 6174554572369083367}
-  animator: {fileID: 1538625110415528108}
-  weaponHolder: {fileID: 1992860502}
-  charCollider: {fileID: 1107431243}
+  attackSpeed: 2.5
   navMeshAgent: {fileID: 6382942012154392569}
   capsuleCollider: {fileID: 1107431243}
   mark: {fileID: 2490113800835141095}
+  bodyMesh: {fileID: 4173739899160838182}
+  pantMesh: {fileID: 5047699404238996805}
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!195 &6382942012154392569
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -274,7 +358,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 3.5
   avoidancePriority: 50
-  m_AngularSpeed: 360
+  m_AngularSpeed: 90
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -354,7 +438,8 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1525555810}
   m_Father: {fileID: 9439290164303270}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -444,11 +529,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b8686990b495494f9fab7a9f5eff6a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myTransform: {fileID: 8642293132199297630}
   handTransform: {fileID: 4368474228428372489}
-  holderTransform: {fileID: 8642293132199297630}
   bulletPoint: {fileID: 918026814215277227}
   character: {fileID: 6638304256866674041}
-  rangeCollider: {fileID: 0}
 --- !u!1 &5769016369069694783
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,7 +798,7 @@ PrefabInstance:
     - target: {fileID: -8699012472884554006, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4e41d089e4288f44194fa03abc1c9da5, type: 2}
+      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: -8542655298583481684, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -1214,7 +1298,7 @@ PrefabInstance:
     - target: {fileID: -529177695146175607, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4e41d089e4288f44194fa03abc1c9da5, type: 2}
+      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 129350255495253916, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -1746,5 +1830,15 @@ Animator:
 --- !u!4 &4368474228428372489 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -9064325173771588411, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 4515699125288523468}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &5047699404238996805 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -529177695146175607, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 4515699125288523468}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &4173739899160838182 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -8699012472884554006, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 4515699125288523468}
   m_PrefabAsset: {fileID: 0}

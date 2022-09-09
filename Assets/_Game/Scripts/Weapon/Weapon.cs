@@ -6,8 +6,6 @@ public abstract class Weapon : GameUnit
 {
     public float attackSpeed { get; private set; }
     public GameUnit bulletPrefab;
-    public Transform weaponTransform;
-    public Collider rangeCollider;
 
     public Vector3 scale;
     public float range;

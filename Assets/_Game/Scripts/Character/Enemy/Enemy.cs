@@ -8,15 +8,14 @@ public class Enemy : Character
     public NavMeshAgent navMeshAgent;
     public CapsuleCollider capsuleCollider;
     public Mark mark;
+    public SkinnedMeshRenderer bodyMesh, pantMesh;
+
+    public Color color;
 
     private IState<Enemy> currentState;
+    private Indicator indicator;
 
     private const float DECOMPOSE_TIME = 2f;
-
-    private void Start()
-    {
-        OnInit();
-    }
 
     void Update()
     {
@@ -29,6 +28,10 @@ public class Enemy : Character
     public override void OnInit()
     {
         base.OnInit();
+        color = DataManager.Ins.colors[Random.Range(0, 7)];
+        bodyMesh.material.color = color;
+        pantMesh.material.color = color;
+        nameBar.SetColor(color);
         ChangeState(new IdleState());
     }
 
@@ -69,14 +72,14 @@ public class Enemy : Character
 
     public void ResetAgentDes()
     {
-        navMeshAgent.destination = charTransform.position;
+        navMeshAgent.destination = myTransform.position;
     }
 
     public void Patrolling()
     {
         if (IsReachDes())
         {
-            navMeshAgent.destination = RandomPoint(charTransform.position, 10f);
+            navMeshAgent.destination = RandomPoint(myTransform.position, 10f);
         }
     }
 
@@ -110,5 +113,22 @@ public class Enemy : Character
     public void DisableMark()
     {
         mark.DisableMark();
+    }
+
+    public void AssignIndicator(Indicator indicator)
+    {
+        this.indicator = indicator;
+        indicator.SetColor(color);
+        indicator.ChangeScore(score);
+    }
+
+    public override void ChangeScore(int point)
+    {
+        base.ChangeScore(point);
+
+        if (indicator != null)
+        {
+            indicator.ChangeScore(point);
+        }
     }
 }

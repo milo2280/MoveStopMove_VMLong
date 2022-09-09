@@ -4,34 +4,39 @@ using UnityEngine;
 
 public abstract class Character : GameUnit, IHit
 {
+    public Animator animator;
+    public Collider myCollider;
+    public Transform myTransform;
+
+    public NameBar nameBar;
+    public WeaponHolder weaponHolder;
+
     public float speed;
     public float attackRange;
     public float attackSpeed;
-    public Transform charTransform;
-    public Animator animator;
-    public WeaponHolder weaponHolder;
-    public Collider charCollider;
 
+    protected float currentAttackRange;
+    protected int score;
+    protected Vector3 nextScale;
     protected Character target;
-
     protected Collider targetCollider;
     protected List<Collider> listTargetCollider = new List<Collider>();
 
-    protected bool isAttacking, isDelaying, isDead;
     protected string currentAnim;
+    protected bool isAttacking, isDelaying, isDead;
     protected Coroutine lastAttack, lastWeaponAttack, lastFinish;
-    protected Vector3 nextScale;
 
-    protected const float DELAY_ATTACK = 1f;
-    protected const float MAX_ATTACK_SPEED = 1f;
+    protected const float DELAY_ATTACK = 3f;
     protected const float ATTACK_ANIM_DURATION = 1f;
 
     public virtual void OnInit() 
     {
         isDead = false;
-        charCollider.enabled = true;
-        charTransform.localScale = new Vector3(1f, 1f, 1f);
-        nextScale = Constant.SCALE_VECTOR3;
+        myCollider.enabled = true;
+        ChangeScore(0);
+        ResetSize();
+        ResetTarget();
+        weaponHolder.OnInit();
     }
 
     public void OnHit()
@@ -42,10 +47,9 @@ public abstract class Character : GameUnit, IHit
     public virtual void OnDeath()
     {
         isDead = true;
-        charCollider.enabled = false;
+        myCollider.enabled = false;
         ChangeAnim(Constant.ANIM_DEAD);
         if (isAttacking) StopAttack();
-        listTargetCollider.Clear();
     }
 
     public virtual void OnDespawn() { }
@@ -54,27 +58,33 @@ public abstract class Character : GameUnit, IHit
     {
         if (currentAnim != nextAnim)
         {
-            if (!string.IsNullOrEmpty(currentAnim)) animator.ResetTrigger(currentAnim);
+            if (!string.IsNullOrEmpty(currentAnim))
+            {
+                animator.ResetTrigger(currentAnim);
+            }
             animator.SetTrigger(nextAnim);
             currentAnim = nextAnim;
         }
     }
 
-    public void AddTargetCollider(Collider other)
+    public void AddTargetCollider(Collider target)
     {
-        listTargetCollider.Add(other);
+        listTargetCollider.Add(target);
     }
 
-    public virtual void RemoveTargetCollider(Collider other)
+    public virtual void RemoveTargetCollider(Collider target)
     {
-        listTargetCollider.Remove(other);
+        listTargetCollider.Remove(target);
     }
 
     public bool ScanTarget()
     {
         for (int i = 0; i < listTargetCollider.Count; i++)
         {
-            if (listTargetCollider[i].enabled == false) RemoveTargetCollider(listTargetCollider[i]);
+            if (listTargetCollider[i].enabled == false)
+            {
+                RemoveTargetCollider(listTargetCollider[i]);
+            }
         }
 
         if (listTargetCollider.Count > 0)
@@ -89,8 +99,8 @@ public abstract class Character : GameUnit, IHit
         }
         else
         {
-            targetCollider = null;
             target = null;
+            targetCollider = null;
 
             return false;
         }
@@ -107,16 +117,16 @@ public abstract class Character : GameUnit, IHit
 
     protected IEnumerator IEAttack()
     {
-        yield return new WaitForSeconds(MAX_ATTACK_SPEED - attackSpeed);
+        yield return new WaitForSeconds(1 / attackSpeed);
 
-        charTransform.LookAt(target.charTransform);
+        myTransform.LookAt(target.myTransform);
         ChangeAnim(Constant.ANIM_ATTACK);
         lastWeaponAttack = StartCoroutine(IEWeaponAttack());
     }
 
     protected IEnumerator IEWeaponAttack()
     {
-        yield return new WaitForSeconds(ATTACK_ANIM_DURATION / 2);
+        yield return new WaitForSeconds(ATTACK_ANIM_DURATION / 5 * 2);
 
         isDelaying = true;
         weaponHolder.Attack();
@@ -126,7 +136,7 @@ public abstract class Character : GameUnit, IHit
 
     protected IEnumerator IEFinishAttack()
     {
-        yield return new WaitForSeconds(ATTACK_ANIM_DURATION / 2);
+        yield return new WaitForSeconds(ATTACK_ANIM_DURATION / 5 * 3);
 
         isAttacking = false;
         ChangeAnim(Constant.ANIM_IDLE);
@@ -134,7 +144,7 @@ public abstract class Character : GameUnit, IHit
 
     protected IEnumerator IEDelayAfterAttack()
     {
-        yield return new WaitForSeconds(DELAY_ATTACK);
+        yield return new WaitForSeconds(DELAY_ATTACK / attackSpeed);
 
         isDelaying = false;
     }
@@ -147,16 +157,52 @@ public abstract class Character : GameUnit, IHit
         if (lastFinish != null) StopCoroutine(lastFinish);
     }
 
-    public virtual void HitTarget(Collider target)
+    public void HitTarget(Collider target)
+    {
+        OnKill(target);
+    }
+
+    public virtual void OnKill(Collider target)
     {
         RemoveTargetCollider(target);
-        charTransform.localScale = nextScale;
-        attackRange *= Constant.SCALE_FLOAT;
+        IncreaseSize();
+        ChangeScore(++score);
+    }
+
+    private void IncreaseSize()
+    {
+        myTransform.localScale = nextScale;
+        currentAttackRange *= Constant.SCALE_FLOAT;
         nextScale = Vector3.Scale(nextScale, Constant.SCALE_VECTOR3);
+    }
+
+    private void ResetSize()
+    {
+        myTransform.localScale = new Vector3(1f, 1f, 1f);
+        currentAttackRange = attackRange;
+        nextScale = Constant.SCALE_VECTOR3;
+    }
+
+    private void ResetTarget()
+    {
+        target = null;
+        targetCollider = null;
+        listTargetCollider.Clear();
+    }
+
+    public virtual void ChangeScore(int point)
+    {
+        this.score = point;
+        nameBar.ChangeScore(point);
+    }
+
+    public void SetName(string name)
+    {
+        nameBar.SetName(name);
     }
 
     public float GetAttackRange()
     {
-        return attackRange;
+        return currentAttackRange;
     }
 }

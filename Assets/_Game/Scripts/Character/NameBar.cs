@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class NameBar : MonoBehaviour
 {
-    public Text charName;
+    public Text charName, pointText;
     public Image pointBG;
     public Transform nameBarTrans;
 
@@ -58,5 +58,16 @@ public class NameBar : MonoBehaviour
     public void SetName(string name)
     {
         charName.text = name;
+    }
+
+    public void ChangeScore(int point)
+    {
+        pointText.text = point.ToString();
+    }
+
+    public void SetColor(Color color)
+    {
+        charName.color = color;
+        pointBG.color = color;
     }
 }

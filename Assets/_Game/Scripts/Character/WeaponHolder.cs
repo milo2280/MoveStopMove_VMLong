@@ -4,40 +4,59 @@ using UnityEngine;
 
 public class WeaponHolder : MonoBehaviour
 {
+    public Transform myTransform;
+
     public Transform handTransform;
-    public Transform holderTransform;
     public Transform bulletPoint;
     public Character character;
-    public Collider rangeCollider;
 
-    private Weapon currentWeapon;
+    private Weapon weapon;
+    private float timer;
+    private bool isAttack;
 
-    private void Start()
-    {
-        WeaponOnHand();
-        GenerateWeapon();
-    }
+    private const float RESPAWN_TIME = 0.5f;
 
     private void Update()
     {
         WeaponOnHand();
+
+        if (isAttack)
+        {
+            timer += Time.deltaTime;
+            if (timer > RESPAWN_TIME)
+            {
+                Respawn();
+            }
+        }
     }
 
-    private void GenerateWeapon()
+    public void OnInit()
     {
-        currentWeapon = SimplePool.SpawnOne<Weapon>(DataManager.Ins.weapons[Random.Range(0, 3)], Vector3.zero, holderTransform);
-        currentWeapon.OnInit(this);
+        if (weapon == null)
+        {
+            weapon = Instantiate(DataManager.Ins.weapons[1], myTransform);
+        }
+        weapon.OnInit(this);
     }
 
     private void WeaponOnHand()
     {
-        holderTransform.position = handTransform.position;
-        holderTransform.rotation = handTransform.rotation;
+        myTransform.position = handTransform.position;
+        myTransform.rotation = handTransform.rotation;
     }
 
     public void Attack()
     {
-        currentWeapon.Attack(bulletPoint.position, bulletPoint.rotation);
+        weapon.Attack(bulletPoint.position, bulletPoint.rotation);
+        isAttack = true;
+        weapon.gameObject.SetActive(false);
+    }
+
+    private void Respawn()
+    {
+        isAttack = false;
+        timer = 0f;
+        weapon.gameObject.SetActive(true);
     }
 
     public void HitTarget(Collider target)

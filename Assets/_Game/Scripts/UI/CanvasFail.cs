@@ -15,10 +15,9 @@ public class CanvasFail : UICanvas
 
     public void RestartLevelButton()
     {
-        //UIManager.Ins.OpenUI(UIID.UICGamePlay);
-        //GameManager.Ins.ChangeState(GameState.Gameplay);
-        //Close();
-
-        Debug.Log("Restart Level");
+        UIManager.Ins.OpenUI(UIID.UICGamePlay);
+        GameManager.Ins.ChangeState(GameState.Gameplay);
+        LevelManager.Ins.RestartLevel();
+        Close();
     }
 }

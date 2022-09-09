@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
-    public GameUnit[] weapons;
+    public Weapon[] weapons;
     public GameUnit[] bullets;
+    public Color[] colors = { Color.black, Color.cyan, Color.gray, Color.green, Color.grey, Color.red, Color.blue };
 }

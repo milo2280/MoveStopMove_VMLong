@@ -6,12 +6,11 @@ public class Player : Character
 {
     public Joystick joystick;
     public CameraFollow cameraFollow;
-    public NameBar nameBar;
 
     private Vector3 mouseDir, moveDir;
     private Quaternion lookRotation;
-    private bool move;
-    private bool markEnabled;
+    private bool isMoving;
+    private bool isMarkEnabled;
 
     private void Start()
     {
@@ -22,8 +21,9 @@ public class Player : Character
     public override void OnInit()
     {
         base.OnInit();
-        charTransform.position = Vector3.zero;
-        charTransform.rotation = Quaternion.Euler(0f, 180f, 0f);
+        isMarkEnabled = false;
+        myTransform.position = Vector3.zero;
+        myTransform.rotation = Quaternion.Euler(0f, 180f, 0f);
     }
 
     private void Update()
@@ -41,14 +41,14 @@ public class Player : Character
 
         if ((mouseDir - Vector3.zero).sqrMagnitude > Constant.ZERO)
         {
-            move = true;
+            isMoving = true;
             CalMoveDir();
             Move();
             ChangeAnim(Constant.ANIM_RUN);
         }
         else
         {
-            move = false;
+            isMoving = false;
             if (!isAttacking) ChangeAnim(Constant.ANIM_IDLE);
         }
     }
@@ -62,8 +62,8 @@ public class Player : Character
 
     private void Move()
     {
-        charTransform.position = Vector3.Lerp(charTransform.position, charTransform.position + moveDir, speed * Time.deltaTime);
-        charTransform.rotation = Quaternion.Slerp(charTransform.rotation, lookRotation, speed * Time.deltaTime);
+        myTransform.position = Vector3.Lerp(myTransform.position, myTransform.position + moveDir, speed * Time.deltaTime);
+        myTransform.rotation = Quaternion.Slerp(myTransform.rotation, lookRotation, speed * Time.deltaTime);
     }
 
     public override void RemoveTargetCollider(Collider other)
@@ -74,13 +74,13 @@ public class Player : Character
 
     private void MarkTarget()
     {
-        markEnabled = true;
+        isMarkEnabled = true;
         (target as Enemy).EnableMark();
     }
 
     private void UnMarkTarget()
     {
-        markEnabled = false;
+        isMarkEnabled = false;
         (target as Enemy).DisableMark();
     }
 
@@ -88,13 +88,13 @@ public class Player : Character
     {
         if (ScanTarget())
         {
-            if (!markEnabled) MarkTarget();
-            if (!move) Attack();
+            if (!isMarkEnabled) MarkTarget();
+            if (!isMoving) Attack();
         }
 
         if (isAttacking)
         {
-            if (move)
+            if (isMoving)
             {
                 StopAttack();
             }
@@ -106,15 +106,10 @@ public class Player : Character
         }
     }
 
-    public override void HitTarget(Collider target)
+    public override void OnKill(Collider target)
     {
-        base.HitTarget(target);
+        base.OnKill(target);
         cameraFollow.ScaleOffset();
-    }
-
-    public void SetName(string name)
-    {
-        nameBar.SetName(name);
     }
 
     public override void OnDeath()

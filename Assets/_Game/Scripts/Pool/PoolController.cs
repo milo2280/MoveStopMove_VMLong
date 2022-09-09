@@ -13,12 +13,12 @@ public class PoolController : MonoBehaviour
 
     private void Awake()
     {
-        SimplePool.Preload(indicatorPrefab, 7, indicatorParent);
-        SimplePool.Preload(enemyPrefab, 7, enemyParent);
+        SimplePool.Preload(indicatorPrefab, 10, indicatorParent);
+        SimplePool.Preload(enemyPrefab, 10, enemyParent);
 
         for (int i = 0; i < bulletParents.Length; i++)
         {
-            SimplePool.Preload(DataManager.Ins.bullets[i], 10, bulletParents[i]);
+            SimplePool.Preload(DataManager.Ins.bullets[i], 5, bulletParents[i]);
         }
     }
 }

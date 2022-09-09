@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CanvasGameplay : UICanvas
 {
+    public Text enemyRemain;
+
     public void SettingButton()
     {
         UIManager.Ins.OpenUI(UIID.UICSetting);
@@ -23,5 +26,10 @@ public class CanvasGameplay : UICanvas
         UIManager.Ins.OpenUI(UIID.UICFail);
         GameManager.Ins.ChangeState(GameState.MainMenu);
         Close();
+    }
+
+    public void UpdateEnemyRemain(int remain)
+    {
+        enemyRemain.text = "Alive: " + remain.ToString();
     }
 }

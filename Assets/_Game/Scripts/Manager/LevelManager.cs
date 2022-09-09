@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelManager : Singleton<LevelManager>
 {
     public Player player;
     public Camera mainCam;
     public CameraFollow cameraFollow;
-    public Vector3 playerPos;
+    public IndicatorHolder indicatorHolder;
+    public GameUnit enemyPrefab;
+    public LevelData[] levelDatas;
 
-    public GameUnit enemyPrefab, indicatorPrefab;
+    public Vector3 playerPos => player.myTransform.position;
 
-    private int spawnCounter = 0;
-    private int deadCounter = 0;
-    private List<Enemy> listActiveEnemy = new List<Enemy>();
-    private Dictionary<Enemy, Indicator> dictIndicator = new Dictionary<Enemy, Indicator>();
+    private LevelData currentLevel;
+    private bool isLevelEnded;
+    private int spawnCounter;
+    private int deadCounter;
 
     private const int START_ENEMY_NUMBER = 5;
     private const int MAX_ENEMY_NUMBER = 10;
@@ -22,12 +25,6 @@ public class LevelManager : Singleton<LevelManager>
     private void Start()
     {
         OnInit();
-    }
-
-    private void Update()
-    {
-        EnemyIndicator();
-        UpdatePlayerInfo();
     }
 
     private void OnInit()
@@ -38,13 +35,16 @@ public class LevelManager : Singleton<LevelManager>
         }
     }
 
-    private void OnReset()
+    public void OnReset()
     {
+        isLevelEnded = false;
+        spawnCounter = 0;
+        deadCounter = 0;
         player.OnInit();
+        UpdateEnemyRemain();
+        cameraFollow.OnReset();
+        indicatorHolder.OnReset();
         SimplePool.CollectAll();
-        listActiveEnemy.Clear();
-        dictIndicator.Clear();
-        OnInit();
     }
 
     private void SpawnEnemy()
@@ -55,21 +55,13 @@ public class LevelManager : Singleton<LevelManager>
         Quaternion randomRot = Quaternion.Euler(0f, Random.Range(-180, 180), 0f);
         Enemy enemy = SimplePool.Spawn<Enemy>(enemyPrefab, randomPos, randomRot);
         enemy.OnInit();
-
-        Indicator indicator = SimplePool.Spawn<Indicator>(indicatorPrefab, Vector3.zero, Quaternion.identity);
-        indicator.OnInit(enemy);
-
-        listActiveEnemy.Add(enemy);
-        dictIndicator.Add(enemy, indicator);
-
+        indicatorHolder.AddIndicator(enemy);
         spawnCounter++;
     }
 
     public void AEnemyDead(Enemy enemy)
     {
-        SimplePool.Despawn(dictIndicator[enemy]);
-        dictIndicator.Remove(enemy);
-        listActiveEnemy.Remove(enemy);
+        indicatorHolder.RemoveIndicator(enemy);
 
         if (spawnCounter < MAX_ENEMY_NUMBER)
         {
@@ -77,6 +69,7 @@ public class LevelManager : Singleton<LevelManager>
         }
 
         deadCounter++;
+        UpdateEnemyRemain();
 
         if (deadCounter == MAX_ENEMY_NUMBER)
         {
@@ -86,15 +79,24 @@ public class LevelManager : Singleton<LevelManager>
 
     public void MainMenu()
     {
-        cameraFollow.MainMenuPos();
         OnReset();
+        OnInit();
+        indicatorHolder.HideAllIndicator();
+        cameraFollow.MainMenuPos();
     }
 
     public void Gameplay()
     {
+        indicatorHolder.ShowAllIndicator();
         cameraFollow.GameplayPos();
+        UpdateEnemyRemain();
     }
 
+    public void RestartLevel()
+    {
+        OnReset();
+        OnInit();
+    }
     public void SetPlayerName(string name)
     {
         player.SetName(name);
@@ -102,6 +104,9 @@ public class LevelManager : Singleton<LevelManager>
 
     public void EndLevel(bool isWin)
     {
+        if (isLevelEnded) return;
+        isLevelEnded = true;
+
         if (isWin)
         {
             if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
@@ -118,53 +123,12 @@ public class LevelManager : Singleton<LevelManager>
         }
     }
 
-    private void EnemyIndicator()
+    private void UpdateEnemyRemain()
     {
-        for (int i = 0; i < listActiveEnemy.Count; i++)
+        if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
         {
-            Enemy enemy = listActiveEnemy[i];
-
-            if (!IsOnScreen(enemy))
-            {
-                EnableIndicator(enemy);
-            }
-            else
-            {
-                DisableIndicator(enemy);
-            }
+            CanvasGameplay canvas = UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay);
+            canvas.UpdateEnemyRemain(MAX_ENEMY_NUMBER - deadCounter + 1);
         }
-    }
-
-    private bool IsOnScreen(Enemy enemy)
-    {
-        Vector3 viewPos = mainCam.WorldToViewportPoint(enemy.charTransform.position);
-
-        if ((viewPos.x > 0 && viewPos.x < 1) && (viewPos.y > 0 && viewPos.y < 1))
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    private void EnableIndicator(Enemy enemy)
-    {
-        if (dictIndicator.ContainsKey(enemy))
-        {
-            dictIndicator[enemy].EnableIndicator();
-        }
-    }
-
-    private void DisableIndicator(Enemy enemy)
-    {
-        if (dictIndicator.ContainsKey(enemy))
-        {
-            dictIndicator[enemy].DisableIndicator();
-        }
-    }
-
-    private void UpdatePlayerInfo()
-    {
-        playerPos = player.charTransform.position;
     }
 }
