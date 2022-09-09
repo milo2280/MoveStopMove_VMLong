@@ -1527,14 +1527,6 @@ MonoBehaviour:
   - {fileID: 3625895859167088787, guid: d76f944ecb276734a83b9a88384cecc0, type: 3}
   - {fileID: 8844240603678290976, guid: 8e7917170add8304489f5a57087d1c85, type: 3}
   - {fileID: 4020862748125847394, guid: 55e076c8c134fad439631f4ed29615d7, type: 3}
-  colors:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0, g: 1, b: 1, a: 1}
-  - {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!4 &1984029523
 Transform:
   m_ObjectHideFlags: 0

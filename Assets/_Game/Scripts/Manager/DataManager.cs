@@ -28,7 +28,6 @@ public class DataManager : Singleton<DataManager>
     private void Awake()
     {
         colorCount = colors.Length;
-        Debug.Log(colorCount);
 
         TextAsset textAsset = Resources.Load("Text/NamesList") as TextAsset;
         NamesList namesList = JsonUtility.FromJson<NamesList>(textAsset.text);

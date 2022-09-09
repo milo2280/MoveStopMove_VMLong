@@ -34,7 +34,7 @@ public class WeaponHolder : MonoBehaviour
     {
         if (weapon == null)
         {
-            weapon = Instantiate(DataManager.Ins.weapons[1], myTransform);
+            weapon = Instantiate(DataManager.Ins.weapons[Random.Range(0, 3)], myTransform);
         }
         weapon.OnInit(this);
     }

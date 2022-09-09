@@ -12,8 +12,6 @@ public class LevelManager : Singleton<LevelManager>
     public GameUnit enemyPrefab;
     public LevelData[] levelDatas;
 
-    public Vector3 playerPos => player.myTransform.position;
-
     private LevelData currentLevel;
     private bool isLevelEnded;
     private int spawnCounter;
@@ -49,10 +47,14 @@ public class LevelManager : Singleton<LevelManager>
 
     private void SpawnEnemy()
     {
-        float x = Random.Range(Constant.MAX_X, -Constant.MAX_X);
-        float z = Random.Range(Constant.MAX_Z, -Constant.MAX_Z);
+        // Not spawn in player range
+        float x = Random.Range(8f, 2 * Constant.MAX_X);
+        if (x > Constant.MAX_X) x = Constant.MAX_X - x;
+        float z = Random.Range(8f, 2 * Constant.MAX_Z);
+        if (z > Constant.MAX_Z) z = Constant.MAX_Z - z;
         Vector3 randomPos = new Vector3(x, 0f, z);
         Quaternion randomRot = Quaternion.Euler(0f, Random.Range(-180, 180), 0f);
+
         Enemy enemy = SimplePool.Spawn<Enemy>(enemyPrefab, randomPos, randomRot);
         enemy.OnInit();
         indicatorHolder.AddIndicator(enemy);
@@ -77,15 +79,14 @@ public class LevelManager : Singleton<LevelManager>
         }
     }
 
-    public void MainMenu()
+    public void BackHome()
     {
-        OnReset();
-        OnInit();
+        RestartLevel();
         indicatorHolder.HideAllIndicator();
         cameraFollow.MainMenuPos();
     }
 
-    public void Gameplay()
+    public void PlayGame()
     {
         indicatorHolder.ShowAllIndicator();
         cameraFollow.GameplayPos();

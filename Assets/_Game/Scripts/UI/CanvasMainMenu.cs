@@ -8,7 +8,7 @@ public class CanvasMainMenu : UICanvas
     {
         UIManager.Ins.OpenUI(UIID.UICGamePlay);
         GameManager.Ins.ChangeState(GameState.Gameplay);
-        LevelManager.Ins.Gameplay();
+        LevelManager.Ins.PlayGame();
         Close();
     }
 

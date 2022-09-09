@@ -15,7 +15,7 @@ public class CanvasSetting : UICanvas
     {
         UIManager.Ins.OpenUI(UIID.UICMainMenu);
         GameManager.Ins.ChangeState(GameState.MainMenu);
-        LevelManager.Ins.MainMenu();
+        LevelManager.Ins.BackHome();
         Close();
     }
 }
