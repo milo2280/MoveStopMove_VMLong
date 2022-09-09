@@ -28,7 +28,8 @@ public class Enemy : Character
     public override void OnInit()
     {
         base.OnInit();
-        color = DataManager.Ins.colors[Random.Range(0, 7)];
+        SetName(DataManager.Ins.GetRandomName());
+        color = DataManager.Ins.GetRandomColor();
         bodyMesh.material.color = color;
         pantMesh.material.color = color;
         nameBar.SetColor(color);
