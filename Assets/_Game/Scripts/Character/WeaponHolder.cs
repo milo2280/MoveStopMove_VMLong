@@ -13,8 +13,7 @@ public class WeaponHolder : MonoBehaviour
     private Weapon weapon;
     private float timer;
     private bool isAttack;
-
-    private const float RESPAWN_TIME = 0.5f;
+    private float respawnTime;
 
     private void Update()
     {
@@ -23,7 +22,7 @@ public class WeaponHolder : MonoBehaviour
         if (isAttack)
         {
             timer += Time.deltaTime;
-            if (timer > RESPAWN_TIME)
+            if (timer > respawnTime)
             {
                 Respawn();
             }
@@ -45,10 +44,11 @@ public class WeaponHolder : MonoBehaviour
         myTransform.rotation = handTransform.rotation;
     }
 
-    public void Attack()
+    public void Attack(float respawnTime)
     {
         weapon.Attack(bulletPoint.position, bulletPoint.rotation);
         isAttack = true;
+        this.respawnTime = respawnTime;
         weapon.gameObject.SetActive(false);
     }
 
@@ -59,9 +59,9 @@ public class WeaponHolder : MonoBehaviour
         weapon.gameObject.SetActive(true);
     }
 
-    public void HitTarget(Collider target)
+    public void HitTarget()
     {
-        character.HitTarget(target);
+        character.HitTarget();
     }
 
     public float GetAttackRange()

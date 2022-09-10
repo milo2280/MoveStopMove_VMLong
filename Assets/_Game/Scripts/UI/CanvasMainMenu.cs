@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class CanvasMainMenu : UICanvas
 {
-    public void PlayGameButton()
-    {
-        UIManager.Ins.OpenUI(UIID.UICGamePlay);
-        GameManager.Ins.ChangeState(GameState.Gameplay);
-        LevelManager.Ins.PlayGame();
-        Close();
-    }
-
     public void ReadStringInput(string name)
     {
         if (string.IsNullOrEmpty(name))
@@ -20,5 +12,23 @@ public class CanvasMainMenu : UICanvas
         }
 
         LevelManager.Ins.SetPlayerName(name);
+    }
+
+    public void PlayGameButton()
+    {
+        UIManager.Ins.OpenUI(UIID.UICGamePlay);
+        GameManager.Ins.ChangeState(GameState.Gameplay);
+        LevelManager.Ins.PlayGame();
+        Close();
+    }
+
+    public void WeaponButton()
+    {
+        Debug.Log("Weapon");
+    }
+
+    public void SkinButton()
+    {
+        Debug.Log("Skin");
     }
 }

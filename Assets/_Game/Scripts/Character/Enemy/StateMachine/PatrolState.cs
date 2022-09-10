@@ -29,11 +29,11 @@ public class PatrolState : IState<Enemy>
 
         if (t.ScanTarget())
         {
-            t2 += Time.deltaTime;
-            if (t2 > attackT)
-            {
+            //t2 += Time.deltaTime;
+            //if (t2 > attackT)
+            //{
                 t.ChangeState(new AttackState());
-            }
+            //}
         }
         else
         {

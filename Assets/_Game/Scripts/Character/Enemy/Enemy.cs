@@ -71,6 +71,28 @@ public class Enemy : Character
         }
     }
 
+    public void AttackControl()
+    {
+        if (ScanTarget())
+        {
+            Attack();
+
+            if (isAttacking)
+            {
+                Attacking();
+            }
+
+            if (isDelaying)
+            {
+                Delaying();
+            }
+        }
+        else
+        {
+            ChangeState(new IdleState());
+        }
+    }
+
     public void ResetAgentDes()
     {
         navMeshAgent.destination = myTransform.position;

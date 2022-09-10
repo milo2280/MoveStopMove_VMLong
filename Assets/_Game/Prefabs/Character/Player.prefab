@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.32226774, g: 0.32228178, b: 0.9622642, a: 1}
+  m_Color: {r: 0.78431374, g: 0.78431374, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.0465023, g: 0.09086924, b: 0.5188679, a: 1}
+  m_Color: {r: 0.78431374, g: 0.78431374, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charName: {fileID: 1264826576}
-  pointText: {fileID: 0}
+  pointText: {fileID: 1426858794335833543}
   pointBG: {fileID: 995613836}
   nameBarTrans: {fileID: 1509871061}
 --- !u!1 &1703202212
@@ -494,14 +494,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cd7bbab46b07764b87d55d16f3a8de9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 3588033767626844521}
+  myCollider: {fileID: 1890375759441814781}
+  myTransform: {fileID: 1890375759441814778}
+  nameBar: {fileID: 1937983527944766015}
+  weaponHolder: {fileID: 1543441740}
   speed: 7
   attackRange: 5.7
-  attackSpeed: 0.9
-  charTransform: {fileID: 1890375759441814778}
-  animator: {fileID: 3588033767626844521}
-  weaponHolder: {fileID: 1543441740}
-  charCollider: {fileID: 1890375759441814781}
-  nameBar: {fileID: 1937983527944766015}
+  attackSpeed: 1
   joystick: {fileID: 0}
   cameraFollow: {fileID: 0}
 --- !u!114 &78529575207847083
@@ -669,11 +669,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b8686990b495494f9fab7a9f5eff6a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myTransform: {fileID: 6037540144831608630}
   handTransform: {fileID: 1733598863580365772}
-  holderTransform: {fileID: 6037540144831608630}
   bulletPoint: {fileID: 1925985402010551248}
   character: {fileID: 1890375759441814783}
-  rangeCollider: {fileID: 5672453763657395960}
 --- !u!1001 &1890375759114809097
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -740,7 +739,7 @@ PrefabInstance:
     - target: {fileID: -8699012472884554006, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d3770a78d4280714a805bdda5f2f5e02, type: 2}
+      objectReference: {fileID: 2100000, guid: 4d5b431f1b3b9824ea3e451e290a7236, type: 2}
     - target: {fileID: -8542655298583481684, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -1240,7 +1239,7 @@ PrefabInstance:
     - target: {fileID: -529177695146175607, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d3770a78d4280714a805bdda5f2f5e02, type: 2}
+      objectReference: {fileID: 2100000, guid: 4d5b431f1b3b9824ea3e451e290a7236, type: 2}
     - target: {fileID: 129350255495253916, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
       propertyPath: m_Layer
       value: 6

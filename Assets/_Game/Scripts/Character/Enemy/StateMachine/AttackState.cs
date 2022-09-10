@@ -11,19 +11,11 @@ public class AttackState : IState<Enemy>
 
     public void OnExecute(Enemy t)
     {
-        if (t.ScanTarget())
-        {
-            t.Attack();
-        }
-        else
-        {
-            t.ChangeState(new IdleState());
-        }
+        t.AttackControl();
     }
 
     public void OnExit(Enemy t)
     {
         t.StopAttack();
-        t.ChangeAnim(Constant.ANIM_IDLE);
     }
 }

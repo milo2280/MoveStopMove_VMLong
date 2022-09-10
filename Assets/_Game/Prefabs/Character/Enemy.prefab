@@ -338,7 +338,7 @@ MonoBehaviour:
   weaponHolder: {fileID: 1992860502}
   speed: 0
   attackRange: 5.6
-  attackSpeed: 2.5
+  attackSpeed: 0.9
   navMeshAgent: {fileID: 6382942012154392569}
   capsuleCollider: {fileID: 1107431243}
   mark: {fileID: 2490113800835141095}

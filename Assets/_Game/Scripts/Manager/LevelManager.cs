@@ -48,10 +48,10 @@ public class LevelManager : Singleton<LevelManager>
     private void SpawnEnemy()
     {
         // Not spawn in player range
-        float x = Random.Range(8f, 2 * Constant.MAX_X);
-        if (x > Constant.MAX_X) x = Constant.MAX_X - x;
-        float z = Random.Range(8f, 2 * Constant.MAX_Z);
-        if (z > Constant.MAX_Z) z = Constant.MAX_Z - z;
+        float x = Random.Range(8f, 2 * Constant.MAX_X - 8f);
+        if (x > Constant.MAX_X) x = Constant.MAX_X - (x + 8f);
+        float z = Random.Range(8f, 2 * Constant.MAX_Z - 8f);
+        if (z > Constant.MAX_Z) z = Constant.MAX_Z - (z + 8f);
         Vector3 randomPos = new Vector3(x, 0f, z);
         Quaternion randomRot = Quaternion.Euler(0f, Random.Range(-180, 180), 0f);
 

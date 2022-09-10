@@ -25,9 +25,9 @@ public abstract class Weapon : GameUnit
         SimplePool.Spawn<Bullet>(bulletPrefab, position, rotation).OnInit(this);
     }
 
-    public void HitTarget(Collider target)
+    public void HitTarget()
     {
-        weaponHolder.HitTarget(target);
+        weaponHolder.HitTarget();
         scale = Vector3.Scale(scale, Constant.SCALE_VECTOR3);
         range *= Constant.SCALE_FLOAT;
     }

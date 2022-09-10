@@ -29,9 +29,9 @@ public class Bullet : GameUnit
         bulletRigidbody.velocity = bulletTransform.forward * speed;
     }
 
-    private void OnHit(Collider target)
+    private void OnHit()
     {
-        weapon.HitTarget(target);
+        weapon.HitTarget();
         OnDespawn();
     }
 
@@ -53,7 +53,7 @@ public class Bullet : GameUnit
     {
         if (other.CompareTag(Constant.TAG_CHARACTER))
         {
-            OnHit(other);
+            OnHit();
         }
     }
 }

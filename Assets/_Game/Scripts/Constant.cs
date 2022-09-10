@@ -9,6 +9,7 @@ public class Constant
     public const string ANIM_RUN = "run";
     public const string ANIM_ATTACK = "attack";
     public const string ANIM_DEAD = "dead";
+    public const string ANIM_ATTACK_SPEED = "attackSpeed";
 
     // Tag
     public const string TAG_CHARACTER = "Character";

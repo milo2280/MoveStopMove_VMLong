@@ -23,16 +23,20 @@ public abstract class Character : GameUnit, IHit
     protected List<Collider> listTargetCollider = new List<Collider>();
 
     protected string currentAnim;
-    protected bool isAttacking, isDelaying, isDead;
-    protected Coroutine lastAttack, lastWeaponAttack, lastFinish;
+    protected bool isAttacking, isThrew, isDelaying, isDead;
 
-    protected const float DELAY_ATTACK = 3f;
-    protected const float ATTACK_ANIM_DURATION = 1f;
+    protected float attackTimer, delayTimer;
+
+    protected const float ATTACK_DURARION = 1f;
+    protected const float THROW_DURATION = 2f / 5f;
+    protected const float HAND_BACK_DURATION = 3f / 5f;
+    protected const float DELAY_DURATION = 1f;
 
     public virtual void OnInit() 
     {
         isDead = false;
         myCollider.enabled = true;
+        animator.SetFloat(Constant.ANIM_ATTACK_SPEED, attackSpeed);
         ChangeScore(0);
         ResetSize();
         ResetTarget();
@@ -67,14 +71,14 @@ public abstract class Character : GameUnit, IHit
         }
     }
 
-    public void AddTargetCollider(Collider target)
+    public void AddTargetCollider(Collider targetCollider)
     {
-        listTargetCollider.Add(target);
+        listTargetCollider.Add(targetCollider);
     }
 
-    public virtual void RemoveTargetCollider(Collider target)
+    public virtual void RemoveTargetCollider(Collider targetCollider)
     {
-        listTargetCollider.Remove(target);
+        listTargetCollider.Remove(targetCollider);
     }
 
     public bool ScanTarget()
@@ -111,60 +115,61 @@ public abstract class Character : GameUnit, IHit
         if (!isAttacking && !isDelaying)
         {
             isAttacking = true;
-            lastAttack = StartCoroutine(IEAttack());
+            myTransform.LookAt(target.myTransform);
+            ChangeAnim(Constant.ANIM_ATTACK);
         }
     }
 
-    protected IEnumerator IEAttack()
+    public void Attacking()
     {
-        yield return new WaitForSeconds(1 / attackSpeed);
+        attackTimer += Time.deltaTime;
 
-        myTransform.LookAt(target.myTransform);
-        ChangeAnim(Constant.ANIM_ATTACK);
-        lastWeaponAttack = StartCoroutine(IEWeaponAttack());
+        if (!ScanTarget() && !isThrew)
+        {
+            ChangeAnim(Constant.ANIM_IDLE);
+            StopAttack();
+        }
+
+        if (attackTimer > THROW_DURATION / attackSpeed && !isThrew)
+        {
+            weaponHolder.Attack(HAND_BACK_DURATION / attackSpeed);
+            isDelaying = true;
+            isThrew = true;
+        }
+
+        if (attackTimer > ATTACK_DURARION / attackSpeed)
+        {
+            attackTimer = 0;
+            isAttacking = false;
+            isThrew = false;
+            ChangeAnim(Constant.ANIM_IDLE);
+        }
     }
 
-    protected IEnumerator IEWeaponAttack()
+    public void Delaying()
     {
-        yield return new WaitForSeconds(ATTACK_ANIM_DURATION / 5 * 2);
-
-        isDelaying = true;
-        weaponHolder.Attack();
-        lastFinish = StartCoroutine(IEFinishAttack());
-        StartCoroutine(IEDelayAfterAttack());
-    }
-
-    protected IEnumerator IEFinishAttack()
-    {
-        yield return new WaitForSeconds(ATTACK_ANIM_DURATION / 5 * 3);
-
-        isAttacking = false;
-        ChangeAnim(Constant.ANIM_IDLE);
-    }
-
-    protected IEnumerator IEDelayAfterAttack()
-    {
-        yield return new WaitForSeconds(DELAY_ATTACK / attackSpeed);
-
-        isDelaying = false;
+        delayTimer += Time.deltaTime;
+        if (delayTimer > DELAY_DURATION / attackSpeed)
+        {
+            delayTimer = 0;
+            isDelaying = false;
+        }
     }
 
     public void StopAttack()
     {
         isAttacking = false;
-        if (lastAttack != null) StopCoroutine(lastAttack);
-        if (lastWeaponAttack != null) StopCoroutine(lastWeaponAttack);
-        if (lastFinish != null) StopCoroutine(lastFinish);
+        isThrew = false;
+        attackTimer = 0;
     }
 
-    public void HitTarget(Collider target)
+    public void HitTarget()
     {
-        OnKill(target);
+        OnKill();
     }
 
-    public virtual void OnKill(Collider target)
+    public virtual void OnKill()
     {
-        RemoveTargetCollider(target);
         IncreaseSize();
         ChangeScore(++score);
     }
@@ -190,10 +195,10 @@ public abstract class Character : GameUnit, IHit
         listTargetCollider.Clear();
     }
 
-    public virtual void ChangeScore(int point)
+    public virtual void ChangeScore(int score)
     {
-        this.score = point;
-        nameBar.ChangeScore(point);
+        this.score = score;
+        nameBar.ChangeScore(score);
     }
 
     public void SetName(string name)

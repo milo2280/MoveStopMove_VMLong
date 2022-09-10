@@ -42,18 +42,19 @@ public class Player : Character
         if ((mouseDir - Vector3.zero).sqrMagnitude > Constant.ZERO)
         {
             isMoving = true;
-            CalMoveDir();
+            CalculateMoveDir();
             Move();
             ChangeAnim(Constant.ANIM_RUN);
         }
-        else
+        
+        if (Input.GetMouseButtonUp(0))
         {
             isMoving = false;
-            if (!isAttacking) ChangeAnim(Constant.ANIM_IDLE);
+            ChangeAnim(Constant.ANIM_IDLE);
         }
     }
 
-    private void CalMoveDir()
+    private void CalculateMoveDir()
     {
         moveDir.x = mouseDir.x;
         moveDir.z = mouseDir.y;
@@ -91,24 +92,26 @@ public class Player : Character
             if (!isMarkEnabled) MarkTarget();
             if (!isMoving) Attack();
         }
-
+        
         if (isAttacking)
         {
+            Attacking();
+
             if (isMoving)
             {
                 StopAttack();
             }
-            else if (!ScanTarget())
-            {
-                StopAttack();
-                ChangeAnim(Constant.ANIM_IDLE);
-            }
+        }
+
+        if (isDelaying)
+        {
+            Delaying();
         }
     }
 
-    public override void OnKill(Collider target)
+    public override void OnKill()
     {
-        base.OnKill(target);
+        base.OnKill();
         cameraFollow.ScaleOffset();
     }
 
