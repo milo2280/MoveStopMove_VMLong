@@ -6,6 +6,7 @@ public class Player : Character
 {
     public Joystick joystick;
     public CameraFollow cameraFollow;
+    public PlayerData playerData;
 
     private Vector3 mouseDir, moveDir;
     private Quaternion lookRotation;
@@ -22,8 +23,23 @@ public class Player : Character
     {
         base.OnInit();
         isMarkEnabled = false;
+        SetName(playerData.playerName);
         myTransform.position = Vector3.zero;
         myTransform.rotation = Quaternion.Euler(0f, 180f, 0f);
+    }
+
+    public void OnRevive()
+    {
+        isDead = false;
+        myCollider.enabled = true;
+        SetColor();
+        ChangeAnim(Constant.ANIM_IDLE);
+    }
+
+    public override void SetColor()
+    {
+        color = Color.yellow;
+        base.SetColor();
     }
 
     private void Update()
@@ -109,6 +125,12 @@ public class Player : Character
         }
     }
 
+    public override void SetName(string name)
+    {
+        base.SetName(name);
+        playerData.playerName = name;
+    }
+
     public override void OnKill()
     {
         base.OnKill();
@@ -118,6 +140,6 @@ public class Player : Character
     public override void OnDeath()
     {
         base.OnDeath();
-        LevelManager.Ins.EndLevel(false);
+        LevelManager.Ins.Fail();
     }
 }

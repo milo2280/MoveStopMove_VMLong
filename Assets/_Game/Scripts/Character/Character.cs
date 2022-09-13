@@ -10,11 +10,13 @@ public abstract class Character : GameUnit, IHit
 
     public NameBar nameBar;
     public WeaponHolder weaponHolder;
+    public SkinnedMeshRenderer bodyMesh, pantMesh;
 
     public float speed;
     public float attackRange;
     public float attackSpeed;
 
+    protected Color color;
     protected float currentAttackRange;
     protected int score;
     protected Vector3 nextScale;
@@ -36,11 +38,19 @@ public abstract class Character : GameUnit, IHit
     {
         isDead = false;
         myCollider.enabled = true;
+        SetColor();
         animator.SetFloat(Constant.ANIM_ATTACK_SPEED, attackSpeed);
         ChangeScore(0);
         ResetSize();
         ResetTarget();
         weaponHolder.OnInit();
+    }
+
+    public virtual void SetColor()
+    {
+        bodyMesh.material.color = color;
+        pantMesh.material.color = color;
+        nameBar.SetColor(color);
     }
 
     public void OnHit()
@@ -52,8 +62,17 @@ public abstract class Character : GameUnit, IHit
     {
         isDead = true;
         myCollider.enabled = false;
+        TurnGray();
         ChangeAnim(Constant.ANIM_DEAD);
         if (isAttacking) StopAttack();
+        SoundManager.Ins.PlaySound(SoundManager.Ins.die);
+    }
+
+    public void TurnGray()
+    {
+        bodyMesh.material.color = color / 3;
+        pantMesh.material.color = color / 3;
+        nameBar.SetColor(color / 3);
     }
 
     public virtual void OnDespawn() { }
@@ -201,7 +220,7 @@ public abstract class Character : GameUnit, IHit
         nameBar.ChangeScore(score);
     }
 
-    public void SetName(string name)
+    public virtual void SetName(string name)
     {
         nameBar.SetName(name);
     }

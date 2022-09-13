@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum WeaponType { Hammer, Knife, Candy2 }
+
 public abstract class Weapon : GameUnit
 {
     public float attackSpeed { get; private set; }
@@ -22,6 +24,7 @@ public abstract class Weapon : GameUnit
 
     public virtual void Attack(Vector3 position, Quaternion rotation) 
     {
+        SoundManager.Ins.PlaySound(SoundManager.Ins.throwWeapon);
         SimplePool.Spawn<Bullet>(bulletPrefab, position, rotation).OnInit(this);
     }
 

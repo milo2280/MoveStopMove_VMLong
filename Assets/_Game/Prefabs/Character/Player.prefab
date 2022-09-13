@@ -426,6 +426,7 @@ GameObject:
   - component: {fileID: 1083104639}
   - component: {fileID: 1890375759441814783}
   - component: {fileID: 78529575207847083}
+  - component: {fileID: 812534096}
   m_Layer: 6
   m_Name: Player
   m_TagString: Character
@@ -480,8 +481,8 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 90
-  m_CollisionDetection: 0
+  m_Constraints: 126
+  m_CollisionDetection: 1
 --- !u!114 &1890375759441814783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,13 +498,17 @@ MonoBehaviour:
   animator: {fileID: 3588033767626844521}
   myCollider: {fileID: 1890375759441814781}
   myTransform: {fileID: 1890375759441814778}
+  die: {fileID: 8300000, guid: 142c98874cfa14c4a96d432788902b54, type: 3}
   nameBar: {fileID: 1937983527944766015}
   weaponHolder: {fileID: 1543441740}
+  bodyMesh: {fileID: 2124872751717693923}
+  pantMesh: {fileID: 7105568657808080000}
   speed: 7
   attackRange: 5.7
   attackSpeed: 1
   joystick: {fileID: 0}
   cameraFollow: {fileID: 0}
+  playerData: {fileID: 11400000, guid: fea6a1f33d532e64abc83c272d9de728, type: 2}
 --- !u!114 &78529575207847083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,6 +522,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character: {fileID: 1890375759441814783}
+--- !u!195 &812534096
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890375759441814779}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 0
+  m_Acceleration: 0
+  avoidancePriority: 50
+  m_AngularSpeed: 0
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2.3
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &4056847864618124178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1758,9 +1785,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
---- !u!4 &1733598863580365772 stripped
+--- !u!4 &6863840365549814803 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -9064325173771588411, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 1890375759114809097}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &3588033767626844521 stripped
@@ -1768,8 +1795,18 @@ Animator:
   m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 1890375759114809097}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &6863840365549814803 stripped
+--- !u!137 &7105568657808080000 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -529177695146175607, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 1890375759114809097}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &2124872751717693923 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -8699012472884554006, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 1890375759114809097}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1733598863580365772 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_CorrespondingSourceObject: {fileID: -9064325173771588411, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 1890375759114809097}
   m_PrefabAsset: {fileID: 0}

@@ -15,6 +15,11 @@ public enum UIID
     UICSetting = 3,
     UICFail = 4,
     UICVictory = 5,
+    UICRevive = 6,
+    UICShopWeapon = 7,
+    UICShopSkin = 8,
+    UICMoneyShop = 9,
+
 }
 
 

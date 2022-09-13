@@ -23,7 +23,7 @@ public class CanvasGameplay : UICanvas
 
     public void Fail()
     {
-        UIManager.Ins.OpenUI(UIID.UICFail);
+        UIManager.Ins.OpenUI<CanvasRevive>(UIID.UICRevive).OnInit();
         GameManager.Ins.ChangeState(GameState.MainMenu);
         Close();
     }

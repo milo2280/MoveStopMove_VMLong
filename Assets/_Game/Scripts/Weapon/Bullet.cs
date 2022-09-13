@@ -6,6 +6,7 @@ public class Bullet : GameUnit
 {
     public Rigidbody bulletRigidbody;
     public Transform bulletTransform;
+
     private Vector3 spawnPos;
     private float distanceTravelled;
     private float speed;

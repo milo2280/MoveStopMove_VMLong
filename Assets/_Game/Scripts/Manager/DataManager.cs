@@ -6,6 +6,7 @@ public class DataManager : Singleton<DataManager>
 {
     public Weapon[] weapons;
     public GameUnit[] bullets;
+    public TextAsset nameFile;
 
     private Color[] colors = { 
     new Color(200f/255f, 0f, 200f/255f),
@@ -13,7 +14,7 @@ public class DataManager : Singleton<DataManager>
     new Color(0f, 100f/255f, 200f/255f),
     new Color(0f, 200f/255f, 100f/255f),
     new Color(100f/255f, 200f/255f, 0f),
-    Color.black, Color.gray, Color.green, Color.red, Color.blue };
+    Color.gray, Color.green, Color.red, Color.blue };
     private int colorIndex, colorCount;
     private List<int> usedColors = new List<int>();
 
@@ -29,8 +30,7 @@ public class DataManager : Singleton<DataManager>
     {
         colorCount = colors.Length;
 
-        TextAsset textAsset = Resources.Load("Text/NamesList") as TextAsset;
-        NamesList namesList = JsonUtility.FromJson<NamesList>(textAsset.text);
+        NamesList namesList = JsonUtility.FromJson<NamesList>(nameFile.text);
         names = namesList.names;
         nameCount = names.Count;
     }

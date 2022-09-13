@@ -8,9 +8,6 @@ public class Enemy : Character
     public NavMeshAgent navMeshAgent;
     public CapsuleCollider capsuleCollider;
     public Mark mark;
-    public SkinnedMeshRenderer bodyMesh, pantMesh;
-
-    public Color color;
 
     private IState<Enemy> currentState;
     private Indicator indicator;
@@ -29,11 +26,13 @@ public class Enemy : Character
     {
         base.OnInit();
         SetName(DataManager.Ins.GetRandomName());
-        color = DataManager.Ins.GetRandomColor();
-        bodyMesh.material.color = color;
-        pantMesh.material.color = color;
-        nameBar.SetColor(color);
         ChangeState(new IdleState());
+    }
+
+    public override void SetColor()
+    {
+        color = DataManager.Ins.GetRandomColor();
+        base.SetColor();
     }
 
     public override void OnDeath()
@@ -89,7 +88,7 @@ public class Enemy : Character
         }
         else
         {
-            ChangeState(new IdleState());
+            ChangeState(new PatrolState());
         }
     }
 

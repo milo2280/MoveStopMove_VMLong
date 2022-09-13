@@ -13,7 +13,6 @@ public class LevelManager : Singleton<LevelManager>
     public LevelData[] levelDatas;
 
     private LevelData currentLevel;
-    private bool isLevelEnded;
     private int spawnCounter;
     private int deadCounter;
 
@@ -35,7 +34,6 @@ public class LevelManager : Singleton<LevelManager>
 
     public void OnReset()
     {
-        isLevelEnded = false;
         spawnCounter = 0;
         deadCounter = 0;
         player.OnInit();
@@ -43,6 +41,11 @@ public class LevelManager : Singleton<LevelManager>
         cameraFollow.OnReset();
         indicatorHolder.OnReset();
         SimplePool.CollectAll();
+    }
+
+    public void OnRevive()
+    {
+        player.OnRevive();
     }
 
     private void SpawnEnemy()
@@ -75,7 +78,7 @@ public class LevelManager : Singleton<LevelManager>
 
         if (deadCounter == MAX_ENEMY_NUMBER)
         {
-            EndLevel(true);
+            Victory();
         }
     }
 
@@ -103,24 +106,19 @@ public class LevelManager : Singleton<LevelManager>
         player.SetName(name);
     }
 
-    public void EndLevel(bool isWin)
+    public void Victory()
     {
-        if (isLevelEnded) return;
-        isLevelEnded = true;
-
-        if (isWin)
+        if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
         {
-            if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
-            {
-                UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay).Victory();
-            }
+            UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay).Victory();
         }
-        else
+    }
+
+    public void Fail()
+    {
+        if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
         {
-            if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
-            {
-                UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay).Fail();
-            }
+            UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay).Fail();
         }
     }
 
@@ -131,5 +129,15 @@ public class LevelManager : Singleton<LevelManager>
             CanvasGameplay canvas = UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay);
             canvas.UpdateEnemyRemain(MAX_ENEMY_NUMBER - deadCounter + 1);
         }
+    }
+
+    public void HidePlayer()
+    {
+        player.gameObject.SetActive(false);
+    }
+
+    public void ShowPlayer()
+    {
+        player.gameObject.SetActive(true);
     }
 }

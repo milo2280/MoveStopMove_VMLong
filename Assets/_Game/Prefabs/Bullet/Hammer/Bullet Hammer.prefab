@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1583695439909367243}
   - component: {fileID: 6975035136424781945}
   m_Layer: 0
-  m_Name: B_Hammer
+  m_Name: Bullet Hammer
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletRigidbody: {fileID: 6975035136424781945}
   bulletTransform: {fileID: 1037836962382126223}
+  clip: {fileID: 8300000, guid: 45e189f419a53844b9f77828cf042567, type: 3}
 --- !u!65 &1583695439909367243
 BoxCollider:
   m_ObjectHideFlags: 0

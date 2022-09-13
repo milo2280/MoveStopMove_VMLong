@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1343968582615303709}
   - component: {fileID: 1753922085549627145}
   m_Layer: 0
-  m_Name: B_Candy2
+  m_Name: Bullet Candy2
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletRigidbody: {fileID: 1343968582615303709}
   bulletTransform: {fileID: 3999872484208263853}
+  clip: {fileID: 8300000, guid: 45e189f419a53844b9f77828cf042567, type: 3}
 --- !u!54 &1343968582615303709
 Rigidbody:
   m_ObjectHideFlags: 0

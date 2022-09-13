@@ -334,17 +334,17 @@ MonoBehaviour:
   animator: {fileID: 1538625110415528108}
   myCollider: {fileID: 1107431243}
   myTransform: {fileID: 6174554572369083367}
+  die: {fileID: 8300000, guid: 919de2e922c8eac4e8146fd9a08c08c7, type: 3}
   nameBar: {fileID: 8818820969693472491}
   weaponHolder: {fileID: 1992860502}
+  bodyMesh: {fileID: 4173739899160838182}
+  pantMesh: {fileID: 5047699404238996805}
   speed: 0
   attackRange: 5.6
-  attackSpeed: 0.9
+  attackSpeed: 1
   navMeshAgent: {fileID: 6382942012154392569}
   capsuleCollider: {fileID: 1107431243}
   mark: {fileID: 2490113800835141095}
-  bodyMesh: {fileID: 4173739899160838182}
-  pantMesh: {fileID: 5047699404238996805}
-  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!195 &6382942012154392569
 NavMeshAgent:
   m_ObjectHideFlags: 0
