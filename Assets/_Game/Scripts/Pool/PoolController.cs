@@ -16,9 +16,9 @@ public class PoolController : MonoBehaviour
         SimplePool.Preload(indicatorPrefab, 10, indicatorParent);
         SimplePool.Preload(enemyPrefab, 10, enemyParent);
 
-        for (int i = 0; i < bulletParents.Length; i++)
+        for (int i = 0; i < WeaponManager.Ins.bullets.Length; i++)
         {
-            SimplePool.Preload(DataManager.Ins.bullets[i], 5, bulletParents[i]);
+            SimplePool.Preload(WeaponManager.Ins.bullets[i], 10, bulletParents[i]);
         }
     }
 }

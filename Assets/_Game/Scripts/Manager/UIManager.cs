@@ -16,10 +16,11 @@ public enum UIID
     UICFail = 4,
     UICVictory = 5,
     UICRevive = 6,
-    UICShopWeapon = 7,
-    UICShopSkin = 8,
-    UICMoneyShop = 9,
+    UICMoneyShop = 7,
+    UICOffer = 8,
 
+    UICShopWeapon = 101,
+    UICShopSkin = 102,
 }
 
 
@@ -29,6 +30,7 @@ public class UIManager : Singleton<UIManager>
     private Dictionary<UIID, UICanvas> UICanvas = new Dictionary<UIID, UICanvas>();
 
     public Transform CanvasParentTF;
+    public Transform CanvasParentTF2;
 
     #region Canvas
 
@@ -41,7 +43,17 @@ public class UIManager : Singleton<UIManager>
     {
         if (!UICanvas.ContainsKey(ID) || UICanvas[ID] == null)
         {
-            UICanvas canvas = Instantiate(Resources.Load<UICanvas>("UI/" + ID.ToString()), CanvasParentTF);
+            UICanvas canvas;
+
+            if ((int)ID > 100)
+            {
+                canvas = Instantiate(Resources.Load<UICanvas>("UI/" + ID.ToString()), CanvasParentTF2);
+            }
+            else
+            {
+                canvas = Instantiate(Resources.Load<UICanvas>("UI/" + ID.ToString()), CanvasParentTF);
+            }
+            
             UICanvas[ID] = canvas;
         }
 

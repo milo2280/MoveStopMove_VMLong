@@ -77,14 +77,26 @@ public static class SimplePool
         return obj as T;
     }
 
-    public static T SpawnOne<T>(GameUnit prefab, Vector3 localPosition, Transform myParent) where T : GameUnit
+    public static GameUnit Spawn(GameUnit prefab, Transform myParent, int amount)
     {
         if (!poolObject.ContainsKey(prefab) || poolObject[prefab] == null)
         {
-            poolObject.Add(prefab, new Pool(prefab, 1, myParent));
+            poolObject.Add(prefab, new Pool(prefab, amount, myParent));
         }
 
-        GameUnit obj = poolObject[prefab].Spawn(localPosition, myParent);
+        GameUnit obj = poolObject[prefab].Spawn(myParent);
+
+        return obj;
+    }
+
+    public static T Spawn<T>(GameUnit prefab, Transform myParent, int amount) where T : GameUnit
+    {
+        if (!poolObject.ContainsKey(prefab) || poolObject[prefab] == null)
+        {
+            poolObject.Add(prefab, new Pool(prefab, amount, myParent));
+        }
+
+        GameUnit obj = poolObject[prefab].Spawn(myParent);
 
         return obj as T;
     }
@@ -127,6 +139,7 @@ public static class SimplePool
         public Pool(GameUnit prefab, int amount, Transform parent)
         {
             this.prefab = prefab;
+            this.parent = parent;
 
             for (int i = 0; i < amount; i++)
             {
@@ -174,6 +187,27 @@ public static class SimplePool
             }
 
             obj.transform.localPosition = localPosition;
+            obj.gameObject.SetActive(true);
+
+            activeObjs.Add(obj);
+
+            return obj;
+        }
+
+        public GameUnit Spawn(Transform myParent)
+        {
+            GameUnit obj = null;
+
+            if (pool.Count == 0)
+            {
+                obj = GameObject.Instantiate(prefab, myParent);
+                poolParent.Add(obj, this);
+            }
+            else
+            {
+                obj = pool.Dequeue();
+            }
+
             obj.gameObject.SetActive(true);
 
             activeObjs.Add(obj);

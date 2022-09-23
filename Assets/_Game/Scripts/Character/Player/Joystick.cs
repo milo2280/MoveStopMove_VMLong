@@ -25,26 +25,34 @@ public class Joystick : MonoBehaviour
 
     private void HandleMouseInput()
     {
-        if (Input.GetMouseButton(0) && !IsMouseOverUI())
+        if (Input.GetMouseButton(0))
         {
-            if (Input.GetMouseButtonDown(0))
+            if (!IsMouseOverUI())
             {
-                rootPos = Input.mousePosition;
+                if (Input.GetMouseButtonDown(0))
+                {
+                    rootPos = Input.mousePosition;
+                }
+
+                joystickTransform.gameObject.SetActive(true);
+                joystickTransform.position = rootPos;
+
+                dragPos = Input.mousePosition;
+                dragDir = dragPos - rootPos;
+                mouseDir = dragDir.normalized;
+
+                if (dragDir.sqrMagnitude > sqrDragOffset)
+                {
+                    dragPos = rootPos + mouseDir * dragOffset;
+                }
+
+                stickTransform.position = dragPos;
             }
-
-            joystickTransform.gameObject.SetActive(true);
-            joystickTransform.position = rootPos;
-
-            dragPos = Input.mousePosition;
-            dragDir = dragPos - rootPos;
-            mouseDir = dragDir.normalized;
-
-            if (dragDir.sqrMagnitude > sqrDragOffset)
+            else
             {
-                dragPos = rootPos + mouseDir * dragOffset;
+                mouseDir = Vector3.zero;
+                joystickTransform.gameObject.SetActive(false);
             }
-
-            stickTransform.position = dragPos;
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -66,7 +74,7 @@ public class Joystick : MonoBehaviour
 
             for (int i = 0; i < raycastResults.Count; i++)
             {
-                if (raycastResults[i].gameObject.CompareTag("Button"))
+                if (raycastResults[i].gameObject.CompareTag(Constant.TAG_BUTTON))
                 {
                     return true;
                 }

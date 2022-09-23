@@ -6,6 +6,7 @@ public class AttackState : IState<Enemy>
 {
     public void OnEnter(Enemy t)
     {
+        t.ChangeAnim(Constant.ANIM_IDLE);
     }
 
     public void OnExecute(Enemy t)

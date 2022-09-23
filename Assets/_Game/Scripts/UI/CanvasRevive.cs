@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CanvasRevive : UICanvas
 {
     public Text timeText;
+    public GameObject notEnough;
 
     private float timer;
     private float timeRemain;
@@ -15,6 +16,7 @@ public class CanvasRevive : UICanvas
         timeRemain = 5;
         timer = timeRemain;
         timeText.text = "5";
+        notEnough.SetActive(false);
     }
 
     private void Update()
@@ -30,6 +32,7 @@ public class CanvasRevive : UICanvas
         {
             timeRemain--;
             timeText.text = timeRemain.ToString();
+            SoundManager.Ins.PlaySound(SoundManager.Ins.countdown);
         }
 
         if (timeRemain < Constant.ZERO && timer < -0.5f)
@@ -40,20 +43,29 @@ public class CanvasRevive : UICanvas
 
     public void CloseButton()
     {
-        UIManager.Ins.OpenUI(UIID.UICFail);
+        UIManager.Ins.OpenUI<CanvasFail>(UIID.UICFail).OnInit();
         Close();
     }
 
     public void UseGoldButton()
     {
-        Debug.Log("Use Gold");
+        if (LevelManager.Ins.OnRevive(true))
+        {
+            GameManager.Ins.ChangeState(GameState.Gameplay);
+            UIManager.Ins.OpenUI(UIID.UICGamePlay);
+            Close();
+        }
+        else
+        {
+            notEnough.SetActive(true);
+        }
     }
 
     public void WatchAdButton()
     {
         GameManager.Ins.ChangeState(GameState.Gameplay);
         UIManager.Ins.OpenUI(UIID.UICGamePlay);
-        LevelManager.Ins.OnRevive();
+        LevelManager.Ins.OnRevive(false);
         Close();
     }
 }

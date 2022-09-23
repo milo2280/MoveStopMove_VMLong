@@ -2,36 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum WeaponType { Hammer, Knife, Candy2 }
-
 public abstract class Weapon : GameUnit
 {
-    public float attackSpeed { get; private set; }
+    public WeaponClass weaponClass;
+    public WeaponType weaponType;
+    public Buff buff;
+
     public GameUnit bulletPrefab;
 
-    public Vector3 scale;
-    public float range;
     public float bulletSpeed;
 
-    protected WeaponHolder weaponHolder;
+    public Character character;
+    protected Transform bulletPoint;
 
-    public void OnInit(WeaponHolder weaponHolder)
+    public void OnInit(Character character)
     {
-        this.weaponHolder = weaponHolder;
-        scale = new Vector3(1f, 1f, 1f);
-        range = weaponHolder.GetAttackRange();
+        this.character = character;
+        this.bulletPoint = character.bulletPoint;
     }
 
-    public virtual void Attack(Vector3 position, Quaternion rotation) 
+    public virtual void Attack() 
     {
         SoundManager.Ins.PlaySound(SoundManager.Ins.throwWeapon);
-        SimplePool.Spawn<Bullet>(bulletPrefab, position, rotation).OnInit(this);
+        SimplePool.Spawn<Bullet>(bulletPrefab, bulletPoint.position, bulletPoint.rotation).OnInit(this);
     }
 
-    public void HitTarget()
+    public string GetCharName()
     {
-        weaponHolder.HitTarget();
-        scale = Vector3.Scale(scale, Constant.SCALE_VECTOR3);
-        range *= Constant.SCALE_FLOAT;
+        return (character as Enemy).GetName();
     }
 }

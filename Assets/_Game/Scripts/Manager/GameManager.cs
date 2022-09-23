@@ -13,10 +13,15 @@ public class GameManager : Singleton<GameManager>
         Application.targetFrameRate = 60;
         Input.multiTouchEnabled = false;
 
-        // Init data
+        PlayerData.Ins.LoadData();
 
         ChangeState(GameState.MainMenu);
         UIManager.Ins.OpenUI(UIID.UICMainMenu);
+    }
+
+    private void OnApplicationQuit()
+    {
+        PlayerData.Ins.SaveData();
     }
 
     public void ChangeState(GameState state)

@@ -5,17 +5,29 @@ using UnityEngine.UI;
 
 public class CanvasMainMenu : UICanvas
 {
-    public Text placeHolder;
-    public PlayerData playerData;
+    public Text placeHolder, goldText;
 
     public GameObject soundOn, soundOff;
     public GameObject vibrateOn, vibrateOff;
 
+    public RectTransform fillTransform;
+    public GameObject[] ranks;
+
     private bool isSoundOn, isVibrateOn;
+
+    private int[] goals = { 0, 100, 500, 1000 };
+    private GameObject currentRank;
+    private float currentScore, prevGoal, currentGoal, currentWidth;
+
+    private const float MAX_WIDTH = 220f;
+    private const float MIN_WIDTH = 28f;
+    private const float HEIGHT = 28f;
 
     private void OnEnable()
     {
-        placeHolder.text = playerData.playerName;
+        placeHolder.text = PlayerData.Ins.playerName;
+        goldText.text = PlayerData.Ins.gold.ToString();
+        UpdateRank();
     }
 
     public void ReadStringInput(string name)
@@ -26,8 +38,7 @@ public class CanvasMainMenu : UICanvas
         }
 
         placeHolder.text = name;
-        playerData.playerName = name;
-        LevelManager.Ins.SetPlayerName(name);
+        PlayerData.Ins.SetPlayerName(name);
     }
 
     public void PlayGameButton()
@@ -71,5 +82,42 @@ public class CanvasMainMenu : UICanvas
         soundOn.SetActive(isSoundOn);
         soundOff.SetActive(!isSoundOn);
         isSoundOn = !isSoundOn;
+    }
+
+    private void UpdateRank()
+    {
+        currentScore = PlayerData.Ins.totalScore;
+
+        if (currentScore == 0)
+        {
+            currentRank = ranks[0];
+            fillTransform.sizeDelta = new Vector2(0, HEIGHT);
+        }
+
+        for (int i = 0; i < ranks.Length; i++)
+        {
+            if (currentScore > goals[i] && currentScore <= goals[i + 1])
+            {
+                currentGoal = goals[i + 1];
+                prevGoal = goals[i];
+                currentRank = ranks[i];
+                ChangeFillWidth();
+                break;
+            }
+        }
+
+        currentRank.SetActive(true);
+    }
+
+    private void ChangeFillWidth()
+    {
+        currentWidth = MIN_WIDTH;
+        currentWidth += (MAX_WIDTH - MIN_WIDTH) * (currentScore - prevGoal) / (currentGoal - prevGoal);
+        fillTransform.sizeDelta = new Vector2(currentWidth, HEIGHT);
+    }
+
+    private void OnDisable()
+    {
+        currentRank.SetActive(false);
     }
 }

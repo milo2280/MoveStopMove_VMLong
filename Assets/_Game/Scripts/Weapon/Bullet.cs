@@ -1,17 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : GameUnit
 {
-    public Rigidbody bulletRigidbody;
-    public Transform bulletTransform;
+    public Rigidbody m_Rigidbody;
+    public Transform m_Transform;
 
     private Vector3 spawnPos;
     private float distanceTravelled;
     private float speed;
-    private float range;
     private Weapon weapon;
+    private Character character;
 
     private void Update()
     {
@@ -21,18 +22,18 @@ public class Bullet : GameUnit
     public void OnInit(Weapon weapon)
     {
         this.weapon = weapon;
-        range = weapon.range;
+        this.character = weapon.character;
         speed = weapon.bulletSpeed;
-        bulletTransform.localScale = weapon.scale;
+        //m_Transform.localScale = character.scale;
 
         distanceTravelled = 0;
-        spawnPos = bulletTransform.position;
-        bulletRigidbody.velocity = bulletTransform.forward * speed;
+        spawnPos = m_Transform.position;
+        m_Rigidbody.velocity = m_Transform.forward * speed;
     }
 
     private void OnHit()
     {
-        weapon.HitTarget();
+        character.OnKill();
         OnDespawn();
     }
 
@@ -43,11 +44,16 @@ public class Bullet : GameUnit
 
     private void TrackBulletDistance()
     {
-        distanceTravelled = Vector3.Distance(spawnPos, bulletTransform.position);
-        if (distanceTravelled > range)
+        distanceTravelled = Vector3.Distance(spawnPos, m_Transform.position);
+        if (distanceTravelled > character.range)
         {
             OnDespawn();
         }
+    }
+
+    public string GetCharName()
+    {
+        return weapon.GetCharName();
     }
 
     private void OnTriggerEnter(Collider other)

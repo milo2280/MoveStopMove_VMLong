@@ -5,27 +5,27 @@ using UnityEngine;
 public abstract class Character : GameUnit, IHit
 {
     public Animator animator;
-    public Collider myCollider;
-    public Transform myTransform;
+    public Collider m_Collider;
+    public Transform m_Transform;
 
-    public NameBar nameBar;
-    public WeaponHolder weaponHolder;
+    public Hand hand;
+    public HeadBar headBar;
+    public Transform bulletPoint;
     public SkinnedMeshRenderer bodyMesh, pantMesh;
 
-    public float speed;
-    public float attackRange;
-    public float attackSpeed;
+    public int score;
+    public bool isDead;
+    public float baseRange, baseAS, baseMS;
+    public float range, attackSpeed, moveSpeed;
 
     protected Color color;
-    protected float currentAttackRange;
-    protected int score;
     protected Vector3 nextScale;
+    protected Weapon weapon;
     protected Character target;
-    protected Collider targetCollider;
-    protected List<Collider> listTargetCollider = new List<Collider>();
+    protected List<Character> targets = new List<Character>();
 
     protected string currentAnim;
-    protected bool isAttacking, isThrew, isDelaying, isDead;
+    protected bool isAttacking, isThrew, isDelaying;
 
     protected float attackTimer, delayTimer;
 
@@ -36,21 +36,24 @@ public abstract class Character : GameUnit, IHit
 
     public virtual void OnInit() 
     {
+        moveSpeed = baseMS;
+        attackSpeed = baseAS;
+        range = baseRange;
+
         isDead = false;
-        myCollider.enabled = true;
+        m_Collider.enabled = true;
         SetColor();
-        animator.SetFloat(Constant.ANIM_ATTACK_SPEED, attackSpeed);
-        ChangeScore(0);
-        ResetSize();
-        ResetTarget();
-        weaponHolder.OnInit();
+        animator.SetFloat(Constant.ANIM_ATTACK_SPEED, GetAttackSpeed());
+        UpdateScore(0);
+        InitSize();
+        InitTarget();
     }
 
     public virtual void SetColor()
     {
         bodyMesh.material.color = color;
         pantMesh.material.color = color;
-        nameBar.SetColor(color);
+        headBar.SetColor(color);
     }
 
     public void OnHit()
@@ -61,7 +64,7 @@ public abstract class Character : GameUnit, IHit
     public virtual void OnDeath()
     {
         isDead = true;
-        myCollider.enabled = false;
+        m_Collider.enabled = false;
         TurnGray();
         ChangeAnim(Constant.ANIM_DEAD);
         if (isAttacking) StopAttack();
@@ -72,7 +75,7 @@ public abstract class Character : GameUnit, IHit
     {
         bodyMesh.material.color = color / 3;
         pantMesh.material.color = color / 3;
-        nameBar.SetColor(color / 3);
+        headBar.SetColor(color / 3);
     }
 
     public virtual void OnDespawn() { }
@@ -90,41 +93,37 @@ public abstract class Character : GameUnit, IHit
         }
     }
 
-    public void AddTargetCollider(Collider targetCollider)
+    private void InitTarget()
     {
-        listTargetCollider.Add(targetCollider);
+        target = null;
+        targets.Clear();
     }
 
-    public virtual void RemoveTargetCollider(Collider targetCollider)
+    public void AddTarget(Character target)
     {
-        listTargetCollider.Remove(targetCollider);
+        targets.Add(target);
+    }
+
+    public virtual void RemoveTarget(Character target)
+    {
+        targets.Remove(target);
     }
 
     public bool ScanTarget()
     {
-        for (int i = 0; i < listTargetCollider.Count; i++)
+        for (int i = 0; i < targets.Count; i++)
         {
-            if (listTargetCollider[i].enabled == false)
-            {
-                RemoveTargetCollider(listTargetCollider[i]);
-            }
+            if (targets[i].isDead) RemoveTarget(targets[i]);
         }
 
-        if (listTargetCollider.Count > 0)
+        if (targets.Count > 0)
         {
-            if (!listTargetCollider.Contains(targetCollider))
-            {
-                targetCollider = listTargetCollider[0];
-                target = Cache<Character>.Get(targetCollider);
-            }
-
+            if (!targets.Contains(target)) target = targets[0];
             return true;
         }
         else
         {
             target = null;
-            targetCollider = null;
-
             return false;
         }
     }
@@ -134,7 +133,7 @@ public abstract class Character : GameUnit, IHit
         if (!isAttacking && !isDelaying)
         {
             isAttacking = true;
-            myTransform.LookAt(target.myTransform);
+            m_Transform.LookAt(target.m_Transform);
             ChangeAnim(Constant.ANIM_ATTACK);
         }
     }
@@ -149,14 +148,15 @@ public abstract class Character : GameUnit, IHit
             StopAttack();
         }
 
-        if (attackTimer > THROW_DURATION / attackSpeed && !isThrew)
+        if (attackTimer > THROW_DURATION / GetAttackSpeed() && !isThrew)
         {
-            weaponHolder.Attack(HAND_BACK_DURATION / attackSpeed);
+            weapon.Attack();
+            hand.ThrowWeapon(HAND_BACK_DURATION / GetAttackSpeed());
             isDelaying = true;
             isThrew = true;
         }
 
-        if (attackTimer > ATTACK_DURARION / attackSpeed)
+        if (attackTimer > ATTACK_DURARION / GetAttackSpeed())
         {
             attackTimer = 0;
             isAttacking = false;
@@ -168,7 +168,7 @@ public abstract class Character : GameUnit, IHit
     public void Delaying()
     {
         delayTimer += Time.deltaTime;
-        if (delayTimer > DELAY_DURATION / attackSpeed)
+        if (delayTimer > DELAY_DURATION / GetAttackSpeed())
         {
             delayTimer = 0;
             isDelaying = false;
@@ -182,51 +182,59 @@ public abstract class Character : GameUnit, IHit
         attackTimer = 0;
     }
 
-    public void HitTarget()
-    {
-        OnKill();
-    }
-
     public virtual void OnKill()
     {
         IncreaseSize();
-        ChangeScore(++score);
+        UpdateScore(++score);
     }
 
     private void IncreaseSize()
     {
-        myTransform.localScale = nextScale;
-        currentAttackRange *= Constant.SCALE_FLOAT;
+        m_Transform.localScale = nextScale;
+        range *= Constant.SCALE_FLOAT;
         nextScale = Vector3.Scale(nextScale, Constant.SCALE_VECTOR3);
     }
 
-    private void ResetSize()
+    private void InitSize()
     {
-        myTransform.localScale = new Vector3(1f, 1f, 1f);
-        currentAttackRange = attackRange;
+        m_Transform.localScale = new Vector3(1f, 1f, 1f);
+        range = baseRange;
         nextScale = Constant.SCALE_VECTOR3;
     }
 
-    private void ResetTarget()
-    {
-        target = null;
-        targetCollider = null;
-        listTargetCollider.Clear();
-    }
-
-    public virtual void ChangeScore(int score)
+    public virtual void UpdateScore(int score)
     {
         this.score = score;
-        nameBar.ChangeScore(score);
+        headBar.ChangeScore(score);
     }
 
     public virtual void SetName(string name)
     {
-        nameBar.SetName(name);
+        headBar.SetName(name);
     }
 
     public float GetAttackRange()
     {
-        return currentAttackRange;
+        return range;
+    }
+
+    private float GetAttackSpeed()
+    {
+        return attackSpeed / 100;
+    }
+
+    //public virtual void  
+
+    public void AddBuff()
+    {
+        if (weapon != null)
+        {
+            AddWeaponBuff();
+        }
+    }
+
+    public void AddWeaponBuff()
+    {
+
     }
 }

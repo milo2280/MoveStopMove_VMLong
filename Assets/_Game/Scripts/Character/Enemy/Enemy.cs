@@ -11,10 +11,11 @@ public class Enemy : Character
 
     private IState<Enemy> currentState;
     private Indicator indicator;
+    private string enemyName;
 
     private const float DECOMPOSE_TIME = 2f;
 
-    void Update()
+    private void Update()
     {
         if (currentState != null && !isDead)
         {
@@ -24,9 +25,10 @@ public class Enemy : Character
 
     public override void OnInit()
     {
-        base.OnInit();
+        weapon = hand.OnInit(WeaponManager.Ins.GetRandomType());
         SetName(DataManager.Ins.GetRandomName());
         ChangeState(new IdleState());
+        base.OnInit();
     }
 
     public override void SetColor()
@@ -94,15 +96,24 @@ public class Enemy : Character
 
     public void ResetAgentDes()
     {
-        navMeshAgent.destination = myTransform.position;
+        navMeshAgent.destination = m_Transform.position;
     }
 
     public void Patrolling()
     {
         if (IsReachDes())
         {
-            navMeshAgent.destination = RandomPoint(myTransform.position, 10f);
+            navMeshAgent.destination = RandomPoint(m_Transform.position, 10f);
         }
+    }
+
+    public bool IsReachDes()
+    {
+        bool isReachDes = !navMeshAgent.pathPending
+            && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance
+            && (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f);
+
+        return isReachDes;
     }
 
     public Vector3 RandomPoint(Vector3 center, float radius)
@@ -116,15 +127,6 @@ public class Enemy : Character
         }
 
         return Vector3.zero;
-    }
-
-    public bool IsReachDes()
-    {
-        bool isReachDes = !navMeshAgent.pathPending
-            && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance
-            && (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f);
-
-        return isReachDes;
     }
 
     public void EnableMark()
@@ -141,16 +143,27 @@ public class Enemy : Character
     {
         this.indicator = indicator;
         indicator.SetColor(color);
-        indicator.ChangeScore(score);
+        indicator.UpdateScore(score);
     }
 
-    public override void ChangeScore(int point)
+    public override void UpdateScore(int point)
     {
-        base.ChangeScore(point);
+        base.UpdateScore(point);
 
         if (indicator != null)
         {
-            indicator.ChangeScore(point);
+            indicator.UpdateScore(point);
         }
+    }
+
+    public override void SetName(string name)
+    {
+        base.SetName(name);
+        enemyName = name;
+    }
+
+    public string GetName()
+    {
+        return enemyName;
     }
 }

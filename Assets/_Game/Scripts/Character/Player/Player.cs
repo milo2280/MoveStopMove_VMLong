@@ -6,32 +6,42 @@ public class Player : Character
 {
     public Joystick joystick;
     public CameraFollow cameraFollow;
-    public PlayerData playerData;
 
     private Vector3 mouseDir, moveDir;
     private Quaternion lookRotation;
     private bool isMoving;
     private bool isMarkEnabled;
+    private bool isWin;
 
     private void Start()
     {
         OnInit();
-        ChangeAnim(Constant.ANIM_IDLE);
+    }
+
+    private void Update()
+    {
+        if (!isDead && !isWin)
+        {
+            JoystickMove();
+            AttackControl();
+        }
     }
 
     public override void OnInit()
     {
-        base.OnInit();
+        isWin = false;
         isMarkEnabled = false;
-        SetName(playerData.playerName);
-        myTransform.position = Vector3.zero;
-        myTransform.rotation = Quaternion.Euler(0f, 180f, 0f);
+        ChangeAnim(Constant.ANIM_IDLE);
+        weapon = hand.OnInit(PlayerData.Ins.weaponType);
+        m_Transform.position = Vector3.zero;
+        m_Transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+        base.OnInit();
     }
 
     public void OnRevive()
     {
         isDead = false;
-        myCollider.enabled = true;
+        m_Collider.enabled = true;
         SetColor();
         ChangeAnim(Constant.ANIM_IDLE);
     }
@@ -40,15 +50,6 @@ public class Player : Character
     {
         color = Color.yellow;
         base.SetColor();
-    }
-
-    private void Update()
-    {
-        if (!isDead)
-        {
-            JoystickMove();
-            AttackControl();
-        }
     }
 
     private void JoystickMove()
@@ -66,7 +67,7 @@ public class Player : Character
         if (Input.GetMouseButtonUp(0))
         {
             isMoving = false;
-            ChangeAnim(Constant.ANIM_IDLE);
+            if (!isAttacking) ChangeAnim(Constant.ANIM_IDLE);
         }
     }
 
@@ -79,14 +80,14 @@ public class Player : Character
 
     private void Move()
     {
-        myTransform.position = Vector3.Lerp(myTransform.position, myTransform.position + moveDir, speed * Time.deltaTime);
-        myTransform.rotation = Quaternion.Slerp(myTransform.rotation, lookRotation, speed * Time.deltaTime);
+        m_Transform.position = Vector3.Lerp(m_Transform.position, m_Transform.position + moveDir, moveSpeed * Time.deltaTime);
+        m_Transform.rotation = Quaternion.Slerp(m_Transform.rotation, lookRotation, moveSpeed * Time.deltaTime);
     }
 
-    public override void RemoveTargetCollider(Collider other)
+    public override void RemoveTarget(Character target)
     {
-        if (other == targetCollider) UnMarkTarget();
-        base.RemoveTargetCollider(other);
+        if (this.target == target) UnMarkTarget();
+        base.RemoveTarget(target);
     }
 
     private void MarkTarget()
@@ -125,12 +126,6 @@ public class Player : Character
         }
     }
 
-    public override void SetName(string name)
-    {
-        base.SetName(name);
-        playerData.playerName = name;
-    }
-
     public override void OnKill()
     {
         base.OnKill();
@@ -140,6 +135,12 @@ public class Player : Character
     public override void OnDeath()
     {
         base.OnDeath();
-        LevelManager.Ins.Fail();
+        LevelManager.Ins.EndLevel(false);
+    }
+
+    public void Win()
+    {
+        isWin = true;
+        ChangeAnim(Constant.ANIM_WIN);
     }
 }

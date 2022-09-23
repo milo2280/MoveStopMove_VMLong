@@ -11,21 +11,95 @@ public class LevelManager : Singleton<LevelManager>
     public IndicatorHolder indicatorHolder;
     public GameUnit enemyPrefab;
     public LevelData[] levelDatas;
+    public Transform[] SpawnPos;
+    public GameObject[] listObstacle;
+
+    public int rank;
+    public string killer;
+    public int playerScore => player.score;
+
+    public int deadCounter;
 
     private LevelData currentLevel;
     private int spawnCounter;
-    private int deadCounter;
+    private float timer;
+    private bool isWin, isNewLevel, isPopUI;
+    private int random;
+    private List<int> used = new List<int>();
 
-    private const int START_ENEMY_NUMBER = 5;
-    private const int MAX_ENEMY_NUMBER = 10;
+    private const int REVIVE_GOLD = 150;
+    private const int START_ENEMY_NUMBER = 2;
+    private const int MAX_ENEMY_NUMBER = 2;
+
+    private void Awake()
+    {
+        currentLevel = levelDatas[PlayerData.Ins.currentLevel - 1];
+    }
 
     private void Start()
     {
         OnInit();
+        LoadLevel();
+    }
+
+    private void Update()
+    {
+        if (isPopUI)
+        {
+            timer += Time.deltaTime;
+            if (timer > 1f)
+            {
+                End();
+            }
+        }
+    }
+
+    private void LoadLevel()
+    {
+        EnableObstacle();
+    }
+
+    private void EnableObstacle()
+    {
+        switch (currentLevel.level)
+        {
+            case 1:
+                for (int i = 0; i < listObstacle.Length; i++)
+                {
+                    listObstacle[i].SetActive(false);
+                }
+
+                break;
+
+            case 2:
+                listObstacle[0].SetActive(true);
+                listObstacle[1].SetActive(true);
+                listObstacle[2].SetActive(false);
+                listObstacle[3].SetActive(false);
+
+                break;
+
+            case 3:
+                for (int i = 0; i < listObstacle.Length; i++)
+                {
+                    listObstacle[i].SetActive(true);
+                }
+
+                break;
+
+            default:
+                break;
+        }
     }
 
     private void OnInit()
     {
+        if (isNewLevel)
+        {
+            LoadLevel();
+            isNewLevel = false;
+        }
+
         for (int i = 0; i < START_ENEMY_NUMBER; i++)
         {
             SpawnEnemy();
@@ -43,21 +117,38 @@ public class LevelManager : Singleton<LevelManager>
         SimplePool.CollectAll();
     }
 
-    public void OnRevive()
+    public bool OnRevive(bool isUseGold)
     {
-        player.OnRevive();
+        if (isUseGold)
+        {
+            if (PlayerData.Ins.SpendGold(REVIVE_GOLD))
+            {
+                player.OnRevive();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            player.OnRevive();
+            return true;
+        }
     }
 
     private void SpawnEnemy()
     {
-        // Not spawn in player range
-        float x = Random.Range(8f, 2 * Constant.MAX_X - 8f);
-        if (x > Constant.MAX_X) x = Constant.MAX_X - (x + 8f);
-        float z = Random.Range(8f, 2 * Constant.MAX_Z - 8f);
-        if (z > Constant.MAX_Z) z = Constant.MAX_Z - (z + 8f);
-        Vector3 randomPos = new Vector3(x, 0f, z);
-        Quaternion randomRot = Quaternion.Euler(0f, Random.Range(-180, 180), 0f);
-
+        if (used.Count == SpawnPos.Length) used.Clear();
+        random = Random.Range(0, SpawnPos.Length);
+        while (used.Contains(random))
+        {
+            random = Random.Range(0, SpawnPos.Length);
+        }
+        used.Add(random);
+        Vector3 randomPos = SpawnPos[random].position;
+        Quaternion randomRot = Quaternion.Euler(0f, Random.Range(-180f, 180f), 0f);
         Enemy enemy = SimplePool.Spawn<Enemy>(enemyPrefab, randomPos, randomRot);
         enemy.OnInit();
         indicatorHolder.AddIndicator(enemy);
@@ -78,7 +169,7 @@ public class LevelManager : Singleton<LevelManager>
 
         if (deadCounter == MAX_ENEMY_NUMBER)
         {
-            Victory();
+            EndLevel(true);
         }
     }
 
@@ -101,24 +192,51 @@ public class LevelManager : Singleton<LevelManager>
         OnReset();
         OnInit();
     }
-    public void SetPlayerName(string name)
-    {
-        player.SetName(name);
-    }
 
-    public void Victory()
+    public void EndLevel(bool isWin)
     {
-        if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
+        PlayerData.Ins.ReceiveGold(playerScore);
+        PlayerData.Ins.AddTotalScore(playerScore);
+
+        if (!isPopUI)
         {
-            UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay).Victory();
+            this.isWin = isWin;
         }
+        else
+        {
+            this.isWin = false;
+        }
+        isPopUI = true;
     }
 
-    public void Fail()
+    private void End()
     {
-        if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
+        timer = 0;
+        isPopUI = false;
+
+        if (isWin)
         {
-            UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay).Fail();
+            if (currentLevel.level < 3)
+            {
+                currentLevel = levelDatas[currentLevel.level];
+                PlayerData.Ins.currentLevel = currentLevel.level;
+                isNewLevel = true;
+            }
+
+            if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
+            {
+                UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay).Victory();
+            }
+
+            player.Win();
+        }
+        else
+        {
+            rank = MAX_ENEMY_NUMBER - deadCounter + 1;
+            if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
+            {
+                UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay).Fail(MAX_ENEMY_NUMBER - deadCounter);
+            }
         }
     }
 
@@ -139,5 +257,6 @@ public class LevelManager : Singleton<LevelManager>
     public void ShowPlayer()
     {
         player.gameObject.SetActive(true);
+        player.OnInit();
     }
 }

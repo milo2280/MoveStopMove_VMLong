@@ -6,12 +6,14 @@ using UnityEngine;
 public class LevelData : ScriptableObject
 {
     // Player Base Status
-    public float playerRunSpeed;
-    public float playerAttackSpeed;
-    public float playerAttackRange;
+    //public float playerRunSpeed;
+    //public float playerAttackSpeed;
+    //public float playerAttackRange;
 
     // Enemy Base Status
-    public float enemyRunSpeed;
-    public float enemyAttackSpeed;
-    public float enemyAttackRange;
+    //public float enemyRunSpeed;
+    //public float enemyAttackSpeed;
+    //public float enemyAttackRange;
+
+    public int level;
 }

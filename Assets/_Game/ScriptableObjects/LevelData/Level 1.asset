@@ -12,9 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e1f7c0a814f1eb4d90fe79e3772b9fc, type: 3}
   m_Name: Level 1
   m_EditorClassIdentifier: 
-  playerRunSpeed: 0
-  playerAttackSpeed: 0
-  playerAttackRange: 0
-  enemyRunSpeed: 0
-  enemyAttackSpeed: 0
-  enemyAttackRange: 0
+  level: 1

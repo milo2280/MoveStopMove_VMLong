@@ -9,17 +9,19 @@ public class Constant
     public const string ANIM_RUN = "run";
     public const string ANIM_ATTACK = "attack";
     public const string ANIM_DEAD = "dead";
+    public const string ANIM_WIN = "win";
     public const string ANIM_ATTACK_SPEED = "attackSpeed";
 
     // Tag
     public const string TAG_CHARACTER = "Character";
     public const string TAG_BULLET = "Bullet";
+    public const string TAG_BUTTON = "Button";
 
     // Other
-    public const string DEFAULT_NAME = "You";
-    public const float ZERO = 0.00001f;
+    public const float ZERO = 0.001f;
     public const float SCALE_FLOAT = 1.1f;
     public const float MAX_Z = 50f;
     public const float MAX_X = 60f;
+    public const float DELAY_BUTTON = 2f;
     public static readonly Vector3 SCALE_VECTOR3 = new Vector3(1.1f, 1.1f, 1.1f);
 }
