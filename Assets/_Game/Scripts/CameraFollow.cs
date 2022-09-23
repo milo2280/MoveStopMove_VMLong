@@ -67,7 +67,7 @@ public class CameraFollow : MonoBehaviour
 
     public void ScaleOffset()
     {
-        nextOffset = Vector3.Scale(nextOffset, Constant.SCALE_VECTOR3);
+        nextOffset += nextOffset * Constant.TEN_PERCENT;
         offsetChanged = true;
     }
 }

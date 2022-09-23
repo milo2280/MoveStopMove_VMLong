@@ -520,15 +520,24 @@ MonoBehaviour:
   animator: {fileID: 3588033767626844521}
   m_Collider: {fileID: 1890375759441814781}
   m_Transform: {fileID: 1890375759441814778}
-  headBar: {fileID: 8774635349002165233}
   hand: {fileID: 1543441740}
+  headBar: {fileID: 8774635349002165233}
+  bulletPoint: {fileID: 1925985402010551248}
+  rangeTranform: {fileID: 870053402}
   bodyMesh: {fileID: 2124872751717693923}
   pantMesh: {fileID: 7105568657808080000}
   score: 0
   isDead: 0
+  charName: 
+  scale: {x: 0, y: 0, z: 0}
   baseRange: 5.6
   baseAS: 100
   baseMS: 10
+  baseBS: 0
+  range: 0
+  attackSpeed: 0
+  moveSpeed: 0
+  bulletSpeed: 0
   joystick: {fileID: 0}
   cameraFollow: {fileID: 0}
 --- !u!114 &78529575207847083
@@ -697,10 +706,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b8686990b495494f9fab7a9f5eff6a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayer: 0
   m_Transform: {fileID: 6037540144831608630}
   handTransform: {fileID: 1733598863580365772}
-  bulletPoint: {fileID: 1925985402010551248}
   character: {fileID: 1890375759441814783}
 --- !u!1001 &1890375759114809097
 PrefabInstance:

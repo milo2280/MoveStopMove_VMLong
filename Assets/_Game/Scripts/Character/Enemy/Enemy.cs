@@ -11,7 +11,6 @@ public class Enemy : Character
 
     private IState<Enemy> currentState;
     private Indicator indicator;
-    private string enemyName;
 
     private const float DECOMPOSE_TIME = 2f;
 
@@ -25,16 +24,11 @@ public class Enemy : Character
 
     public override void OnInit()
     {
+        SetColor(DataManager.Ins.GetRandomColor());
         weapon = hand.OnInit(WeaponManager.Ins.GetRandomType());
         SetName(DataManager.Ins.GetRandomName());
         ChangeState(new IdleState());
         base.OnInit();
-    }
-
-    public override void SetColor()
-    {
-        color = DataManager.Ins.GetRandomColor();
-        base.SetColor();
     }
 
     public override void OnDeath()
@@ -154,16 +148,5 @@ public class Enemy : Character
         {
             indicator.UpdateScore(point);
         }
-    }
-
-    public override void SetName(string name)
-    {
-        base.SetName(name);
-        enemyName = name;
-    }
-
-    public string GetName()
-    {
-        return enemyName;
     }
 }

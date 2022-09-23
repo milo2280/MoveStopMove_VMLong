@@ -20,7 +20,7 @@ public class IceCream : Weapon
         leftRot = bulletPoint.rotation * Quaternion.Euler(0f, -ANGLE_DEVIATION, 0f);
         rightRot = bulletPoint.rotation * Quaternion.Euler(0f, ANGLE_DEVIATION, 0f);
 
-        SimplePool.Spawn<Bullet>(bulletPrefab, bulletPoint.position, leftRot).OnInit(this);
-        SimplePool.Spawn<Bullet>(bulletPrefab, bulletPoint.position, rightRot).OnInit(this);
+        SimplePool.Spawn<Bullet>(bulletPrefab, bulletPoint.position, leftRot).OnInit(character);
+        SimplePool.Spawn<Bullet>(bulletPrefab, bulletPoint.position, rightRot).OnInit(character);
     }
 }

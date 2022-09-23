@@ -19,9 +19,10 @@ public class Constant
 
     // Other
     public const float ZERO = 0.001f;
-    public const float SCALE_FLOAT = 1.1f;
-    public const float MAX_Z = 50f;
-    public const float MAX_X = 60f;
+    public const float TEN_PERCENT = 0.1f;
     public const float DELAY_BUTTON = 2f;
-    public static readonly Vector3 SCALE_VECTOR3 = new Vector3(1.1f, 1.1f, 1.1f);
+
+    public const float THROW_RATIO = 2f / 5f;
+    public const float RETRACT_RATIO = 3f / 5f;
+    public const float DELAY_RATIO = 1f;
 }

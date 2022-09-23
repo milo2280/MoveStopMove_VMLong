@@ -925,11 +925,6 @@ Transform:
   m_Father: {fileID: 1975533461}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &581730346 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1925985402010551248, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
-  m_PrefabInstance: {fileID: 1890375759707272745}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &603687285
 GameObject:
   m_ObjectHideFlags: 0
@@ -2053,13 +2048,10 @@ MonoBehaviour:
   infos:
   - weaponClass: 100
     price: 0
-    className: HAMMER
   - weaponClass: 200
     price: 400
-    className: KNIFE
   - weaponClass: 300
     price: 2000
-    className: ICE-CREAM
   weaponItems:
   - {fileID: 1935456195763937707, guid: c30df2effd15b7c4491354ee4589e4f6, type: 3}
   - {fileID: 9072938254566924060, guid: 7860a59968578b84fa66efde63dc2757, type: 3}
@@ -3225,10 +3217,6 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 1745851153}
-    - target: {fileID: 1890375759441814783, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
-      propertyPath: bulletPoint
-      value: 
-      objectReference: {fileID: 581730346}
     - target: {fileID: 1890375759441814783, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
       propertyPath: cameraFollow
       value: 

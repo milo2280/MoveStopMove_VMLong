@@ -46,7 +46,7 @@ public class CanvasShopWeapon : UICanvas
 
     private void ShowWeaponName()
     {
-        weaponName.text = WeaponManager.Ins.dictClassInfo[currentClass].className;
+        weaponName.text = DataManager.Ins.GetDescription(currentClass);
         if (!PlayerData.Ins.unlockedClass.Contains(currentClass))
         {
             weaponName.color = Color.black;
@@ -112,7 +112,11 @@ public class CanvasShopWeapon : UICanvas
         Buff buff = currentWeapon.buff;
         if (buff.buffClass == BuffClass.Add)
         {
-            buffText.text = "+ " + buff.buffAmount.ToString() + " " + buff.buffName;
+            buffText.text = "+ " + buff.buffAmount.ToString() + " " + DataManager.Ins.GetDescription(buff.buffType);
+        }
+        else
+        {
+            buffText.text = "+ " + buff.buffAmount.ToString() + "% " + DataManager.Ins.GetDescription(buff.buffType);
         }
     }
 
@@ -148,7 +152,7 @@ public class CanvasShopWeapon : UICanvas
         else
         {
             EnableUI(note);
-            noteText.text = "(Unlock " + WeaponManager.Ins.dictClassInfo[prevClass].className + " first)";
+            noteText.text = "(Unlock " + DataManager.Ins.GetDescription(prevClass) + " first)";
             EnableUI(buyGray);
             priceGrayText.text = WeaponManager.Ins.dictClassInfo[currentClass].price.ToString();
         }

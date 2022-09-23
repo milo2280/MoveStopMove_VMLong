@@ -389,16 +389,21 @@ MonoBehaviour:
   hand: {fileID: 1992860502}
   headBar: {fileID: 6814658125219018992}
   bulletPoint: {fileID: 918026814215277227}
+  rangeTranform: {fileID: 1035161368571035353}
   bodyMesh: {fileID: 4173739899160838182}
   pantMesh: {fileID: 5047699404238996805}
   score: 0
   isDead: 0
+  charName: 
+  scale: {x: 0, y: 0, z: 0}
   baseRange: 5.6
   baseAS: 100
   baseMS: 0
+  baseBS: 0
   range: 0
   attackSpeed: 0
   moveSpeed: 0
+  bulletSpeed: 0
   navMeshAgent: {fileID: 6382942012154392569}
   capsuleCollider: {fileID: 1107431243}
   mark: {fileID: 2490113800835141095}

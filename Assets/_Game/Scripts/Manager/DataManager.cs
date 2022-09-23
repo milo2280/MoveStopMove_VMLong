@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
@@ -53,6 +56,20 @@ public class DataManager : Singleton<DataManager>
         usedColors.Add(colorIndex);
 
         return colors[colorIndex].color;
+    }
+
+    public string GetDescription(System.Enum value)
+    {
+        FieldInfo fi = value.GetType().GetField(value.ToString());
+
+        DescriptionAttribute[] attributes = fi.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
+
+        if (attributes != null && attributes.Any())
+        {
+            return attributes.First().Description;
+        }
+
+        return value.ToString();
     }
 }
 

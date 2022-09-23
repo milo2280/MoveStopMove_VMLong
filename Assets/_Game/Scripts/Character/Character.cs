@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Character : GameUnit, IHit
+public abstract class Character : GameUnit, IHit<Character>
 {
     public Animator animator;
     public Collider m_Collider;
@@ -10,53 +10,113 @@ public abstract class Character : GameUnit, IHit
 
     public Hand hand;
     public HeadBar headBar;
-    public Transform bulletPoint;
+    public Transform bulletPoint, rangeTranform;
     public SkinnedMeshRenderer bodyMesh, pantMesh;
 
     public int score;
     public bool isDead;
-    public float baseRange, baseAS, baseMS;
-    public float range, attackSpeed, moveSpeed;
+    public string charName;
+    public Vector3 scale;
+    public float baseRange, baseAS, baseMS, baseBS;
+    [HideInInspector]
+    public float range, attackSpeed, moveSpeed, bulletSpeed;
 
     protected Color color;
-    protected Vector3 nextScale;
+    protected string currentAnim;
     protected Weapon weapon;
+    protected float[] addBuff = { 0f, 0f, 0f, 0f };
+    protected float[] percentBuff = { 0f, 0f, 0f, 0f };
     protected Character target;
     protected List<Character> targets = new List<Character>();
-
-    protected string currentAnim;
     protected bool isAttacking, isThrew, isDelaying;
-
     protected float attackTimer, delayTimer;
-
-    protected const float ATTACK_DURARION = 1f;
-    protected const float THROW_DURATION = 2f / 5f;
-    protected const float HAND_BACK_DURATION = 3f / 5f;
-    protected const float DELAY_DURATION = 1f;
+    protected float fullAttackDuration, throwDuration, retractHandDuration, delayDuration;
 
     public virtual void OnInit() 
     {
-        moveSpeed = baseMS;
-        attackSpeed = baseAS;
-        range = baseRange;
-
+        InitStat();
         isDead = false;
         m_Collider.enabled = true;
-        SetColor();
-        animator.SetFloat(Constant.ANIM_ATTACK_SPEED, GetAttackSpeed());
         UpdateScore(0);
-        InitSize();
         InitTarget();
     }
 
-    public virtual void SetColor()
+    public void InitStat()
     {
+        InitBaseStat();
+        AddBuff();
+        SetupAS();
+        SetupRange();
+    }
+
+    public void InitBaseStat()
+    {
+        range = baseRange;
+        attackSpeed = baseAS;
+        moveSpeed = baseMS;
+        bulletSpeed = baseBS;
+        scale = new Vector3(1f, 1f, 1f);
+        m_Transform.localScale = scale;
+    }
+
+    public void AddBuff()
+    {
+        for (int i = 0; i < addBuff.Length; i++)
+        {
+            addBuff[i] = 0;
+            percentBuff[i] = 0;
+        }
+
+        if (weapon != null)
+        {
+            bulletSpeed += weapon.bulletSpeed;
+            ClassifyBuff(weapon.buff);
+            CalculateNewStat();
+        }
+    }
+
+    public void ClassifyBuff(Buff buff)
+    {
+        if (buff.buffClass == BuffClass.Add)
+        {
+            addBuff[(int)buff.buffType] = buff.buffAmount;
+        }
+        else
+        {
+            percentBuff[(int)buff.buffType] = buff.buffAmount;
+        }
+    }
+
+    public virtual void CalculateNewStat()
+    {
+        range = (range + addBuff[(int)BuffType.Range] / 10) * (1 + percentBuff[(int)BuffType.Range] / 100);
+        attackSpeed = (attackSpeed + addBuff[(int)BuffType.AttackSpeed]) * (1 + percentBuff[(int)BuffType.AttackSpeed] / 100);
+        moveSpeed = (moveSpeed + addBuff[(int)BuffType.MoveSpeed]) * (1 + percentBuff[(int)BuffType.MoveSpeed] / 100);
+    }
+
+    protected void SetupRange()
+    {
+        rangeTranform.localScale = new Vector3(1f, 1f, 1f) * range / baseRange;
+    }
+
+    protected void SetupAS()
+    {
+        fullAttackDuration = attackSpeed / 100;
+        throwDuration = fullAttackDuration * Constant.THROW_RATIO;
+        retractHandDuration = fullAttackDuration * Constant.RETRACT_RATIO;
+        delayDuration = fullAttackDuration * Constant.DELAY_RATIO;
+        animator.SetFloat(Constant.ANIM_ATTACK_SPEED, fullAttackDuration);
+    }
+
+    public void SetColor(Color color)
+    {
+        this.color = color;
         bodyMesh.material.color = color;
         pantMesh.material.color = color;
         headBar.SetColor(color);
     }
 
-    public void OnHit()
+    public virtual void OnHit(Character killer)
     {
         OnDeath();
     }
@@ -65,17 +125,10 @@ public abstract class Character : GameUnit, IHit
     {
         isDead = true;
         m_Collider.enabled = false;
-        TurnGray();
+        SetColor(color / 3);
         ChangeAnim(Constant.ANIM_DEAD);
         if (isAttacking) StopAttack();
         SoundManager.Ins.PlaySound(SoundManager.Ins.die);
-    }
-
-    public void TurnGray()
-    {
-        bodyMesh.material.color = color / 3;
-        pantMesh.material.color = color / 3;
-        headBar.SetColor(color / 3);
     }
 
     public virtual void OnDespawn() { }
@@ -148,15 +201,15 @@ public abstract class Character : GameUnit, IHit
             StopAttack();
         }
 
-        if (attackTimer > THROW_DURATION / GetAttackSpeed() && !isThrew)
+        if (attackTimer > throwDuration && !isThrew)
         {
             weapon.Attack();
-            hand.ThrowWeapon(HAND_BACK_DURATION / GetAttackSpeed());
+            hand.HideWeapon(retractHandDuration);
             isDelaying = true;
             isThrew = true;
         }
 
-        if (attackTimer > ATTACK_DURARION / GetAttackSpeed())
+        if (attackTimer > fullAttackDuration)
         {
             attackTimer = 0;
             isAttacking = false;
@@ -168,7 +221,7 @@ public abstract class Character : GameUnit, IHit
     public void Delaying()
     {
         delayTimer += Time.deltaTime;
-        if (delayTimer > DELAY_DURATION / GetAttackSpeed())
+        if (delayTimer > delayDuration)
         {
             delayTimer = 0;
             isDelaying = false;
@@ -190,51 +243,20 @@ public abstract class Character : GameUnit, IHit
 
     private void IncreaseSize()
     {
-        m_Transform.localScale = nextScale;
-        range *= Constant.SCALE_FLOAT;
-        nextScale = Vector3.Scale(nextScale, Constant.SCALE_VECTOR3);
-    }
-
-    private void InitSize()
-    {
-        m_Transform.localScale = new Vector3(1f, 1f, 1f);
-        range = baseRange;
-        nextScale = Constant.SCALE_VECTOR3;
+        scale += scale * Constant.TEN_PERCENT;
+        m_Transform.localScale = scale;
+        range += range * Constant.TEN_PERCENT;
     }
 
     public virtual void UpdateScore(int score)
     {
         this.score = score;
-        headBar.ChangeScore(score);
+        headBar.UpdateScore(score);
     }
 
     public virtual void SetName(string name)
     {
         headBar.SetName(name);
-    }
-
-    public float GetAttackRange()
-    {
-        return range;
-    }
-
-    private float GetAttackSpeed()
-    {
-        return attackSpeed / 100;
-    }
-
-    //public virtual void  
-
-    public void AddBuff()
-    {
-        if (weapon != null)
-        {
-            AddWeaponBuff();
-        }
-    }
-
-    public void AddWeaponBuff()
-    {
-
+        charName = name;
     }
 }

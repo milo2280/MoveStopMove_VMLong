@@ -58,14 +58,14 @@ public class Hand : MonoBehaviour
         m_Transform.rotation = handTransform.rotation;
     }
 
-    public void ThrowWeapon(float respawnTime)
+    public void HideWeapon(float respawnTime)
     {
         isAttack = true;
         this.respawnTime = respawnTime;
         weapon.gameObject.SetActive(false);
     }
 
-    private void RespawnWeapon()
+    public void RespawnWeapon()
     {
         timer = 0f;
         isAttack = false;

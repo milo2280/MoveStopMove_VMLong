@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public enum WeaponClass
 {
-    Hammer = 100,
-    Knife = 200,
-    IceCream = 300,
+    [Description("HAMMER")] Hammer = 100,
+    [Description("KNIFE")] Knife = 200,
+    [Description("ICE-CREAM")] IceCream = 300,
 }
 
 public enum WeaponType
@@ -98,5 +99,4 @@ public class WeaponClassInfo
 {
     public WeaponClass weaponClass;
     public int price;
-    public string className;
 }

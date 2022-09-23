@@ -24,11 +24,6 @@ public abstract class Weapon : GameUnit
     public virtual void Attack() 
     {
         SoundManager.Ins.PlaySound(SoundManager.Ins.throwWeapon);
-        SimplePool.Spawn<Bullet>(bulletPrefab, bulletPoint.position, bulletPoint.rotation).OnInit(this);
-    }
-
-    public string GetCharName()
-    {
-        return (character as Enemy).GetName();
+        SimplePool.Spawn<Bullet>(bulletPrefab, bulletPoint.position, bulletPoint.rotation).OnInit(character);
     }
 }

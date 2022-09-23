@@ -11,7 +11,6 @@ public class Bullet : GameUnit
     private Vector3 spawnPos;
     private float distanceTravelled;
     private float speed;
-    private Weapon weapon;
     private Character character;
 
     private void Update()
@@ -19,12 +18,23 @@ public class Bullet : GameUnit
         TrackBulletDistance();
     }
 
-    public void OnInit(Weapon weapon)
+    private void OnTriggerEnter(Collider other)
     {
-        this.weapon = weapon;
-        this.character = weapon.character;
-        speed = weapon.bulletSpeed;
-        //m_Transform.localScale = character.scale;
+        if (other.CompareTag(Constant.TAG_CHARACTER))
+        {
+            OnHit();
+
+            IHit<Character> hit;
+            hit = Cache<Character>.Get(other);
+            hit.OnHit(character);
+        }
+    }
+
+    public void OnInit(Character character)
+    {
+        this.character = character;
+        speed = character.bulletSpeed;
+        m_Transform.localScale = character.scale;
 
         distanceTravelled = 0;
         spawnPos = m_Transform.position;
@@ -48,19 +58,6 @@ public class Bullet : GameUnit
         if (distanceTravelled > character.range)
         {
             OnDespawn();
-        }
-    }
-
-    public string GetCharName()
-    {
-        return weapon.GetCharName();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag(Constant.TAG_CHARACTER))
-        {
-            OnHit();
         }
     }
 }

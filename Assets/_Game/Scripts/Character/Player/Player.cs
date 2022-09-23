@@ -31,6 +31,7 @@ public class Player : Character
     {
         isWin = false;
         isMarkEnabled = false;
+        SetColor(Color.yellow);
         ChangeAnim(Constant.ANIM_IDLE);
         weapon = hand.OnInit(PlayerData.Ins.weaponType);
         m_Transform.position = Vector3.zero;
@@ -42,14 +43,8 @@ public class Player : Character
     {
         isDead = false;
         m_Collider.enabled = true;
-        SetColor();
+        SetColor(color * 3);
         ChangeAnim(Constant.ANIM_IDLE);
-    }
-
-    public override void SetColor()
-    {
-        color = Color.yellow;
-        base.SetColor();
     }
 
     private void JoystickMove()
@@ -124,6 +119,12 @@ public class Player : Character
         {
             Delaying();
         }
+    }
+
+    public override void OnHit(Character killer)
+    {
+        base.OnHit(killer);
+        LevelManager.Ins.killer = killer.charName;
     }
 
     public override void OnKill()

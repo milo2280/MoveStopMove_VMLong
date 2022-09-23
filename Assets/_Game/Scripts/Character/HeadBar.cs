@@ -61,9 +61,9 @@ public class HeadBar : MonoBehaviour
         nameText.text = name;
     }
 
-    public void ChangeScore(int point)
+    public void UpdateScore(int score)
     {
-        scoreText.text = point.ToString();
+        scoreText.text = score.ToString();
     }
 
     public void SetColor(Color color)

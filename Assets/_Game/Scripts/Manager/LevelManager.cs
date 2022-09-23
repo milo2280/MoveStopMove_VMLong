@@ -29,7 +29,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private const int REVIVE_GOLD = 150;
     private const int START_ENEMY_NUMBER = 2;
-    private const int MAX_ENEMY_NUMBER = 2;
+    private const int MAX_ENEMY_NUMBER = 3;
 
     private void Awake()
     {

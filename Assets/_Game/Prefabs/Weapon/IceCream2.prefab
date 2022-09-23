@@ -44,13 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10adb7dbd6ca04b429a8f97841e1a117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bonus: {fileID: 11400000, guid: bfe39cb1a89426e4793eed6ae1cb2704, type: 2}
   weaponClass: 300
   weaponType: 302
+  buff: {fileID: 11400000, guid: 85835214debf2d849bdb55ab4dca2cb7, type: 2}
   bulletPrefab: {fileID: 3625895859167088787, guid: 5a563be3cce4e554eb24a326053e31e3, type: 3}
-  scale: {x: 0, y: 0, z: 0}
-  range: 0
-  bulletSpeed: 0
+  bulletSpeed: 8
+  character: {fileID: 0}
 --- !u!1001 &8925269447469571052
 PrefabInstance:
   m_ObjectHideFlags: 0

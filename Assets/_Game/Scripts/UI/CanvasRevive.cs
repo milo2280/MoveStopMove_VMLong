@@ -9,7 +9,7 @@ public class CanvasRevive : UICanvas
     public GameObject notEnough;
 
     private float timer;
-    private float timeRemain;
+    private int timeRemain;
 
     public void OnInit()
     {
@@ -35,7 +35,7 @@ public class CanvasRevive : UICanvas
             SoundManager.Ins.PlaySound(SoundManager.Ins.countdown);
         }
 
-        if (timeRemain < Constant.ZERO && timer < -0.5f)
+        if (timer < -0.5f)
         {
             CloseButton();
         }

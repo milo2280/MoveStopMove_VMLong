@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public enum BuffClass
 {
     Add,
-    Percentage
+    Percent
 }
 
 public enum BuffType
 {
-    Range,
-    AttackSpeed,
-    MoveSpeed,
-    Gold,
+    [Description("Range")] Range = 0,
+    [Description("Attack Speed")] AttackSpeed = 1,
+    [Description("Move Speed")] MoveSpeed = 2,
+    [Description("Gold")] Gold = 3,
 }
 
 [CreateAssetMenu(fileName = "Buff", menuName = "ScriptableObjects/Buff", order = 1)]
@@ -21,6 +22,5 @@ public class Buff : ScriptableObject
 {
     public BuffClass buffClass;
     public BuffType buffType;
-    public int buffAmount;
-    public string buffName;
+    public float buffAmount;
 }
