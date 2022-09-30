@@ -34,7 +34,7 @@ public class Bullet : GameUnit
     {
         this.character = character;
         speed = character.bulletSpeed;
-        m_Transform.localScale = character.scale;
+        m_Transform.localScale = character.Scale;
 
         distanceTravelled = 0;
         spawnPos = m_Transform.position;

@@ -23,7 +23,7 @@ public abstract class Weapon : GameUnit
 
     public virtual void Attack() 
     {
-        SoundManager.Ins.PlaySound(SoundManager.Ins.throwWeapon);
+        SoundManager.Ins.PlayAudio(AudioType.ThrowWeapon);
         SimplePool.Spawn<Bullet>(bulletPrefab, bulletPoint.position, bulletPoint.rotation).OnInit(character);
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class OnTrigger : MonoBehaviour
 {
-    public bool isPlayer;
     public Character character;
 
     private Character target;

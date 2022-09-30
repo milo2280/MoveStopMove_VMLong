@@ -10,7 +10,7 @@ public class CanvasShopWeapon : UICanvas
     public Transform weaponParentTF;
     public WeaponOption[] weaponOptions;
     public Button[] optionButtons;
-    public Text buffText;
+    public Text buffText, goldText;
     public GameObject note, select, equipped, buy, buyGray, watchAds, watchAds2;
 
     private Dictionary<WeaponType, WeaponItem> dictShowedWeapon = new Dictionary<WeaponType, WeaponItem>();
@@ -33,6 +33,7 @@ public class CanvasShopWeapon : UICanvas
     {
         WeaponItem playerWeapon = WeaponManager.Ins.dictWeaponItem[PlayerData.Ins.weaponType];
         currentClass = playerWeapon.weaponClass;
+        UpdateGold();
         UpdateShop();
     }
 
@@ -44,6 +45,11 @@ public class CanvasShopWeapon : UICanvas
         ShowWeapon(0);
     }
 
+    private void UpdateGold()
+    {
+        goldText.text = PlayerData.Ins.gold.ToString();
+    }
+
     private void ShowWeaponName()
     {
         weaponName.text = DataManager.Ins.GetDescription(currentClass);
@@ -52,7 +58,6 @@ public class CanvasShopWeapon : UICanvas
             weaponName.color = Color.black;
         }
     }
-
 
     private void ShowOption()
     {
@@ -221,6 +226,7 @@ public class CanvasShopWeapon : UICanvas
         if (PlayerData.Ins.SpendGold(WeaponManager.Ins.dictClassInfo[currentClass].price))
         {
             PlayerData.Ins.UnlockClass(currentClass);
+            UpdateGold();
             ShowButton();
             ShowOption();
         }

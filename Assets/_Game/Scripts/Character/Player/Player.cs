@@ -7,6 +7,8 @@ public class Player : Character
     public Joystick joystick;
     public CameraFollow cameraFollow;
 
+    public float gold;
+
     private Vector3 mouseDir, moveDir;
     private Quaternion lookRotation;
     private bool isMoving;
@@ -39,6 +41,12 @@ public class Player : Character
         base.OnInit();
     }
 
+    public override void CalculateNewStat()
+    {
+        base.CalculateNewStat();
+        gold = (gold + addBuff[(int)BuffType.Gold]) * (1 + percentBuff[(int)BuffType.Gold] / 100);
+    }
+
     public void OnRevive()
     {
         isDead = false;
@@ -62,7 +70,7 @@ public class Player : Character
         if (Input.GetMouseButtonUp(0))
         {
             isMoving = false;
-            if (!isAttacking) ChangeAnim(Constant.ANIM_IDLE);
+            if (!isAttacking && GameManager.Ins.IsState(GameState.Gameplay)) ChangeAnim(Constant.ANIM_IDLE);
         }
     }
 
@@ -124,13 +132,13 @@ public class Player : Character
     public override void OnHit(Character killer)
     {
         base.OnHit(killer);
-        LevelManager.Ins.killer = killer.charName;
+        LevelManager.Ins.killer = killer.CharName;
     }
 
     public override void OnKill()
     {
         base.OnKill();
-        cameraFollow.ScaleOffset();
+        cameraFollow.IncreaseOffset();
     }
 
     public override void OnDeath()

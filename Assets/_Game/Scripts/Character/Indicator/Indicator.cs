@@ -18,8 +18,8 @@ public class Indicator : GameUnit
 
     private const float RADIUS = 50f;
     private static readonly Vector3 offset = new Vector3(0.5f, 0.5f, 0f);
-    private static readonly float MAX_X = Screen.width / 2 - 80f;
-    private static readonly float MAX_Y = Screen.height / 2 - 80f;
+    private static readonly float MAX_X = Screen.width / 2 - 80;
+    private static readonly float MAX_Y = Screen.height / 2 - 80;
 
     private void Awake()
     {

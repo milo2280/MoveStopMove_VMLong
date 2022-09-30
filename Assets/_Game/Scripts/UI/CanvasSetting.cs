@@ -13,7 +13,7 @@ public class CanvasSetting : UICanvas
 
     public void SoundToggleButton()
     {
-        SoundManager.Ins.SoundOnOff();
+        SoundManager.Ins.ToggleSound();
         ChangeSoundToggle();
     }
 
@@ -33,13 +33,14 @@ public class CanvasSetting : UICanvas
     {
         UIManager.Ins.OpenUI(UIID.UICMainMenu);
         GameManager.Ins.ChangeState(GameState.MainMenu);
+        LevelManager.Ins.RestartLevel();
         LevelManager.Ins.BackHome();
         Close();
     }
 
     private void ChangeSoundToggle()
     {
-        soundOn.SetActive(SoundManager.Ins.isSoundOn);
-        soundOff.SetActive(!SoundManager.Ins.isSoundOn);
+        soundOn.SetActive(SoundManager.Ins.IsSoundOn);
+        soundOff.SetActive(!SoundManager.Ins.IsSoundOn);
     }
 }

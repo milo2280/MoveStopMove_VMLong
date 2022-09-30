@@ -32,7 +32,7 @@ public class CanvasRevive : UICanvas
         {
             timeRemain--;
             timeText.text = timeRemain.ToString();
-            SoundManager.Ins.PlaySound(SoundManager.Ins.countdown);
+            SoundManager.Ins.PlayAudio(AudioType.Countdown);
         }
 
         if (timer < -0.5f)

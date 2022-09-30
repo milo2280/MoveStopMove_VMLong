@@ -14,6 +14,8 @@ public class PlayerData : Singleton<PlayerData>
     public List<WeaponType> unlockedWeapon = new List<WeaponType>();
     public List<WeaponClass> unlockedClass = new List<WeaponClass>();
 
+    public List<SkinType> equippedSkin = new List<SkinType>();
+
     private const string NAME = "name";
     private const string GOLD = "gold";
     private const string SCORE = "score";
@@ -24,6 +26,9 @@ public class PlayerData : Singleton<PlayerData>
 
     private const string CLASS = "class";
     private const string CLASS_COUNT = "class_count";
+
+    private const string SKIN = "skin";
+    private const string SKIN_COUNT = "skin_count";
 
     private const string DEFAULT_NAME = "You";
 
@@ -56,6 +61,14 @@ public class PlayerData : Singleton<PlayerData>
         {
             unlockedClass.Add((WeaponClass)PlayerPrefs.GetInt(CLASS + i));
         }
+
+        if (PlayerPrefs.GetInt(SKIN_COUNT) != 0)
+        {
+            for (int i = 0; i < PlayerPrefs.GetInt(SKIN_COUNT); i++)
+            {
+                equippedSkin.Add((SkinType)PlayerPrefs.GetInt(SKIN + i));
+            }
+        }
     }
 
     public void SaveData()
@@ -77,6 +90,12 @@ public class PlayerData : Singleton<PlayerData>
         {
             PlayerPrefs.SetInt(CLASS + i, (int)unlockedClass[i]);
         }
+
+        PlayerPrefs.SetInt(SKIN_COUNT, equippedSkin.Count);
+        for (int i = 0; i < equippedSkin.Count; i++)
+        {
+            PlayerPrefs.SetInt(SKIN + i, (int)equippedSkin[i]);
+        }
     }
 
     public void SetPlayerName(string name)
@@ -87,7 +106,7 @@ public class PlayerData : Singleton<PlayerData>
 
     public void ReceiveGold(int gold)
     {
-        this.gold += gold;
+        this.gold += (int)(gold * player.gold);
     }
 
     public bool SpendGold(int gold)
@@ -122,5 +141,10 @@ public class PlayerData : Singleton<PlayerData>
     {
         unlockedClass.Add(weaponClass);
         unlockedWeapon.Add(WeaponManager.Ins.dictWeaponClass[weaponClass][0]);
+    }
+
+    public void UnlockSkin(SkinType skinType)
+    {
+        equippedSkin.Add(skinType);
     }
 }

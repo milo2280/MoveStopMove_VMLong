@@ -10,6 +10,7 @@ public class Constant
     public const string ANIM_ATTACK = "attack";
     public const string ANIM_DEAD = "dead";
     public const string ANIM_WIN = "win";
+    public const string ANIM_DANCE = "dance";
     public const string ANIM_ATTACK_SPEED = "attackSpeed";
 
     // Tag
@@ -19,7 +20,7 @@ public class Constant
 
     // Other
     public const float ZERO = 0.001f;
-    public const float TEN_PERCENT = 0.1f;
+    public const float TEN_PERCENT = 0.3f;
     public const float DELAY_BUTTON = 2f;
 
     public const float THROW_RATIO = 2f / 5f;

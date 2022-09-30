@@ -58,7 +58,8 @@ public class CanvasMainMenu : UICanvas
 
     public void SkinButton()
     {
-        Debug.Log("Skin");
+        UIManager.Ins.OpenUI(UIID.UICShopSkin);
+        Close();
     }
 
     public void RemoveAdButton()
@@ -78,7 +79,7 @@ public class CanvasMainMenu : UICanvas
 
     public void SoundButton()
     {
-        SoundManager.Ins.SoundOnOff();
+        SoundManager.Ins.ToggleSound();
         soundOn.SetActive(isSoundOn);
         soundOff.SetActive(!isSoundOn);
         isSoundOn = !isSoundOn;

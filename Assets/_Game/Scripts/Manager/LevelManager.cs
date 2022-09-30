@@ -16,7 +16,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public int rank;
     public string killer;
-    public int playerScore => player.score;
+    public int playerScore => player.Score;
 
     public int deadCounter;
 
@@ -112,7 +112,6 @@ public class LevelManager : Singleton<LevelManager>
         deadCounter = 0;
         player.OnInit();
         UpdateEnemyRemain();
-        cameraFollow.OnReset();
         indicatorHolder.OnReset();
         SimplePool.CollectAll();
     }
@@ -175,16 +174,22 @@ public class LevelManager : Singleton<LevelManager>
 
     public void BackHome()
     {
-        RestartLevel();
+        player.ChangeAnim(Constant.ANIM_IDLE);
+        cameraFollow.MenuVC();
         indicatorHolder.HideAllIndicator();
-        cameraFollow.MainMenuPos();
     }
 
     public void PlayGame()
     {
         indicatorHolder.ShowAllIndicator();
-        cameraFollow.GameplayPos();
+        cameraFollow.PlayVC();
         UpdateEnemyRemain();
+    }
+
+    public void SkinShop()
+    {
+        cameraFollow.SkinVC();
+        player.ChangeAnim(Constant.ANIM_DANCE);
     }
 
     public void RestartLevel()

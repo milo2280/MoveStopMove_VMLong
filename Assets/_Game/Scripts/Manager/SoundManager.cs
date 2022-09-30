@@ -2,27 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum AudioType
+{
+    ThrowWeapon,
+    Die,
+    Countdown
+}
+
 public class SoundManager : Singleton<SoundManager>
 {
-    public AudioSource sound;
+    [SerializeField]
+    private AudioSource audioSource;
+    [SerializeField]
+    private Audio[] audios;
 
-    public AudioClip throwWeapon, die, countdown;
+    private bool isSoundOn;
+    public bool IsSoundOn { get { return isSoundOn; } private set { } }
 
-    public bool isSoundOn;
+    private Dictionary<AudioType, AudioClip> dictAudio = new Dictionary<AudioType, AudioClip>();
 
     private void Awake()
     {
-        isSoundOn = !sound.mute;
+        isSoundOn = !audioSource.mute;
+
+        for (int i = 0; i < audios.Length; i++)
+        {
+            dictAudio.Add(audios[i].soundType, audios[i].audioClip);
+        }
     }
 
-    public void PlaySound(AudioClip clip)
+    public void PlayAudio(AudioType audioType)
     {
-        sound.PlayOneShot(clip, 0.2f);
+        audioSource.PlayOneShot(dictAudio[audioType], 0.2f);
     }
 
-    public void SoundOnOff()
+    public void ToggleSound()
     {
-        sound.mute = !sound.mute;
-        isSoundOn = !sound.mute;
+        audioSource.mute = !audioSource.mute;
+        isSoundOn = !audioSource.mute;
     }
+}
+
+[System.Serializable]
+public class Audio
+{
+    public AudioType soundType;
+    public AudioClip audioClip;
 }

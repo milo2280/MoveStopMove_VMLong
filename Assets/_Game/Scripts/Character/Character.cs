@@ -10,17 +10,22 @@ public abstract class Character : GameUnit, IHit<Character>
 
     public Hand hand;
     public HeadBar headBar;
-    public Transform bulletPoint, rangeTranform;
+    public Transform bulletPoint, rangeTranform, headTransform;
     public SkinnedMeshRenderer bodyMesh, pantMesh;
 
-    public int score;
-    public bool isDead;
-    public string charName;
-    public Vector3 scale;
+    protected int score;
+    public int Score { get { return score; } private set { } }
+    protected Vector3 scale;
+    public Vector3 Scale { get { return scale; } private set { } }
+    protected string charName;
+    public string CharName { get { return charName; } private set { } }
+
     public float baseRange, baseAS, baseMS, baseBS;
     [HideInInspector]
     public float range, attackSpeed, moveSpeed, bulletSpeed;
 
+    protected Dictionary<SkinType, Skin> dictUsedSkin = new Dictionary<SkinType, Skin>();
+    protected Skin currentHair;
     protected Color color;
     protected string currentAnim;
     protected Weapon weapon;
@@ -28,7 +33,7 @@ public abstract class Character : GameUnit, IHit<Character>
     protected float[] percentBuff = { 0f, 0f, 0f, 0f };
     protected Character target;
     protected List<Character> targets = new List<Character>();
-    protected bool isAttacking, isThrew, isDelaying;
+    protected bool isDead, isAttacking, isThrew, isDelaying;
     protected float attackTimer, delayTimer;
     protected float fullAttackDuration, throwDuration, retractHandDuration, delayDuration;
 
@@ -40,6 +45,8 @@ public abstract class Character : GameUnit, IHit<Character>
         UpdateScore(0);
         InitTarget();
     }
+
+    #region Add buff & Setup stat
 
     public void InitStat()
     {
@@ -108,6 +115,8 @@ public abstract class Character : GameUnit, IHit<Character>
         animator.SetFloat(Constant.ANIM_ATTACK_SPEED, fullAttackDuration);
     }
 
+    #endregion
+
     public void SetColor(Color color)
     {
         this.color = color;
@@ -128,7 +137,7 @@ public abstract class Character : GameUnit, IHit<Character>
         SetColor(color / 3);
         ChangeAnim(Constant.ANIM_DEAD);
         if (isAttacking) StopAttack();
-        SoundManager.Ins.PlaySound(SoundManager.Ins.die);
+        SoundManager.Ins.PlayAudio(AudioType.Die);
     }
 
     public virtual void OnDespawn() { }
@@ -145,6 +154,8 @@ public abstract class Character : GameUnit, IHit<Character>
             currentAnim = nextAnim;
         }
     }
+
+    #region Detect Target & Attack
 
     private void InitTarget()
     {
@@ -235,6 +246,8 @@ public abstract class Character : GameUnit, IHit<Character>
         attackTimer = 0;
     }
 
+    #endregion
+
     public virtual void OnKill()
     {
         IncreaseSize();
@@ -258,5 +271,37 @@ public abstract class Character : GameUnit, IHit<Character>
     {
         headBar.SetName(name);
         charName = name;
+    }
+
+    public void WearSkin(SkinType skinType)
+    {
+        Skin skin = SkinManager.Ins.dictSkin[skinType];
+
+        switch (skin.skinClass)
+        {
+            case SkinClass.Hair:
+                WearHair(skin);
+                break;
+        }
+    }
+
+    private void WearHair(Skin skin) 
+    {
+        if (currentHair != null)
+        {
+            currentHair.gameObject.SetActive(false);
+        }
+
+        if (dictUsedSkin.ContainsKey(skin.skinType))
+        {
+            currentHair = dictUsedSkin[skin.skinType];
+            currentHair.gameObject.SetActive(true);
+        }
+        else
+        {
+            currentHair = Instantiate<Skin>(skin, headTransform);
+            currentHair.m_Transform.localPosition = Vector3.zero;
+            dictUsedSkin.Add(currentHair.skinType, currentHair);
+        }
     }
 }

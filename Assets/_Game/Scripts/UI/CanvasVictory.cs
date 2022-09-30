@@ -36,6 +36,7 @@ public class CanvasVictory : UICanvas
         UIManager.Ins.OpenUI(UIID.UICMainMenu);
         UIManager.Ins.OpenUI(UIID.UICOffer);
         GameManager.Ins.ChangeState(GameState.MainMenu);
+        LevelManager.Ins.RestartLevel();
         LevelManager.Ins.BackHome();
         Close();
     }
@@ -46,6 +47,7 @@ public class CanvasVictory : UICanvas
         UIManager.Ins.OpenUI(UIID.UICMainMenu);
         UIManager.Ins.OpenUI(UIID.UICOffer);
         GameManager.Ins.ChangeState(GameState.MainMenu);
+        LevelManager.Ins.RestartLevel();
         LevelManager.Ins.BackHome();
         Close();
 

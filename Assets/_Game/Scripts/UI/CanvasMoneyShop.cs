@@ -18,7 +18,7 @@ public class CanvasMoneyShop : UICanvas
 
     public void BuyGold()
     {
-        Debug.Log("Buy gold");
+        PlayerData.Ins.ReceiveGold(25000);
     }
 
     public void BuyAllSkins()
