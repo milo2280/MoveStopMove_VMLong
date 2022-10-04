@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3af7bab4aa36d3047b48a327d267dbdf, type: 3}
   m_Name: Hair 7
   m_EditorClassIdentifier: 
-  price: 500
+  price: 300
   skinBuff: {fileID: 11400000, guid: 6d5309750d6377743b6d5d59a90a1ecc, type: 2}
   locked: 1
+  material: {fileID: 0}

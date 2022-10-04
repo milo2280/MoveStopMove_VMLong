@@ -28,7 +28,21 @@ public class Enemy : Character
         weapon = hand.OnInit(WeaponManager.Ins.GetRandomType());
         SetName(DataManager.Ins.GetRandomName());
         ChangeState(new IdleState());
+        EquipSkin(SkinManager.Ins.GetRandomHair());
+        EquipSkin(SkinManager.Ins.GetRandomPant());
+        
         base.OnInit();
+
+        if (LevelManager.Ins.playerScore > 0)
+        {
+            score = LevelManager.Ins.playerScore + Random.Range(-5, 5);
+            if (score < 0) score = 0;
+            UpdateScore(score);
+            for (int i = 0; i < Mathf.FloorToInt(score / 5); i++)
+            {
+                IncreaseSize();
+            }
+        }
     }
 
     public override void OnDeath()

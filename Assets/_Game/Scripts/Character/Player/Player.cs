@@ -38,6 +38,12 @@ public class Player : Character
         weapon = hand.OnInit(PlayerData.Ins.weaponType);
         m_Transform.position = Vector3.zero;
         m_Transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+        UnequipAllSkin();
+        for (int i = 0; i < PlayerData.Ins.equippedSkins.Count; i++)
+        {
+            EquipSkin(PlayerData.Ins.equippedSkins[i]);
+        }
+        UpdateScore(0);
         base.OnInit();
     }
 
@@ -138,6 +144,12 @@ public class Player : Character
     public override void OnKill()
     {
         base.OnKill();
+        //cameraFollow.IncreaseOffset();
+    }
+
+    protected override void IncreaseSize()
+    {
+        base.IncreaseSize();
         cameraFollow.IncreaseOffset();
     }
 

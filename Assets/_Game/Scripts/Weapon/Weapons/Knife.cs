@@ -6,6 +6,6 @@ public class Knife : Weapon
 {
     private void Awake()
     {
-        bulletSpeed = 12f;
+        bulletSpeed = 16f;
     }
 }

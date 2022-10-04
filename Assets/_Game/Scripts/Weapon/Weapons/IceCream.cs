@@ -10,7 +10,7 @@ public class IceCream : Weapon
 
     private void Awake()
     {
-        bulletSpeed = 6f;
+        bulletSpeed = 10f;
     }
 
     public override void Attack()

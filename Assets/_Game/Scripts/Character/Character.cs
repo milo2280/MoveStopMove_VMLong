@@ -14,9 +14,9 @@ public abstract class Character : GameUnit, IHit<Character>
     public SkinnedMeshRenderer bodyMesh, pantMesh;
 
     protected int score;
-    public int Score { get { return score; } private set { } }
+    public int Score { get { return score; } }
     protected Vector3 scale;
-    public Vector3 Scale { get { return scale; } private set { } }
+    public Vector3 Scale { get { return scale; } }
     protected string charName;
     public string CharName { get { return charName; } private set { } }
 
@@ -24,25 +24,30 @@ public abstract class Character : GameUnit, IHit<Character>
     [HideInInspector]
     public float range, attackSpeed, moveSpeed, bulletSpeed;
 
+    protected Material basePant;
     protected Dictionary<SkinType, Skin> dictUsedSkin = new Dictionary<SkinType, Skin>();
-    protected Skin currentHair;
+    protected Skin currentHair, currentPant;
     protected Color color;
     protected string currentAnim;
     protected Weapon weapon;
-    protected float[] addBuff = { 0f, 0f, 0f, 0f };
-    protected float[] percentBuff = { 0f, 0f, 0f, 0f };
+    protected float[] addBuff = new float[4];
+    protected float[] percentBuff = new float[4];
     protected Character target;
     protected List<Character> targets = new List<Character>();
     protected bool isDead, isAttacking, isThrew, isDelaying;
     protected float attackTimer, delayTimer;
     protected float fullAttackDuration, throwDuration, retractHandDuration, delayDuration;
 
+    private void Awake()
+    {
+        basePant = pantMesh.material;
+    }
+
     public virtual void OnInit() 
     {
         InitStat();
         isDead = false;
         m_Collider.enabled = true;
-        UpdateScore(0);
         InitTarget();
     }
 
@@ -78,8 +83,20 @@ public abstract class Character : GameUnit, IHit<Character>
         {
             bulletSpeed += weapon.bulletSpeed;
             ClassifyBuff(weapon.buff);
-            CalculateNewStat();
         }
+
+        if (currentHair != null)
+        {
+            ClassifyBuff(currentHair.data.skinBuff);
+        }
+
+        if (currentPant != null)
+        {
+            ClassifyBuff(currentPant.data.skinBuff);
+        }
+
+        CalculateNewStat();
+
     }
 
     public void ClassifyBuff(Buff buff)
@@ -250,11 +267,14 @@ public abstract class Character : GameUnit, IHit<Character>
 
     public virtual void OnKill()
     {
-        IncreaseSize();
         UpdateScore(++score);
+        if (score % 5 == 0)
+        {
+            IncreaseSize();
+        }
     }
 
-    private void IncreaseSize()
+    protected virtual void IncreaseSize()
     {
         scale += scale * Constant.TEN_PERCENT;
         m_Transform.localScale = scale;
@@ -273,19 +293,22 @@ public abstract class Character : GameUnit, IHit<Character>
         charName = name;
     }
 
-    public void WearSkin(SkinType skinType)
+    public void EquipSkin(SkinType skinType)
     {
         Skin skin = SkinManager.Ins.dictSkin[skinType];
 
         switch (skin.skinClass)
         {
             case SkinClass.Hair:
-                WearHair(skin);
+                EquipHair(skin);
+                break;
+            case SkinClass.Pant:
+                EquipPant(skin);
                 break;
         }
     }
 
-    private void WearHair(Skin skin) 
+    private void EquipHair(Skin skin) 
     {
         if (currentHair != null)
         {
@@ -302,6 +325,27 @@ public abstract class Character : GameUnit, IHit<Character>
             currentHair = Instantiate<Skin>(skin, headTransform);
             currentHair.m_Transform.localPosition = Vector3.zero;
             dictUsedSkin.Add(currentHair.skinType, currentHair);
+        }
+    }
+
+    private void EquipPant(Skin skin)
+    {
+        currentPant = skin;
+        pantMesh.material = skin.data.material;
+    }
+
+    public void UnequipAllSkin()
+    {
+        if (currentHair != null)
+        {
+            currentHair.gameObject.SetActive(false);
+            currentHair = null;
+        }
+
+        if (currentPant != null)
+        {
+            pantMesh.material = basePant;
+            currentPant = null;
         }
     }
 }

@@ -856,7 +856,8 @@ MonoBehaviour:
   weaponType: 0
   unlockedWeapon: 
   unlockedClass: 
-  equippedSkin: 
+  equippedSkins: 
+  oneTimeSkins: 
 --- !u!1 &480923309
 GameObject:
   m_ObjectHideFlags: 0
@@ -1258,7 +1259,14 @@ MonoBehaviour:
   - {fileID: 1285046242274098371, guid: 6eb7ea087577e194aafb2281f9af2e84, type: 3}
   - {fileID: 5945542978191981558, guid: ce847c5c59e4e9a4daa2803ea9a8f8f8, type: 3}
   - {fileID: 7188528156241907320, guid: d1edc1092551cde469d37a71a86a0fbd, type: 3}
-  pants: []
+  pants:
+  - {fileID: -4527405312981240134, guid: 08625f5596b332a45b06a1bf091c9430, type: 3}
+  - {fileID: -4527405312981240134, guid: 912c57522972e074d8c92967a8a26787, type: 3}
+  - {fileID: -4527405312981240134, guid: 2d1ac7750030c4340bd9619dd1d0e1f5, type: 3}
+  - {fileID: -4527405312981240134, guid: c5598b06d4f9eeb4cb3f8b6fb6359819, type: 3}
+  - {fileID: -4527405312981240134, guid: 244949a305bc20a4a9d93bf65e900854, type: 3}
+  - {fileID: -4527405312981240134, guid: ebbb7cf9defa43c4793b6ab58b5b1d4f, type: 3}
+  - {fileID: -4527405312981240134, guid: bd05c66dd07085f48bf9ee7af2d7f6ae, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1577,11 +1585,6 @@ Transform:
   m_Father: {fileID: 1975533461}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &921744051 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5870989306026355809, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
-  m_PrefabInstance: {fileID: 1890375759707272745}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &957741894
 GameObject:
   m_ObjectHideFlags: 0
@@ -1790,7 +1793,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 993521174}
-  m_LocalRotation: {x: 0.38268346, y: 3e-45, z: -1e-45, w: 0.92387956}
+  m_LocalRotation: {x: 0.38268346, y: -1e-45, z: 1e-45, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 15, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3929,6 +3932,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1890375759441814783, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
+      propertyPath: baseMS
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1890375759441814783, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
       propertyPath: joystick
       value: 
       objectReference: {fileID: 1745851153}
@@ -3936,9 +3943,5 @@ PrefabInstance:
       propertyPath: cameraFollow
       value: 
       objectReference: {fileID: 1789150469}
-    - target: {fileID: 1890375759441814783, guid: 4ad07afff59001747ab0932733a4d545, type: 3}
-      propertyPath: headTransform
-      value: 
-      objectReference: {fileID: 921744051}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ad07afff59001747ab0932733a4d545, type: 3}

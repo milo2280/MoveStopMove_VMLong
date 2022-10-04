@@ -8,4 +8,5 @@ public class SkinData : ScriptableObject
     public int price;
     public Buff skinBuff;
     public int locked;
+    public Material material;
 }

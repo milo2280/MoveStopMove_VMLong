@@ -52,6 +52,22 @@ public class SkinManager : Singleton<SkinManager>
             dictSkin.Add(pants[i].skinType, pants[i]);
         }
     }
+
+    public SkinType GetRandomHair()
+    {
+        return hairs[Random.Range(0, hairs.Length)].skinType;
+    }
+
+    public SkinType GetRandomPant()
+    {
+        return pants[Random.Range(0, pants.Length)].skinType;
+    }
+
+    public SkinClass GetSkinClass(SkinType skinType)
+    {
+        int type = (int)skinType;
+        return (SkinClass)(type - (type % 100));
+    }
 }
 
 

@@ -14,6 +14,7 @@ public class SkinOption : MonoBehaviour
     {
         SkinData skinData = skin.data;
         if (skinData.locked != 1) locked.SetActive(false);
+        else locked.SetActive(true);
 
         if (currentSkin != null)
         {
@@ -21,5 +22,14 @@ public class SkinOption : MonoBehaviour
         }
 
         currentSkin = SimplePool.Spawn<Skin>(skin, skinParentTF, 1);
+
+        if (PlayerData.Ins.equippedSkins.Contains(currentSkin.skinType))
+        {
+            equipped.SetActive(true);
+        }
+        else
+        {
+            equipped.SetActive(false);
+        }
     }
 }

@@ -28,8 +28,8 @@ public class LevelManager : Singleton<LevelManager>
     private List<int> used = new List<int>();
 
     private const int REVIVE_GOLD = 150;
-    private const int START_ENEMY_NUMBER = 2;
-    private const int MAX_ENEMY_NUMBER = 3;
+    private const int START_ENEMY_NUMBER = 7;
+    private const int MAX_ENEMY_NUMBER = 50;
 
     private void Awake()
     {
@@ -110,6 +110,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         spawnCounter = 0;
         deadCounter = 0;
+        PlayerData.Ins.ResetOneTime();
         player.OnInit();
         UpdateEnemyRemain();
         indicatorHolder.OnReset();

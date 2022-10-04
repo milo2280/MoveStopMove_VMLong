@@ -14,7 +14,8 @@ public class PlayerData : Singleton<PlayerData>
     public List<WeaponType> unlockedWeapon = new List<WeaponType>();
     public List<WeaponClass> unlockedClass = new List<WeaponClass>();
 
-    public List<SkinType> equippedSkin = new List<SkinType>();
+    public List<SkinType> equippedSkins = new List<SkinType>();
+    public List<SkinType> oneTimeSkins = new List<SkinType>();
 
     private const string NAME = "name";
     private const string GOLD = "gold";
@@ -29,6 +30,9 @@ public class PlayerData : Singleton<PlayerData>
 
     private const string SKIN = "skin";
     private const string SKIN_COUNT = "skin_count";
+
+    private const string ONETIME = "onetime";
+    private const string ONETIME_COUNT = "onetime_count";
 
     private const string DEFAULT_NAME = "You";
 
@@ -66,7 +70,15 @@ public class PlayerData : Singleton<PlayerData>
         {
             for (int i = 0; i < PlayerPrefs.GetInt(SKIN_COUNT); i++)
             {
-                equippedSkin.Add((SkinType)PlayerPrefs.GetInt(SKIN + i));
+                equippedSkins.Add((SkinType)PlayerPrefs.GetInt(SKIN + i));
+            }
+        }
+
+        if (PlayerPrefs.GetInt(ONETIME_COUNT) != 0)
+        {
+            for (int i = 0; i < PlayerPrefs.GetInt(ONETIME_COUNT); i++)
+            {
+                oneTimeSkins.Add((SkinType)PlayerPrefs.GetInt(ONETIME + i));
             }
         }
     }
@@ -91,10 +103,16 @@ public class PlayerData : Singleton<PlayerData>
             PlayerPrefs.SetInt(CLASS + i, (int)unlockedClass[i]);
         }
 
-        PlayerPrefs.SetInt(SKIN_COUNT, equippedSkin.Count);
-        for (int i = 0; i < equippedSkin.Count; i++)
+        PlayerPrefs.SetInt(SKIN_COUNT, equippedSkins.Count);
+        for (int i = 0; i < equippedSkins.Count; i++)
         {
-            PlayerPrefs.SetInt(SKIN + i, (int)equippedSkin[i]);
+            PlayerPrefs.SetInt(SKIN + i, (int)equippedSkins[i]);
+        }
+
+        PlayerPrefs.SetInt(ONETIME_COUNT, oneTimeSkins.Count);
+        for (int i = 0; i < oneTimeSkins.Count; i++)
+        {
+            PlayerPrefs.SetInt(ONETIME + i, (int)oneTimeSkins[i]);
         }
     }
 
@@ -143,8 +161,44 @@ public class PlayerData : Singleton<PlayerData>
         unlockedWeapon.Add(WeaponManager.Ins.dictWeaponClass[weaponClass][0]);
     }
 
-    public void UnlockSkin(SkinType skinType)
+    public void EquipSkin(SkinType skinType)
     {
-        equippedSkin.Add(skinType);
+        SkinClass skinClass = SkinManager.Ins.GetSkinClass(skinType);
+
+        for (int i = 0; i < equippedSkins.Count; i++)
+        {
+            if (skinClass == SkinManager.Ins.GetSkinClass(equippedSkins[i]))
+            {
+                equippedSkins.RemoveAt(i);
+                break;
+            }
+        }
+
+        equippedSkins.Add(skinType);
+    }
+
+    public void UnequipSkin(SkinType skinType)
+    {
+        if (equippedSkins.Contains(skinType))
+        {
+            equippedSkins.Remove(skinType);
+        }
+    }
+
+    public void UnlockOneTime(SkinType skinType)
+    {
+        oneTimeSkins.Add(skinType);
+    }
+
+    public void ResetOneTime()
+    {
+        for (int i = 0; i < oneTimeSkins.Count; i++)
+        {
+            Skin skin = SkinManager.Ins.dictSkin[oneTimeSkins[i]];
+            skin.data.locked = 1;
+            UnequipSkin(oneTimeSkins[i]);
+        }
+
+        oneTimeSkins.Clear();
     }
 }
