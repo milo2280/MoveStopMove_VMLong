@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1300618511076964254}
   - component: {fileID: 1300618511076964253}
   - component: {fileID: 1300618511076964240}
+  - component: {fileID: 2525648022564409051}
   m_Layer: 5
   m_Name: UICGameplay
   m_TagString: Untagged
@@ -114,7 +115,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDestroyOnClose: 0
+  allButton:
+  - {fileID: 1300618512547341076}
+  buttonSound: {fileID: 2525648022564409051}
   enemyRemain: {fileID: 6536197345691928405}
+--- !u!114 &2525648022564409051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1300618511076964251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842bbb3ed683c2348a947048c6071364, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1300618512303187662
 GameObject:
   m_ObjectHideFlags: 0

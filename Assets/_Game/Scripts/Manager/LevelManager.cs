@@ -14,26 +14,27 @@ public class LevelManager : Singleton<LevelManager>
     public Transform[] SpawnPos;
     public GameObject[] listObstacle;
 
-    public int rank;
+    public int rank, goldReceive;
     public string killer;
     public int playerScore => player.Score;
 
     public int deadCounter;
 
-    private LevelData currentLevel;
+    public LevelData currentLevel;
     private int spawnCounter;
     private float timer;
     private bool isWin, isNewLevel, isPopUI;
     private int random;
+    public int maxEnemy;
     private List<int> used = new List<int>();
 
     private const int REVIVE_GOLD = 150;
     private const int START_ENEMY_NUMBER = 7;
-    private const int MAX_ENEMY_NUMBER = 50;
 
     private void Awake()
     {
         currentLevel = levelDatas[PlayerData.Ins.currentLevel - 1];
+        maxEnemy = currentLevel.botCount;
     }
 
     private void Start()
@@ -56,6 +57,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private void LoadLevel()
     {
+        maxEnemy = currentLevel.botCount;
         EnableObstacle();
     }
 
@@ -94,6 +96,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private void OnInit()
     {
+        used.Clear();
         if (isNewLevel)
         {
             LoadLevel();
@@ -123,6 +126,7 @@ public class LevelManager : Singleton<LevelManager>
         {
             if (PlayerData.Ins.SpendGold(REVIVE_GOLD))
             {
+                indicatorHolder.ShowAllIndicator();
                 player.OnRevive();
                 return true;
             }
@@ -133,6 +137,7 @@ public class LevelManager : Singleton<LevelManager>
         }
         else
         {
+            indicatorHolder.ShowAllIndicator();
             player.OnRevive();
             return true;
         }
@@ -159,7 +164,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         indicatorHolder.RemoveIndicator(enemy);
 
-        if (spawnCounter < MAX_ENEMY_NUMBER)
+        if (spawnCounter < maxEnemy)
         {
             SpawnEnemy();
         }
@@ -167,7 +172,7 @@ public class LevelManager : Singleton<LevelManager>
         deadCounter++;
         UpdateEnemyRemain();
 
-        if (deadCounter == MAX_ENEMY_NUMBER)
+        if (deadCounter == maxEnemy)
         {
             EndLevel(true);
         }
@@ -201,7 +206,9 @@ public class LevelManager : Singleton<LevelManager>
 
     public void EndLevel(bool isWin)
     {
-        PlayerData.Ins.ReceiveGold(playerScore);
+        indicatorHolder.HideAllIndicator();
+        goldReceive = playerScore * 10;
+        PlayerData.Ins.ReceiveGold(goldReceive);
         PlayerData.Ins.AddTotalScore(playerScore);
 
         if (!isPopUI)
@@ -226,7 +233,12 @@ public class LevelManager : Singleton<LevelManager>
             {
                 currentLevel = levelDatas[currentLevel.level];
                 PlayerData.Ins.currentLevel = currentLevel.level;
+                PlayerData.Ins.bestRank = currentLevel.botCount + 1;
                 isNewLevel = true;
+            }
+            else
+            {
+                PlayerData.Ins.bestRank = 1;
             }
 
             if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
@@ -238,10 +250,14 @@ public class LevelManager : Singleton<LevelManager>
         }
         else
         {
-            rank = MAX_ENEMY_NUMBER - deadCounter + 1;
+            rank = maxEnemy - deadCounter + 1;
+            if (rank < PlayerData.Ins.bestRank)
+            {
+                PlayerData.Ins.bestRank = rank;
+            }
             if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
             {
-                UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay).Fail(MAX_ENEMY_NUMBER - deadCounter);
+                UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay).Fail(maxEnemy - deadCounter);
             }
         }
     }
@@ -251,7 +267,7 @@ public class LevelManager : Singleton<LevelManager>
         if (UIManager.Ins.IsOpened(UIID.UICGamePlay))
         {
             CanvasGameplay canvas = UIManager.Ins.GetUI<CanvasGameplay>(UIID.UICGamePlay);
-            canvas.UpdateEnemyRemain(MAX_ENEMY_NUMBER - deadCounter + 1);
+            canvas.UpdateEnemyRemain(maxEnemy - deadCounter + 1);
         }
     }
 

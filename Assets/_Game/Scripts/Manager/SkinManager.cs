@@ -34,6 +34,7 @@ public class SkinManager : Singleton<SkinManager>
     public Skin[] hairs;
     public Skin[] pants;
 
+    public List<SkinType> lockedSkins = new List<SkinType>();
     public Dictionary<SkinType, Skin> dictSkin = new Dictionary<SkinType, Skin>();
     public Dictionary<SkinClass, Skin[]> dictSkinClass = new Dictionary<SkinClass, Skin[]>();
 
@@ -45,11 +46,13 @@ public class SkinManager : Singleton<SkinManager>
         for (int i = 0; i < hairs.Length; i++)
         {
             dictSkin.Add(hairs[i].skinType, hairs[i]);
+            if (hairs[i].data.locked == 1) lockedSkins.Add(hairs[i].skinType);
         }
 
         for (int i = 0; i < pants.Length; i++)
         {
             dictSkin.Add(pants[i].skinType, pants[i]);
+            if (pants[i].data.locked == 1) lockedSkins.Add(pants[i].skinType);
         }
     }
 
@@ -61,6 +64,11 @@ public class SkinManager : Singleton<SkinManager>
     public SkinType GetRandomPant()
     {
         return pants[Random.Range(0, pants.Length)].skinType;
+    }
+
+    public SkinType GetRandomLockedSkin()
+    {
+        return lockedSkins[Random.Range(0, lockedSkins.Count)];
     }
 
     public SkinClass GetSkinClass(SkinType skinType)

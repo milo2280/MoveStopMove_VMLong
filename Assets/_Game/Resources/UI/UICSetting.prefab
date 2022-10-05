@@ -944,6 +944,7 @@ GameObject:
   - component: {fileID: 4779654202339990326}
   - component: {fileID: 4779654202339990313}
   - component: {fileID: 4779654202339990324}
+  - component: {fileID: 2450793937582440008}
   m_Layer: 5
   m_Name: UICSetting
   m_TagString: Untagged
@@ -1045,10 +1046,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDestroyOnClose: 0
+  allButton:
+  - {fileID: 2417224558980848257}
+  - {fileID: 465661860871670454}
+  - {fileID: 8663242406302856325}
+  - {fileID: 4779654202687038722}
+  buttonSound: {fileID: 2450793937582440008}
   soundOn: {fileID: 7366036208692656389}
   soundOff: {fileID: 4213826423725771751}
   vibrateOn: {fileID: 6291791096316246355}
   vibrateOff: {fileID: 1094325415587001920}
+--- !u!114 &2450793937582440008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779654202339990315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842bbb3ed683c2348a947048c6071364, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4779654202358400039
 GameObject:
   m_ObjectHideFlags: 0

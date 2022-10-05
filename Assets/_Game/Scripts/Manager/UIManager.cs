@@ -17,10 +17,10 @@ public enum UIID
     UICVictory = 5,
     UICRevive = 6,
     UICMoneyShop = 7,
-    UICOffer = 8,
 
     UICShopWeapon = 101,
     UICShopSkin = 102,
+    UICOffer = 103,
 }
 
 

@@ -9,7 +9,7 @@ public class PlayerData : Singleton<PlayerData>
     public string playerName;
     public int gold;
     public int totalScore;
-    public int currentLevel;
+    public int currentLevel, bestRank;
     public WeaponType weaponType;
     public List<WeaponType> unlockedWeapon = new List<WeaponType>();
     public List<WeaponClass> unlockedClass = new List<WeaponClass>();
@@ -21,6 +21,7 @@ public class PlayerData : Singleton<PlayerData>
     private const string GOLD = "gold";
     private const string SCORE = "score";
     private const string LEVEL = "level";
+    private const string BEST = "best";
 
     private const string WEAPON = "weapon";
     private const string WEAPON_COUNT = "weapon_count";
@@ -41,6 +42,7 @@ public class PlayerData : Singleton<PlayerData>
         weaponType = PlayerPrefs.GetInt(WEAPON) == 0 ? WeaponType.Hammer1 : (WeaponType)PlayerPrefs.GetInt(WEAPON);
         playerName = string.IsNullOrEmpty(PlayerPrefs.GetString(NAME)) ? DEFAULT_NAME : PlayerPrefs.GetString(NAME);
         currentLevel = PlayerPrefs.GetInt(LEVEL) == 0 ? 1 : PlayerPrefs.GetInt(LEVEL);
+        bestRank = PlayerPrefs.GetInt(BEST) == 0 ? 50 : PlayerPrefs.GetInt(BEST);
         gold = PlayerPrefs.GetInt(GOLD);
         totalScore = PlayerPrefs.GetInt(SCORE);
 
@@ -90,6 +92,7 @@ public class PlayerData : Singleton<PlayerData>
         PlayerPrefs.SetInt(GOLD, gold);
         PlayerPrefs.SetInt(SCORE, totalScore);
         PlayerPrefs.SetInt(WEAPON, (int)weaponType);
+        PlayerPrefs.SetInt(BEST, bestRank);
 
         PlayerPrefs.SetInt(WEAPON_COUNT, unlockedWeapon.Count);
         for (int i = 0; i < unlockedWeapon.Count; i++)

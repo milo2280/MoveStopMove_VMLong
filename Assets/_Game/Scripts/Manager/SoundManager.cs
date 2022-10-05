@@ -6,7 +6,8 @@ public enum AudioType
 {
     ThrowWeapon,
     Die,
-    Countdown
+    Countdown,
+    ButtonClick,
 }
 
 public class SoundManager : Singleton<SoundManager>

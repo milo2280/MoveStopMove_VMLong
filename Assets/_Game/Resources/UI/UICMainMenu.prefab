@@ -330,6 +330,7 @@ GameObject:
   - component: {fileID: 614080713100154547}
   - component: {fileID: 614080713100154546}
   - component: {fileID: 614080713100154557}
+  - component: {fileID: 539374101391545906}
   m_Layer: 5
   m_Name: UICMainMenu
   m_TagString: Untagged
@@ -431,9 +432,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDestroyOnClose: 0
+  allButton:
+  - {fileID: 614080713685867780}
+  - {fileID: 1604293293176159510}
+  - {fileID: 1255211205126592810}
+  - {fileID: 1132393995891977651}
+  - {fileID: 1529924837959995342}
+  - {fileID: 1854296041131872515}
+  buttonSound: {fileID: 539374101391545906}
   placeHolder: {fileID: 72446186044238909}
   goldText: {fileID: 6829447272761443476}
-  playerData: {fileID: 11400000, guid: fea6a1f33d532e64abc83c272d9de728, type: 2}
+  zoneText: {fileID: 8486246041977024735}
   soundOn: {fileID: 4026753386317404045}
   soundOff: {fileID: 3364561586815897558}
   vibrateOn: {fileID: 6022294721665586913}
@@ -443,6 +452,18 @@ MonoBehaviour:
   - {fileID: 367064622923171656}
   - {fileID: 1776212031270982717}
   - {fileID: 7549582213628363700}
+--- !u!114 &539374101391545906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614080713100154544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842bbb3ed683c2348a947048c6071364, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &614080713685867834
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,6 +497,7 @@ RectTransform:
   - {fileID: 614080712447341423}
   - {fileID: 4828572151421488006}
   - {fileID: 8662328178598411288}
+  - {fileID: 1863695430181261176}
   m_Father: {fileID: 614080712304716095}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2412,6 +2434,85 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &6701290308285433130
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1863695430181261176}
+  - component: {fileID: 4000390729951103907}
+  - component: {fileID: 8486246041977024735}
+  m_Layer: 5
+  m_Name: Zone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1863695430181261176
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6701290308285433130}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 614080713685867835}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -35, y: -50}
+  m_SizeDelta: {x: 400, y: 60}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4000390729951103907
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6701290308285433130}
+  m_CullTransparentMesh: 1
+--- !u!114 &8486246041977024735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6701290308285433130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.6226415, g: 0.23308149, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 25
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 49
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'ZONE: 3 - RANK: #100'
 --- !u!1 &6776549094570623601
 GameObject:
   m_ObjectHideFlags: 0
