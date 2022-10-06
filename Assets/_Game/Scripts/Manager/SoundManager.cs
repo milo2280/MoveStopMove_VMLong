@@ -8,6 +8,10 @@ public enum AudioType
     Die,
     Countdown,
     ButtonClick,
+    Revive,
+    Win,
+    Lose,
+    IncreaseSize,
 }
 
 public class SoundManager : Singleton<SoundManager>
@@ -17,14 +21,11 @@ public class SoundManager : Singleton<SoundManager>
     [SerializeField]
     private Audio[] audios;
 
-    private bool isSoundOn;
-    public bool IsSoundOn { get { return isSoundOn; } private set { } }
-
     private Dictionary<AudioType, AudioClip> dictAudio = new Dictionary<AudioType, AudioClip>();
 
-    private void Awake()
+    private void Start()
     {
-        isSoundOn = !audioSource.mute;
+        audioSource.mute = DataManager.Ins.isMute;
 
         for (int i = 0; i < audios.Length; i++)
         {
@@ -40,7 +41,7 @@ public class SoundManager : Singleton<SoundManager>
     public void ToggleSound()
     {
         audioSource.mute = !audioSource.mute;
-        isSoundOn = !audioSource.mute;
+        DataManager.Ins.isMute = !DataManager.Ins.isMute;
     }
 }
 

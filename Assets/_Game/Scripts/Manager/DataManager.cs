@@ -13,6 +13,11 @@ public class DataManager : Singleton<DataManager>
     private int colorIndex, colorCount;
     private List<int> usedColors = new List<int>();
 
+    public bool isMute, isVibrate;
+
+    private const string MUTE = "mute";
+    private const string VIBRATE = "vibrate";
+
     private class NamesList
     {
         public List<string> names;
@@ -70,6 +75,28 @@ public class DataManager : Singleton<DataManager>
         }
 
         return value.ToString();
+    }
+
+    public void LoadData()
+    {
+        PlayerData.Ins.LoadData();
+
+        if (PlayerPrefs.GetInt(MUTE) == 0) isMute = false;
+        else isMute = true;
+
+        if (PlayerPrefs.GetInt(VIBRATE) == 0) isVibrate = false;
+        else isVibrate = true;
+    }
+
+    public void SaveData()
+    {
+        PlayerData.Ins.SaveData();
+
+        if (isMute) PlayerPrefs.SetInt(MUTE, 1);
+        else PlayerPrefs.SetInt(MUTE, 0);
+
+        if (isVibrate) PlayerPrefs.SetInt(VIBRATE, 1);
+        else PlayerPrefs.SetInt(VIBRATE, 0);
     }
 }
 

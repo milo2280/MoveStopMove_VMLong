@@ -8,18 +8,25 @@ public class CanvasSetting : UICanvas
 
     private void OnEnable()
     {
-        ChangeSoundToggle();
+        soundOn.SetActive(!DataManager.Ins.isMute);
+        soundOff.SetActive(DataManager.Ins.isMute);
+
+        vibrateOn.SetActive(DataManager.Ins.isVibrate);
+        vibrateOff.SetActive(!DataManager.Ins.isVibrate);
     }
 
     public void SoundToggleButton()
     {
         SoundManager.Ins.ToggleSound();
-        ChangeSoundToggle();
+        soundOn.SetActive(!DataManager.Ins.isMute);
+        soundOff.SetActive(DataManager.Ins.isMute);
     }
 
     public void VibrateToggleButton()
     {
-        Debug.Log("Vibrate");
+        DataManager.Ins.isVibrate = !DataManager.Ins.isVibrate;
+        vibrateOn.SetActive(DataManager.Ins.isVibrate);
+        vibrateOff.SetActive(!DataManager.Ins.isVibrate);
     }
 
     public void ContinueButton()
@@ -36,11 +43,5 @@ public class CanvasSetting : UICanvas
         LevelManager.Ins.RestartLevel();
         LevelManager.Ins.BackHome();
         Close();
-    }
-
-    private void ChangeSoundToggle()
-    {
-        soundOn.SetActive(SoundManager.Ins.IsSoundOn);
-        soundOff.SetActive(!SoundManager.Ins.IsSoundOn);
     }
 }

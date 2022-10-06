@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Rigidbody: {fileID: 1343968582615303709}
   m_Transform: {fileID: 3999872484208263853}
+  hitVFX: {fileID: 198138027695693824, guid: 86caadc364352d84c88277ee5ba76b30, type: 3}
 --- !u!54 &1343968582615303709
 Rigidbody:
   m_ObjectHideFlags: 0

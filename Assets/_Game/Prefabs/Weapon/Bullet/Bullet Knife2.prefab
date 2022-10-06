@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Rigidbody: {fileID: 118295727216668469}
   m_Transform: {fileID: 1510512286908745811}
+  hitVFX: {fileID: 198138027695693824, guid: 86caadc364352d84c88277ee5ba76b30, type: 3}
 --- !u!65 &3413522224662862103
 BoxCollider:
   m_ObjectHideFlags: 0

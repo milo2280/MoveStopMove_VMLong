@@ -13,8 +13,6 @@ public class CanvasMainMenu : UICanvas
     public RectTransform fillTransform;
     public GameObject[] ranks;
 
-    private bool isSoundOn, isVibrateOn;
-
     private int[] goals = { 0, 100, 500, 1000 };
     private GameObject currentRank;
     private float currentScore, prevGoal, currentGoal, currentWidth;
@@ -25,6 +23,12 @@ public class CanvasMainMenu : UICanvas
 
     private void OnEnable()
     {
+        vibrateOn.SetActive(DataManager.Ins.isVibrate);
+        vibrateOff.SetActive(!DataManager.Ins.isVibrate);
+
+        soundOn.SetActive(!DataManager.Ins.isMute);
+        soundOff.SetActive(DataManager.Ins.isMute);
+
         placeHolder.text = PlayerData.Ins.playerName;
         goldText.text = PlayerData.Ins.gold.ToString();
         zoneText.text = "ZONE: " + PlayerData.Ins.currentLevel + " - " + "BEST: #" + PlayerData.Ins.bestRank;
@@ -72,18 +76,16 @@ public class CanvasMainMenu : UICanvas
 
     public void VibrateButton()
     {
-        Debug.Log("Vibrate");
-        vibrateOn.SetActive(isVibrateOn);
-        vibrateOff.SetActive(!isVibrateOn);
-        isVibrateOn = !isVibrateOn;
+        DataManager.Ins.isVibrate = !DataManager.Ins.isVibrate;
+        vibrateOn.SetActive(DataManager.Ins.isVibrate);
+        vibrateOff.SetActive(!DataManager.Ins.isVibrate);
     }
 
     public void SoundButton()
     {
         SoundManager.Ins.ToggleSound();
-        soundOn.SetActive(isSoundOn);
-        soundOff.SetActive(!isSoundOn);
-        isSoundOn = !isSoundOn;
+        soundOn.SetActive(!DataManager.Ins.isMute);
+        soundOff.SetActive(DataManager.Ins.isMute);
     }
 
     private void UpdateRank()

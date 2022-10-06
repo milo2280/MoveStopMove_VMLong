@@ -25,6 +25,7 @@ public class CanvasFail : UICanvas
 
     private void OnEnable()
     {
+        SoundManager.Ins.PlayAudio(AudioType.Lose);
         timer = 0;
         isContinueActive = false;
         continueButton.SetActive(false);

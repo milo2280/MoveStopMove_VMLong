@@ -13,7 +13,7 @@ public class GameManager : Singleton<GameManager>
         Application.targetFrameRate = 60;
         Input.multiTouchEnabled = false;
 
-        PlayerData.Ins.LoadData();
+        DataManager.Ins.LoadData();
 
         ChangeState(GameState.MainMenu);
         UIManager.Ins.OpenUI(UIID.UICMainMenu);
@@ -21,7 +21,7 @@ public class GameManager : Singleton<GameManager>
 
     private void OnApplicationQuit()
     {
-        PlayerData.Ins.SaveData();
+        DataManager.Ins.SaveData();
     }
 
     public void ChangeState(GameState state)

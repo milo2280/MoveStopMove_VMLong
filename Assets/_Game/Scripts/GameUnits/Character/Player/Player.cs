@@ -8,6 +8,7 @@ public class Player : Character
     public CameraFollow cameraFollow;
 
     public float gold;
+    public ParticleSystem reviveVFX;
 
     private Vector3 mouseDir, moveDir;
     private Quaternion lookRotation;
@@ -59,6 +60,8 @@ public class Player : Character
         m_Collider.enabled = true;
         SetColor(color * 3);
         ChangeAnim(Constant.ANIM_IDLE);
+        ParticlePool.Play(reviveVFX, m_Transform.position, m_Transform.rotation);
+        SoundManager.Ins.PlayAudio(AudioType.Revive);
     }
 
     private void JoystickMove()
@@ -153,6 +156,7 @@ public class Player : Character
     {
         base.IncreaseSize();
         cameraFollow.IncreaseOffset();
+        SoundManager.Ins.PlayAudio(AudioType.IncreaseSize);
     }
 
     public override void OnDeath()
@@ -160,6 +164,7 @@ public class Player : Character
         base.OnDeath();
         UnMarkTarget();
         LevelManager.Ins.EndLevel(false);
+        Vibrator.Vibrate(500);
     }
 
     public void Win()

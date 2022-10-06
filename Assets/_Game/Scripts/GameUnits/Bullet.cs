@@ -7,6 +7,7 @@ public class Bullet : GameUnit
 {
     public Rigidbody m_Rigidbody;
     public Transform m_Transform;
+    public ParticleSystem hitVFX;
 
     private Vector3 spawnPos;
     private float distanceTravelled;
@@ -43,6 +44,7 @@ public class Bullet : GameUnit
 
     private void OnHit()
     {
+        ParticlePool.Play(hitVFX, m_Transform.position, m_Transform.rotation);
         character.OnKill();
         OnDespawn();
     }

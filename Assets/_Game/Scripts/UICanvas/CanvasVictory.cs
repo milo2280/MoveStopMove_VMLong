@@ -17,6 +17,7 @@ public class CanvasVictory : UICanvas
 
     private void OnEnable()
     {
+        SoundManager.Ins.PlayAudio(AudioType.Win);
         timer = 0;
         isContinueActive = false;
         nextLevelButton.SetActive(false);

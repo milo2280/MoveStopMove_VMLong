@@ -6,10 +6,12 @@ public class PoolController : MonoBehaviour
 {
     public Transform indicatorParent;
     public Transform enemyParent;
+    public Transform hitVFXParent, reviveVFXParent;
     public Transform[] bulletParents;
 
     public GameUnit indicatorPrefab;
     public GameUnit enemyPrefab;
+    public ParticleSystem hitVFX, reviveVFX;
 
     private void Awake()
     {
@@ -20,5 +22,8 @@ public class PoolController : MonoBehaviour
         {
             SimplePool.Preload(WeaponManager.Ins.bullets[i], 10, bulletParents[i]);
         }
+
+        ParticlePool.Preload(hitVFX, 10, hitVFXParent);
+        ParticlePool.Preload(reviveVFX, 1, reviveVFXParent);
     }
 }
