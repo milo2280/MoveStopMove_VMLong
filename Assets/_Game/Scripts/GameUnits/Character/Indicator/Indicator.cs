@@ -18,8 +18,8 @@ public class Indicator : GameUnit
 
     private const float RADIUS = 50f;
     private static readonly Vector3 offset = new Vector3(0.5f, 0.5f, 0f);
-    private static readonly float MAX_X = Screen.width / 2 - 80;
-    private static readonly float MAX_Y = Screen.height / 2 - 80;
+    private float maxX;
+    private float maxY;
 
     private void Awake()
     {
@@ -70,6 +70,12 @@ public class Indicator : GameUnit
 
     private void UpdateIndicatorPos()
     {
+        float width = Screen.width;
+        float height = Screen.height;
+
+        maxY = 1920f * 0.5f - 80f;
+        maxX = 1920f * (width / height) * 0.5f - 80f;
+
         x = viewPos.x;
         y = viewPos.y;
         z = viewPos.z;
@@ -81,12 +87,12 @@ public class Indicator : GameUnit
         if (Mathf.Approximately(x, 0f))
         {
             PosX = 0f;
-            PosY = MAX_Y * signY * signZ;
+            PosY = maxY * signY * signZ;
         }
         else if (Mathf.Approximately(y, 0f))
         {
             PosY = 0f;
-            PosX = MAX_X * signX * signZ;
+            PosX = maxX * signX * signZ;
         }
         else
         {
@@ -94,13 +100,13 @@ public class Indicator : GameUnit
 
             if (ratio > 1)
             {
-                PosX = MAX_X * signX * signZ;
-                PosY = MAX_Y / ratio * signY * signZ;
+                PosX = maxX * signX * signZ;
+                PosY = maxY / ratio * signY * signZ;
             }
             else
             {
-                PosY = MAX_Y * signY * signZ;
-                PosX = MAX_X * ratio * signX * signZ;
+                PosY = maxY * signY * signZ;
+                PosX = maxX * ratio * signX * signZ;
             }
         }
 

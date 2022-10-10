@@ -19,6 +19,7 @@ public class Player : Character
     private void Start()
     {
         OnInit();
+        Camera mainCam = FindObjectOfType<Camera>();
     }
 
     private void Update()
